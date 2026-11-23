@@ -236,7 +236,7 @@ class Phase(nn.Module):
         super().__init__()
         self.m, self.b = m, batch
         kv, conv, rec = m.pack(m.empty_state(batch, dtype=m.W("embed_tokens.weight").dtype))
-        self.register_buffer(f"kv_b{batch}", kv)
+        self.register_buffer(f"kv_b{batch}", kv.float())                   # q/k/v are fp32 after the head norms
         self.register_buffer(f"conv_b{batch}", conv)
         self.register_buffer(f"rec_b{batch}", rec)
 
@@ -252,7 +252,9 @@ class Phase(nn.Module):
             out = (out[0], *(new + 0 * old for new, old in zip(out[1:], (kv, conv, rec))))
         else:
             out = self.m.decode_packed(x, n, kv, conv, rec)
-        kv.copy_(out[1])
-        conv.copy_(out[2])
-        rec.copy_(out[3])
+        # Rebind (not copy_): torch-neuronx aliases a buffer when the object under its name changes during forward; an
+        # in-place copy_ overwrites the pre-forward tensor itself, which then no longer maps to a graph parameter.
+        # Shape and dtype must match exactly or the buffer is silently not aliased (prefill emits the KV cache in fp32).
+        for name, new, old in zip(("kv", "conv", "rec"), out[1:], (kv, conv, rec)):
+            setattr(self, f"{name}_b{self.b}", new.to(old.dtype))
         return out[0]

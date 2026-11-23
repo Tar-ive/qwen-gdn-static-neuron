@@ -1,0 +1,115 @@
++ S3=s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T233153Z-inf2.xlarge
++ export AWS_DEFAULT_REGION=us-east-1
++ AWS_DEFAULT_REGION=us-east-1
++ trap finish EXIT
++ fallocate -l 32G /swapfile
++ chmod 600 /swapfile
++ mkswap /swapfile
+Setting up swapspace version 1, size = 32 GiB (34359734272 bytes)
+no label, UUID=8d4f0bb6-663d-4b33-82ce-be333c3dffcd
++ swapon /swapfile
++ mkdir -p /home/ubuntu/work /home/ubuntu/out
++ cd /home/ubuntu/work
++ aws s3 cp --quiet s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T233153Z-inf2.xlarge/code.tgz .
++ tar xzf code.tgz
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
++ export PATH=/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/bin:/opt/aws/neuron/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/snap/bin
++ PATH=/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/bin:/opt/aws/neuron/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/snap/bin
++ python -c 'from huggingface_hub import snapshot_download as d; d('\''Qwen/Qwen3.5-0.8B'\'', local_dir='\''ckpt'\'', allow_patterns=['\''*.json'\'','\''*.safetensors'\'','\''*.txt'\''])'
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files:  11%|█         | 1/9 [00:00<00:05,  1.52it/s]Fetching 9 files:  22%|██▏       | 2/9 [00:01<00:03,  1.92it/s]Fetching 9 files:  33%|███▎      | 3/9 [00:08<00:20,  3.49s/it]Fetching 9 files: 100%|██████████| 9/9 [00:08<00:00,  1.11it/s]
++ timeout 82m python -u neuron/run_tp.py ckpt /home/ubuntu/out --tp 2 --bucket 256 --steps 32 --decode-batches 8
++ sleep 120
++ sync_out
++ aws s3 sync /home/ubuntu/out s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T233153Z-inf2.xlarge/ --exclude '*.neff' --exclude '*.pt' --exclude 'neuronx-cc/*' --quiet
++ aws s3 cp --quiet /var/log/run.log s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T233153Z-inf2.xlarge/run.log
++ sleep 120
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/parallel_layers/layers.py:16: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  from .mappings import (
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/parallel_layers/layers.py:16: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  from .mappings import (
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/parallel_layers/layers.py:16: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  from .mappings import (
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/modules/moe/blockwise.py:74: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  component, error = import_nki(config)
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/modules/moe/blockwise.py:74: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  component, error = import_nki(config)
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/modules/moe/blockwise.py:74: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  component, error = import_nki(config)
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/modules/moe/blockwise.py:74: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  component, error = import_nki(config)
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/modules/moe/blockwise.py:74: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  component, error = import_nki(config)
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/modules/moe/blockwise.py:74: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  component, error = import_nki(config)
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/modules/moe/blockwise.py:76: UserWarning: Warning: Failed to import blockwise_mm_baseline_shard_n_k1_while_2loops: No module named 'neuronxcc.nki._private.blockwise_matmul_while'
+  warnings.warn(f"Warning: {error}")
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/modules/moe/moe_fused_tkg.py:49: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  component, error = import_nki(config)
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/modules/moe/moe_fused_tkg.py:49: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  component, error = import_nki(config)
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/modules/moe/moe_fused_tkg.py:49: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  component, error = import_nki(config)
+[    156s] trace
+[2026-11-23 23:37:06.982: I neuronx_distributed/parallel_layers/parallel_state.py:638] > initializing tensor model parallel with size 2
+[2026-11-23 23:37:06.983: I neuronx_distributed/parallel_layers/parallel_state.py:639] > initializing pipeline model parallel with size 1
+[2026-11-23 23:37:06.983: I neuronx_distributed/parallel_layers/parallel_state.py:640] > initializing context model parallel with size 1
+[2026-11-23 23:37:06.983: I neuronx_distributed/parallel_layers/parallel_state.py:641] > initializing data parallel with size 1
+[2026-11-23 23:37:06.985: I neuronx_distributed/parallel_layers/parallel_state.py:642] > initializing world size to 2
+[2026-11-23 23:37:06.985: I neuronx_distributed/parallel_layers/parallel_state.py:387] [rank_0_pp-1_tp-1_dp-1_cp-1] Chosen Logic for replica groups ret_logic=<PG_Group_Logic.LOGIC1: (<function ascending_ring_PG_group at 0x7de1443c6160>, 'Ascending Ring PG Group')>
+[2026-11-23 23:37:06.988: I neuronx_distributed/parallel_layers/parallel_state.py:666] [rank_0_pp-1_tp-1_dp-1_cp-1] tp_groups: replica_groups.tp_groups=[[0, 1]]
+[2026-11-23 23:37:06.988: I neuronx_distributed/parallel_layers/parallel_state.py:667] [rank_0_pp-1_tp-1_dp-1_cp-1] dp_groups: replica_groups.dp_groups=[[0], [1]]
+[2026-11-23 23:37:06.989: I neuronx_distributed/parallel_layers/parallel_state.py:668] [rank_0_pp-1_tp-1_dp-1_cp-1] pp_groups: replica_groups.pp_groups=[[0], [1]]
+[2026-11-23 23:37:06.990: I neuronx_distributed/parallel_layers/parallel_state.py:669] [rank_0_pp-1_tp-1_dp-1_cp-1] cp_groups: replica_groups.cp_groups=[[0], [1]]
+[2026-11-23 23:37:06.990: I neuronx_distributed/parallel_layers/parallel_state.py:670] [rank_0_pp-1_tp-1_dp-1_cp-1] ep_model_groups: replica_groups.ep_model_groups=[[0], [1]]
+[2026-11-23 23:37:06.991: I neuronx_distributed/parallel_layers/parallel_state.py:671] [rank_0_pp-1_tp-1_dp-1_cp-1] ep_data_groups: replica_groups.ep_data_groups=[[0], [1]]
+Neuron: HLO generation failed: Unable to lower HLO: parameter not found in lowering context. This is likely caused by an attempted in-place operation, or an attempted access of nn.Parameter.data or nn.Buffer.data. These operations are not currently supported.
+Traceback (most recent call last):
+  File "/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/trace/functions.py", line 429, in trace
+    hlo_artifacts = torch_neuronx.xla_impl.trace.generate_hlo(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/torch_neuronx/xla_impl/trace.py", line 460, in generate_hlo
+    ) = xla_trace(
+        ^^^^^^^^^^
+  File "/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/torch_neuronx/xla_impl/hlo_conversion.py", line 601, in xla_trace
+    return _xla_trace(func, example_inputs, states, input_output_aliases,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/torch_neuronx/xla_impl/hlo_conversion.py", line 545, in _xla_trace
+    ) = hlo_opt.linearize_indices(
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/torch_neuronx/xla_impl/hlo_conversion.py", line 710, in linearize_indices
+    raise ValueError(
+ValueError: Unable to lower HLO: parameter not found in lowering context. This is likely caused by an attempted in-place operation, or an attempted access of nn.Parameter.data or nn.Buffer.data. These operations are not currently supported.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/ubuntu/work/neuron/run_tp.py", line 121, in <module>
+    traces["prefill"] = nxd_trace(tq.Phase(m, B), args=(batch, lengths))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/trace/functions.py", line 442, in trace
+    raise RuntimeError(f"HLO generation failed: {str(e)}") from e
+RuntimeError: HLO generation failed: Unable to lower HLO: parameter not found in lowering context. This is likely caused by an attempted in-place operation, or an attempted access of nn.Parameter.data or nn.Buffer.data. These operations are not currently supported.
++ sync_out
++ aws s3 sync /home/ubuntu/out s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T233153Z-inf2.xlarge/ --exclude '*.neff' --exclude '*.pt' --exclude 'neuronx-cc/*' --quiet
++ aws s3 cp --quiet /var/log/run.log s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T233153Z-inf2.xlarge/run.log
++ sleep 120
++ echo exit=1
++ finish
++ sync_out
++ aws s3 sync /home/ubuntu/out s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T233153Z-inf2.xlarge/ --exclude '*.neff' --exclude '*.pt' --exclude 'neuronx-cc/*' --quiet
++ aws s3 cp --quiet /var/log/run.log s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T233153Z-inf2.xlarge/run.log
