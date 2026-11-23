@@ -1,0 +1,86 @@
+{
+ "args": {
+  "ckpt": "ckpt",
+  "out": "/home/ubuntu/out",
+  "bucket": 256,
+  "steps": 32,
+  "dtype": "bf16",
+  "cc": "--auto-cast=none --model-type=transformer",
+  "skip": ""
+ },
+ "host": "ip-10-42-1-116",
+ "started": "2026-11-23T18:40:10Z",
+ "env": {
+  "torch": "2.9.0+cu128",
+  "torch_neuronx": "2.9.0.2.12.22436+0f1dac25",
+  "neuronx_cc": "NeuronX Compiler version 2.23.6484.0+3b612583\n\nPython version 3.12.3",
+  "neuron_ls": "instance-type: inf2.xlarge\ninstance-id: i-0c5b0def65ccba477\n+--------+--------+----------+--------+--------------+----------+------+\n| NEURON | NEURON |  NEURON  | NEURON |     PCI      |   CPU    | NUMA |\n| DEVICE | CORES  | CORE IDS | MEMORY |     BDF      | AFFINITY | NODE |\n+--------+--------+----------+--------+--------------+----------+------+\n| 0      | 2      | 0-1      | 32 GB  | 0000:00:1f.0 | 0-3      | -1   |\n+--------+--------+----------+--------+--------------+----------+------+",
+  "instance_type": "inf2.xlarge"
+ },
+ "control": {
+  "compiled": true
+ },
+ "prompts": {
+  "lengths": [
+   5,
+   167
+  ],
+  "bucket": 256,
+  "max_len": 320
+ },
+ "cpu_ref_prefill_s": 8.835570335388184,
+ "inverse": {
+  "systems": 256,
+  "of_nonpadding": 1152,
+  "L_fro_max": 41.64276885986328,
+  "L_fro_min_selected": 4.331198215484619,
+  "device_rel_err_max": 2.2791211373718312e-07,
+  "device_rel_err_median": 5.203120784225135e-08,
+  "cpu_fp32_rel_err_max": 2.4703736856146463e-07,
+  "compile_s": 4.220283508300781,
+  "device_call_ms_256_systems": 674.6373176574707
+ },
+ "compile": {
+  "prefill_s": 345.97949981689453,
+  "decode_s": 495.5910744667053
+ },
+ "neff_bytes": "1620184064 /home/ubuntu/out/neuronx-cc/decode/graph.neff\n246784 /home/ubuntu/out/neuronx-cc/inverse/graph.neff\n1627618304 /home/ubuntu/out/neuronx-cc/prefill/graph.neff\n72704 /home/ubuntu/out/neuronx-cc/control_solve/graph.neff",
+ "accuracy": [
+  {
+   "prompt_len": 5,
+   "prefill_kl": 0.0007342742756009102,
+   "max_step_kl": 0.0007342742756009102,
+   "mean_step_kl": 0.00013249235053081065,
+   "teacher_forced_argmax_agree": 1.0,
+   "greedy_identical_prefix": 32,
+   "steps": 32,
+   "prefill_max_abs_dlogit": 0.14986801147460938,
+   "device_text": " Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is",
+   "cpu_fp32_text": " Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is"
+  },
+  {
+   "prompt_len": 167,
+   "prefill_kl": 0.00039744735113345087,
+   "max_step_kl": 0.00039744735113345087,
+   "mean_step_kl": 4.367094879853539e-05,
+   "teacher_forced_argmax_agree": 1.0,
+   "greedy_identical_prefix": 32,
+   "steps": 32,
+   "prefill_max_abs_dlogit": 0.1034841537475586,
+   "device_text": "1. Explain, step by step, why the sky looks blue during the day but red at sunset. Use the physics of Rayleigh scattering and mention the wavelength",
+   "cpu_fp32_text": "1. Explain, step by step, why the sky looks blue during the day but red at sunset. Use the physics of Rayleigh scattering and mention the wavelength"
+  }
+ ],
+ "latency": {
+  "prefill_ms": 52.463340759277344,
+  "prefill_tokens": 172,
+  "bucket": 256,
+  "batch": 2,
+  "decode_step_ms_median": 21.722078323364258,
+  "decode_step_ms_p90": 21.85797691345215,
+  "decode_tok_per_s_batch": 92.07222118561283,
+  "note": "decode wall time includes copying all state tensors host<->device every step",
+  "state_bytes_per_step_each_way": 50872320
+ },
+ "finished": "2026-11-23T19:01:08Z"
+}

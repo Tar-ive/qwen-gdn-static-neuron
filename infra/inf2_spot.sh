@@ -16,6 +16,7 @@ REGION=${REGION:-us-east-1}
 ITYPE=${ITYPE:-inf2.xlarge}
 MINUTES=${MINUTES:-120}
 MODEL=${MODEL:-Qwen/Qwen3.5-0.8B}
+SCRIPT=${SCRIPT:-neuron/run_inf2.py}
 RUN_ARGS=${RUN_ARGS:-"--bucket 256 --steps 32"}
 PREFIX=${PREFIX:-qwen-gdn-static}
 AMI_NAME=${AMI_NAME:-"Deep Learning AMI Neuron PyTorch Inference vLLM 0.13 (Ubuntu 24.04) 20260227"}
@@ -52,7 +53,7 @@ set -x
 S3=s3://$BUCKET/$PREFIX/$RUN
 export AWS_DEFAULT_REGION=$REGION
 sync_out() { aws s3 sync /home/ubuntu/out "\$S3/" --exclude "*.neff" --exclude "*.pt" --exclude "neuronx-cc/*" --quiet; aws s3 cp --quiet /var/log/run.log "\$S3/run.log"; }
-finish() { sync_out; aws s3 cp --quiet /home/ubuntu/out/neuronx-cc "\$S3/neuronx-cc/" --recursive --exclude "*" --include "*.neff" --include "*.txt" --include "*.json" --include "log*" || true; systemctl poweroff; }
+finish() { sync_out; cd /home/ubuntu/out && find neuronx-cc -type f \\( -name "*.txt" -o -name "*.json" -o -name "log*" -o \\( -name "*.neff" -size -50M \\) \\) -exec aws s3 cp --quiet {} "\$S3/{}" \\; || true; systemctl poweroff; }
 trap finish EXIT
 # swap so neuronx-cc does not OOM on a 16 GiB box
 fallocate -l 32G /swapfile && chmod 600 /swapfile && mkswap /swapfile && swapon /swapfile
@@ -61,7 +62,7 @@ aws s3 cp --quiet "\$S3/code.tgz" . && tar xzf code.tgz
 export PATH=$VENV/bin:/opt/aws/neuron/bin:\$PATH
 python -c "from huggingface_hub import snapshot_download as d; d('$MODEL', local_dir='ckpt', allow_patterns=['*.json','*.safetensors','*.txt'])"
 ( while sleep 120; do sync_out; done ) &
-timeout $((MINUTES - 8))m python -u neuron/run_inf2.py ckpt /home/ubuntu/out $RUN_ARGS
+timeout $((MINUTES - 8))m python -u $SCRIPT ckpt /home/ubuntu/out $RUN_ARGS
 echo "exit=\$?" > /home/ubuntu/out/exit_code
 EOF
 

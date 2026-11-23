@@ -165,6 +165,8 @@ if "inverse" not in skip:
     order = Ls.norm(dim=(-1, -2)).argsort(descending=True)
     sel = Ls[order[:N]].contiguous()                                  # the hardest (largest ||L||_F) systems
     inv_mod, ct = trace(Inverse(C), (sel,), "inverse")
+    for _ in range(3):
+        inv_mod(sel)                                                  # warm-up: first call loads the NEFF
     t0 = time.time()
     for _ in range(10):
         out = inv_mod(sel)
