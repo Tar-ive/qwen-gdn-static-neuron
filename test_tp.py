@@ -79,9 +79,10 @@ def run_all(fn):
 
 with torch.no_grad():
     ref_logits, ref_st = ref.prefill(ids, lengths)
-outs = run_all(lambda r: ranks[r].prefill_packed(ids, lengths))
-lg = outs[0][0]
-same = all(torch.equal(o[0], lg) for o in outs)
+phases = [tq.Phase(m, B) for m in ranks]
+outs = run_all(lambda r: phases[r](ids, lengths))
+lg = outs[0]
+same = all(torch.equal(o, lg) for o in outs)
 d = (lg - ref_logits).abs().max().item()
 print(f"prefill: max|dlogit| {d:.2e}, logits identical on all ranks {same}, argmax eq {bool((lg.argmax(-1) == ref_logits.argmax(-1)).all())}")
 ok = d < 1e-3 and same
@@ -89,19 +90,17 @@ ok = d < 1e-3 and same
 tok = ref_logits.argmax(-1)
 pos = lengths.clone()
 st_r = ref_st
-packed = [o[1:] for o in outs]
 for s in range(args.steps):
     with torch.no_grad():
         rl, st_r = ref.decode(tok, pos, st_r)
-    outs = run_all(lambda r: ranks[r].decode_packed(tok, pos, *packed[r]))
-    tl = outs[0][0]
-    packed = [o[1:] for o in outs]
+    outs = run_all(lambda r: phases[r](tok, pos))
+    tl = outs[0]
     d = (tl - rl).abs().max().item()
     agree = bool((tl.argmax(-1) == rl.argmax(-1)).all())
     print(f"decode {s}: max|dlogit| {d:.2e} argmax eq {agree}")
     ok &= d < 1e-3 and agree
     tok, pos = rl.argmax(-1), pos + 1
-shapes = [tuple(t.shape) for t in packed[0]]
+shapes = [tuple(t.shape) for t in phases[0].state()]
 print("packed state per rank:", shapes)
 print("PASS" if ok else "FAIL")
 sys.exit(0 if ok else 1)

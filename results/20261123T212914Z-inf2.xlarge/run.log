@@ -1,0 +1,179 @@
++ S3=s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T212914Z-inf2.xlarge
++ export AWS_DEFAULT_REGION=us-east-1
++ AWS_DEFAULT_REGION=us-east-1
++ trap finish EXIT
++ fallocate -l 32G /swapfile
++ chmod 600 /swapfile
++ mkswap /swapfile
+Setting up swapspace version 1, size = 32 GiB (34359734272 bytes)
+no label, UUID=cd70d5fd-abbd-4870-b496-395e7429de4e
++ swapon /swapfile
++ mkdir -p /home/ubuntu/work /home/ubuntu/out
++ cd /home/ubuntu/work
++ aws s3 cp --quiet s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T212914Z-inf2.xlarge/code.tgz .
++ tar xzf code.tgz
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
++ export PATH=/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/bin:/opt/aws/neuron/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/snap/bin
++ PATH=/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/bin:/opt/aws/neuron/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/snap/bin
++ python -c 'from huggingface_hub import snapshot_download as d; d('\''Qwen/Qwen3.5-0.8B'\'', local_dir='\''ckpt'\'', allow_patterns=['\''*.json'\'','\''*.safetensors'\'','\''*.txt'\''])'
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files:  11%|█         | 1/9 [00:01<00:08,  1.00s/it]Fetching 9 files:  33%|███▎      | 3/9 [00:09<00:20,  3.37s/it]Fetching 9 files: 100%|██████████| 9/9 [00:09<00:00,  1.04s/it]
++ timeout 82m python -u neuron/run_tp.py ckpt /home/ubuntu/out --tp 2 --bucket 256 --steps 32 --decode-batches 8
++ sleep 120
++ sync_out
++ aws s3 sync /home/ubuntu/out s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T212914Z-inf2.xlarge/ --exclude '*.neff' --exclude '*.pt' --exclude 'neuronx-cc/*' --quiet
++ aws s3 cp --quiet /var/log/run.log s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T212914Z-inf2.xlarge/run.log
++ sleep 120
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/parallel_layers/layers.py:16: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  from .mappings import (
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/parallel_layers/layers.py:16: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  from .mappings import (
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/parallel_layers/layers.py:16: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  from .mappings import (
++ sync_out
++ aws s3 sync /home/ubuntu/out s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T212914Z-inf2.xlarge/ --exclude '*.neff' --exclude '*.pt' --exclude 'neuronx-cc/*' --quiet
++ aws s3 cp --quiet /var/log/run.log s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T212914Z-inf2.xlarge/run.log
++ sleep 120
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/modules/moe/blockwise.py:74: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  component, error = import_nki(config)
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/modules/moe/blockwise.py:74: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  component, error = import_nki(config)
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/modules/moe/blockwise.py:74: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  component, error = import_nki(config)
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/modules/moe/blockwise.py:74: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  component, error = import_nki(config)
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/modules/moe/blockwise.py:74: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  component, error = import_nki(config)
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/modules/moe/blockwise.py:74: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  component, error = import_nki(config)
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/modules/moe/blockwise.py:76: UserWarning: Warning: Failed to import blockwise_mm_baseline_shard_n_k1_while_2loops: No module named 'neuronxcc.nki._private.blockwise_matmul_while'
+  warnings.warn(f"Warning: {error}")
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/modules/moe/moe_fused_tkg.py:49: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  component, error = import_nki(config)
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/modules/moe/moe_fused_tkg.py:49: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  component, error = import_nki(config)
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/modules/moe/moe_fused_tkg.py:49: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  component, error = import_nki(config)
+[    179s] trace
+[2026-11-23 21:35:06.159: I neuronx_distributed/parallel_layers/parallel_state.py:638] > initializing tensor model parallel with size 2
+[2026-11-23 21:35:06.159: I neuronx_distributed/parallel_layers/parallel_state.py:639] > initializing pipeline model parallel with size 1
+[2026-11-23 21:35:06.159: I neuronx_distributed/parallel_layers/parallel_state.py:640] > initializing context model parallel with size 1
+[2026-11-23 21:35:06.159: I neuronx_distributed/parallel_layers/parallel_state.py:641] > initializing data parallel with size 1
+[2026-11-23 21:35:06.159: I neuronx_distributed/parallel_layers/parallel_state.py:642] > initializing world size to 2
+[2026-11-23 21:35:06.159: I neuronx_distributed/parallel_layers/parallel_state.py:387] [rank_0_pp-1_tp-1_dp-1_cp-1] Chosen Logic for replica groups ret_logic=<PG_Group_Logic.LOGIC1: (<function ascending_ring_PG_group at 0x79b35f2be5c0>, 'Ascending Ring PG Group')>
+[2026-11-23 21:35:06.160: I neuronx_distributed/parallel_layers/parallel_state.py:666] [rank_0_pp-1_tp-1_dp-1_cp-1] tp_groups: replica_groups.tp_groups=[[0, 1]]
+[2026-11-23 21:35:06.160: I neuronx_distributed/parallel_layers/parallel_state.py:667] [rank_0_pp-1_tp-1_dp-1_cp-1] dp_groups: replica_groups.dp_groups=[[0], [1]]
+[2026-11-23 21:35:06.160: I neuronx_distributed/parallel_layers/parallel_state.py:668] [rank_0_pp-1_tp-1_dp-1_cp-1] pp_groups: replica_groups.pp_groups=[[0], [1]]
+[2026-11-23 21:35:06.160: I neuronx_distributed/parallel_layers/parallel_state.py:669] [rank_0_pp-1_tp-1_dp-1_cp-1] cp_groups: replica_groups.cp_groups=[[0], [1]]
+[2026-11-23 21:35:06.160: I neuronx_distributed/parallel_layers/parallel_state.py:670] [rank_0_pp-1_tp-1_dp-1_cp-1] ep_model_groups: replica_groups.ep_model_groups=[[0], [1]]
+[2026-11-23 21:35:06.160: I neuronx_distributed/parallel_layers/parallel_state.py:671] [rank_0_pp-1_tp-1_dp-1_cp-1] ep_data_groups: replica_groups.ep_data_groups=[[0], [1]]
+[    184s] compile prefill + decode
+Neuron: Started compilation for prefill
+Neuron: Started compilation for decode
+Neuron: Compiler workdir for prefill is: /home/ubuntu/out/neuronx-cc/prefill/2026-11-23T21-35-10.621721
+Neuron: Neuron compiler flags: --auto-cast=none --model-type=transformer -O1 --verbose=35 --logfile=/home/ubuntu/out/neuronx-cc/prefill/2026-11-23T21-35-10.621721/log-neuron-cc.txt
+Neuron: Compiler workdir for decode is: /home/ubuntu/out/neuronx-cc/decode/2026-11-23T21-35-10.623246
+Neuron: Neuron compiler flags: --auto-cast=none --model-type=transformer -O1 --verbose=35 --logfile=/home/ubuntu/out/neuronx-cc/decode/2026-11-23T21-35-10.623246/log-neuron-cc.txt
+Neuron: Started compilation for decode_b8
+Neuron: Compiler workdir for decode_b8 is: /home/ubuntu/out/neuronx-cc/decode_b8/2026-11-23T21-35-10.645045
+Neuron: Neuron compiler flags: --auto-cast=none --model-type=transformer -O1 --verbose=35 --logfile=/home/ubuntu/out/neuronx-cc/decode_b8/2026-11-23T21-35-10.645045/log-neuron-cc.txt
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/libneuronxla/neuron_cc_wrapper.py:246: SyntaxWarning: str format compiler_flags is discouraged as its handling involves repeated joining and splitting, which can easily make mistakes if something is quoted or escaped. Use list[str] instead. Refer to documentation of the Python subprocess module for details.
+  warnings.warn(SyntaxWarning(
+............Inserted NKI kernel for conv:   bfloat16 (2, 3072, 1, 256) %'convolution.7' = NativeNkiKernel-748_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 3072, 1, 259) %'reshape.525', bfloat16 (3072, 1, 1, 4) %'reshape.526') {
+  } # dl = tensor_op_name: _convolution.13695 | hlo_id: 111 | , id = 748
+Neuron NKI - Kernel call: conv1d_depthwise_bf01_oi01_bf01(img_ref = Tensor(shape: (2, 3072, 1, 259), dtype: bfloat16), filter_ref = Tensor(shape: (3072, 1, 1, 4), dtype: bfloat16), out_ref = Tensor(shape: (2, 3072, 1, 256), dtype: bfloat16), stride = [1, 1], padding = [[0, 0], [0, 0]], rhs_dilation = [1, 1], lhs_dilation = [1, 1], in_perm = [0, 1, 2, 3], kern_perm = [0, 1, 2, 3], out_perm = [0, 1, 2, 3], srcs_shapes = [[2, 3072, 1, 259], [3072, 1, 1, 4]], dsts_shapes = [[2, 3072, 1, 256]], batch_group_count = 1, feature_group_count = 3072)
+Inserted NKI kernel for conv:   bfloat16 (2, 3072, 1, 256) %'convolution.8' = NativeNkiKernel-1760_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 3072, 1, 259) %'reshape.605', bfloat16 (3072, 1, 1, 4) %'reshape.606') {
+  } # dl = tensor_op_name: _convolution.15249 | hlo_id: 140 | , id = 1760
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 84]:
+  dve_j_optimized   : Fix prefix (0,) and permute (1,) with (2,) / latency=11,372; shape=(1940, 128, 2); dtype_size=2
+
+Neuron NKI - Kernel call: conv1d_depthwise_bf01_oi01_bf01(img_ref = Tensor(shape: (2, 3072, 1, 259), dtype: bfloat16), filter_ref = Tensor(shape: (3072, 1, 1, 4), dtype: bfloat16), out_ref = Tensor(shape: (2, 3072, 1, 256), dtype: bfloat16), stride = [1, 1], padding = [[0, 0], [0, 0]], rhs_dilation = [1, 1], lhs_dilation = [1, 1], in_perm = [0, 1, 2, 3], kern_perm = [0, 1, 2, 3], out_perm = [0, 1, 2, 3], srcs_shapes = [[2, 3072, 1, 259], [3072, 1, 1, 4]], dsts_shapes = [[2, 3072, 1, 256]], batch_group_count = 1, feature_group_count = 3072)
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (1940, 128, 2), dtype: bfloat16), in_shape = [1940, 128, 2], permutation = [0, 2, 1])
+Inserted NKI kernel for conv:   bfloat16 (2, 3072, 1, 256) %'convolution.4' = NativeNkiKernel-2318_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 3072, 1, 259) %'reshape.266', bfloat16 (3072, 1, 1, 4) %'reshape.267') {
+  } # dl = tensor_op_name: _convolution.2931 | hlo_id: 171 | , id = 2318
+Inserted NKI kernel for conv:   bfloat16 (2, 3072, 1, 256) %'convolution.5' = NativeNkiKernel-2319_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 3072, 1, 259) %'reshape.349', bfloat16 (3072, 1, 1, 4) %'reshape.350') {
+  } # dl = tensor_op_name: _convolution.3708 | hlo_id: 621 | , id = 2319
+Inserted NKI kernel for conv:   bfloat16 (2, 3072, 1, 256) %'convolution.6' = NativeNkiKernel-2320_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 3072, 1, 259) %'reshape.426', bfloat16 (3072, 1, 1, 4) %'reshape.427') {
+  } # dl = tensor_op_name: _convolution.4485 | hlo_id: 1070 | , id = 2320
+Neuron NKI - Kernel call: conv1d_depthwise_bf01_oi01_bf01(img_ref = Tensor(shape: (2, 3072, 1, 259), dtype: bfloat16), filter_ref = Tensor(shape: (3072, 1, 1, 4), dtype: bfloat16), out_ref = Tensor(shape: (2, 3072, 1, 256), dtype: bfloat16), stride = [1, 1], padding = [[0, 0], [0, 0]], rhs_dilation = [1, 1], lhs_dilation = [1, 1], in_perm = [0, 1, 2, 3], kern_perm = [0, 1, 2, 3], out_perm = [0, 1, 2, 3], srcs_shapes = [[2, 3072, 1, 259], [3072, 1, 1, 4]], dsts_shapes = [[2, 3072, 1, 256]], batch_group_count = 1, feature_group_count = 3072)
+Inserted NKI kernel for conv:   bfloat16 (2, 3072, 1, 256) %'convolution.1' = NativeNkiKernel-2310_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 3072, 1, 259) %'reshape.7', bfloat16 (3072, 1, 1, 4) %'reshape.8') {
+  } # dl = tensor_op_name: _convolution.196 | hlo_id: 129 | , id = 2310
+Inserted NKI kernel for conv:   bfloat16 (2, 3072, 1, 256) %'convolution.2' = NativeNkiKernel-2311_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 3072, 1, 259) %'reshape.90', bfloat16 (3072, 1, 1, 4) %'reshape.91') {
+  } # dl = tensor_op_name: _convolution.974 | hlo_id: 579 | , id = 2311
+Inserted NKI kernel for conv:   bfloat16 (2, 3072, 1, 256) %'convolution.3' = NativeNkiKernel-2312_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 3072, 1, 259) %'reshape.167', bfloat16 (3072, 1, 1, 4) %'reshape.168') {
+  } # dl = tensor_op_name: _convolution.1751 | hlo_id: 1028 | , id = 2312
+Neuron NKI - Kernel call: conv1d_depthwise_bf01_oi01_bf01(img_ref = Tensor(shape: (2, 3072, 1, 259), dtype: bfloat16), filter_ref = Tensor(shape: (3072, 1, 1, 4), dtype: bfloat16), out_ref = Tensor(shape: (2, 3072, 1, 256), dtype: bfloat16), stride = [1, 1], padding = [[0, 0], [0, 0]], rhs_dilation = [1, 1], lhs_dilation = [1, 1], in_perm = [0, 1, 2, 3], kern_perm = [0, 1, 2, 3], out_perm = [0, 1, 2, 3], srcs_shapes = [[2, 3072, 1, 259], [3072, 1, 1, 4]], dsts_shapes = [[2, 3072, 1, 256]], batch_group_count = 1, feature_group_count = 3072)
+...+ sync_out
++ aws s3 sync /home/ubuntu/out s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T212914Z-inf2.xlarge/ --exclude '*.neff' --exclude '*.pt' --exclude 'neuronx-cc/*' --quiet
++ aws s3 cp --quiet /var/log/run.log s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T212914Z-inf2.xlarge/run.log
++ sleep 120
+
+Compiler status PASS
+Neuron: Finished compilation for prefill in 98.27356266975403 seconds
+[    282s] prefill compiled in 98s
+....Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 70]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=10,826; shape=(18, 2, 3, 8, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 84]:
+  dve_j_optimized   : Fix prefix (0,) and permute (1,) with (2,) / latency=11,372; shape=(1940, 128, 2); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 70]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=10,826; shape=(18, 2, 3, 8, 3, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (18, 2, 3, 8, 128, 3), dtype: bfloat16), in_shape = [18, 2, 3, 8, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (1940, 128, 2), dtype: bfloat16), in_shape = [1940, 128, 2], permutation = [0, 2, 1])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (18, 2, 3, 8, 3, 128), dtype: bfloat16), in_shape = [18, 2, 3, 8, 3, 128], permutation = [0, 1, 2, 3, 5, 4])
+
+Compiler status PASS
+Neuron: Finished compilation for decode in 127.07630276679993 seconds
+[    311s] decode compiled in 127s
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(18, 8, 3, 8, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 67]:
+  dve_j_optimized   : Fix prefix (0,) and permute (1,) with (2,) / latency=45,489; shape=(1940, 128, 8); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(18, 8, 3, 8, 3, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (18, 8, 3, 8, 128, 3), dtype: bfloat16), in_shape = [18, 8, 3, 8, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (1940, 128, 8), dtype: bfloat16), in_shape = [1940, 128, 8], permutation = [0, 2, 1])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (18, 8, 3, 8, 3, 128), dtype: bfloat16), in_shape = [18, 8, 3, 8, 3, 128], permutation = [0, 1, 2, 3, 5, 4])
+
+Compiler status PASS
+Neuron: Finished compilation for decode_b8 in 141.10167622566223 seconds
+[    325s] decode_b8 compiled in 141s
+[    325s] load per-rank weights
+[    333s] loaded on neuron
+2026-Nov-23 21:37:40.0214 2399:3000 [0] int nccl_net_ofi_create_plugin(nccl_net_ofi_plugin_t**):213 CCOM WARN NET/OFI Failed to initialize sendrecv protocol
+2026-Nov-23 21:37:40.0216 2399:3000 [0] int nccl_net_ofi_create_plugin(nccl_net_ofi_plugin_t**):354 CCOM WARN NET/OFI aws-ofi-nccl initialization failed
+2026-Nov-23 21:37:40.0218 2399:3000 [0] ncclResult_t nccl_net_ofi_init_no_atexit_fini_v6(ncclDebugLogger_t):183 CCOM WARN NET/OFI Initializing plugin failed
+2026-Nov-23 21:37:40.0221 2399:3000 [0] net_plugin.cc:97 CCOM WARN OFI plugin initNet() failed is EFA enabled?
+[    334s] prefill 61.0 ms
+terminate called after throwing an instance of 'c10::ValueError'
+terminate called recursively
++ sync_out
++ aws s3 sync /home/ubuntu/out s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T212914Z-inf2.xlarge/ --exclude '*.neff' --exclude '*.pt' --exclude 'neuronx-cc/*' --quiet
++ aws s3 cp --quiet /var/log/run.log s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T212914Z-inf2.xlarge/run.log
++ sleep 120
+timeout: the monitored command dumped core
+/var/lib/cloud/instance/scripts/part-001: line 17:  2398 Aborted                 timeout 82m python -u neuron/run_tp.py ckpt /home/ubuntu/out --tp 2 --bucket 256 --steps 32 --decode-batches 8
++ echo exit=134
++ finish
++ sync_out
++ aws s3 sync /home/ubuntu/out s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T212914Z-inf2.xlarge/ --exclude '*.neff' --exclude '*.pt' --exclude 'neuronx-cc/*' --quiet
++ aws s3 cp --quiet /var/log/run.log s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T212914Z-inf2.xlarge/run.log

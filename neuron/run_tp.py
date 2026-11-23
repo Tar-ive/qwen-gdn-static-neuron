@@ -98,24 +98,43 @@ full_cfg = sq.Cfg.from_hf(args.ckpt)
 R["model"] = {"layers": full_cfg.layers, "hidden": full_cfg.hidden, "gdn_layers": full_cfg.layer_types.count("linear_attention")}
 
 # ------------------------------------------------------------------------- 1. trace + compile (rank 0, SPMD)
+from neuronx_distributed.trace.nxd_model.base_nxd_model import StateInitializer  # noqa: E402
+from torch_neuronx.proto import metaneff_pb2  # noqa: E402
+from torch_neuronx.xla_impl.trace import get_torch_dtype  # noqa: E402
+
+
+def state_tensors(tr):
+    out = {}
+    for t in tr.metaneff.input_tensors:
+        if t.type is metaneff_pb2.MetaTensor.Type.INPUT_STATE:
+            out[str(t.checkpoint_key).replace("b'", "").replace("'", "")] = (list(t.shape), get_torch_dtype(t.data_type))
+    return out
+
+
 log("trace")
+extra_b = [int(x) for x in args.decode_batches.split(",") if x]
+traces = {}
 with NxDParallelState(world_size=TP, tensor_model_parallel_size=TP):
     tq.use_nxd_collectives()
     m = tq.StaticQwen35TP.empty(args.ckpt, TP, MAXLEN).eval()
-    st0 = m.pack(m.empty_state(B, dtype=torch.bfloat16))
     t0 = time.time()
-    tr_pre = nxd_trace(tq.Prefill(m), args=(batch, lengths))
-    tr_dec = nxd_trace(tq.Decode(m), args=(lengths.clone(), lengths.clone(), *st0))
-    extra = {}
-    for bb in [int(x) for x in args.decode_batches.split(",") if x]:
-        stb = m.pack(m.empty_state(bb, dtype=torch.bfloat16))
-        extra[bb] = (nxd_trace(tq.Decode(m), args=(torch.zeros(bb, dtype=torch.long), torch.full((bb,), 100), *stb)), stb)
+    traces["prefill"] = nxd_trace(tq.Phase(m, B), args=(batch, lengths))
+    traces["decode"] = nxd_trace(tq.Phase(m, B), args=(lengths.clone(), lengths.clone()))
+    for bb in extra_b:
+        traces[f"decode_b{bb}"] = nxd_trace(tq.Phase(m, bb), args=(torch.zeros(bb, dtype=torch.long), torch.full((bb,), 100)))
     R["trace_s"] = time.time() - t0
     buffers = {"m." + k: v.clone() for k, v in m.named_buffers()}   # constant buffers are weights to NxDModel too
 del m
-R["packed_state_shapes"] = [list(t.shape) for t in st0]
+states = {}
+for k, tr in traces.items():
+    st = state_tensors(tr)
+    R.setdefault("states", {})[k] = {n: v[0] for n, v in st.items()}
+    states.update(st)
 save()
-log("compile prefill + decode")
+if not states:
+    raise SystemExit("no INPUT_STATE tensors in the traced graphs: in-place buffer updates were not aliased")
+log(f"device-resident state tensors: {sorted(states)}")
+log("compile")
 
 
 def comp(name, tr):
@@ -125,15 +144,13 @@ def comp(name, tr):
 
 
 R["compile"] = {}
-with cf.ThreadPoolExecutor(2 + len(extra)) as ex:
-    futs = [ex.submit(comp, "prefill", tr_pre), ex.submit(comp, "decode", tr_dec)]
-    futs += [ex.submit(comp, f"decode_b{bb}", tr) for bb, (tr, _) in extra.items()]
-    comps = {}
-    for f in cf.as_completed(futs):
-        name, c, s = f.result()
+comps = {}
+with cf.ThreadPoolExecutor(len(traces)) as ex:
+    for f in cf.as_completed([ex.submit(comp, k, tr) for k, tr in traces.items()]):
+        name, c, s_ = f.result()
         comps[name] = c
-        R["compile"][name + "_s"] = s
-        log(f"{name} compiled in {s:.0f}s")
+        R["compile"][name + "_s"] = s_
+        log(f"{name} compiled in {s_:.0f}s")
         save()
 R["neff_bytes"] = sh(f"find {args.out}/neuronx-cc -name '*.neff' -exec ls -l {{}} \\; | awk '{{print $5, $9}}'")
 save()
@@ -148,11 +165,10 @@ for w in weights:
 R["weights_s"] = time.time() - t0
 R["weights_bytes_per_rank"] = sum(v.numel() * v.element_size() for v in weights[0].values())
 save()
-nxd = NxDModel(world_size=TP)
-nxd.add("prefill", tr_pre, comps["prefill"])
-nxd.add("decode", tr_dec, comps["decode"])
-for bb, (tr, _) in extra.items():
-    nxd.add(f"decode_b{bb}", tr, comps[f"decode_b{bb}"])
+nxd = NxDModel(world_size=TP, state_initializer=StateInitializer({k: v[0] for k, v in states.items()},
+                                                                  {k: v[1] for k, v in states.items()}, TP))
+for k in traces:
+    nxd.add(k, traces[k], comps[k])
 t0 = time.time()
 nxd.set_weights(weights)
 nxd.to_neuron()
@@ -162,79 +178,47 @@ save()
 log("loaded on neuron")
 
 
-def rep(x):
-    return [x] * TP
-
-
-def ranked(*xs):
-    return nxd(*xs, forward_mode="ranked")
-
-
-def to_cpu(t):
-    return t.cpu() if hasattr(t, "cpu") else t
+def run(x, n):
+    return nxd(x, n).float()   # default mode: inputs replicated, rank-0 output (logits are all-gathered)
 
 
 # ------------------------------------------------------------------------- 3. run
-def prefill_dev(b, ln):
-    outs = ranked(rep(b), rep(ln))                       # [output][rank]
-    return to_cpu(outs[0][0]).float(), [outs[1], outs[2], outs[3]]
-
-
 for _ in range(2):
-    d_logits, d_state = prefill_dev(batch, lengths)
+    d_logits = run(batch, lengths)
 t0 = time.time()
 for _ in range(5):
-    d_logits, d_state = prefill_dev(batch, lengths)
+    d_logits = run(batch, lengths)
 pre_ms = (time.time() - t0) / 5 * 1e3
 log(f"prefill {pre_ms:.1f} ms")
-
+d_logits = run(batch, lengths)              # fresh state for the decode run
 toks, logs, step_ms = [d_logits.argmax(-1)], [d_logits], []
 pos = lengths.clone()
-state = d_state
-mode = "device-resident"
 for s in range(args.steps - 1):
     t0 = time.time()
-    try:
-        outs = ranked(rep(toks[-1]), rep(pos), *state)
-    except Exception:  # noqa: BLE001  outputs not accepted back as inputs: copy through host instead
-        if mode == "device-resident":
-            mode = "host-roundtrip"
-            R["decode_state_mode_error"] = traceback.format_exc()[-1500:]
-            state = [[to_cpu(t) for t in st] for st in state]
-            outs = ranked(rep(toks[-1]), rep(pos), *state)
-        else:
-            raise
-    lg = to_cpu(outs[0][0]).float()
-    state = [outs[1], outs[2], outs[3]]
-    if mode == "host-roundtrip":
-        state = [[to_cpu(t) for t in st] for st in state]
+    lg = run(toks[-1], pos)
     step_ms.append((time.time() - t0) * 1e3)
     toks.append(lg.argmax(-1))
     logs.append(lg)
     pos = pos + 1
 dtoks, dlogs = torch.stack(toks, 1), torch.stack(logs, 1)
-d2_logits, _ = prefill_dev(batch2, lengths2)
+d2_logits = run(batch2, lengths2)
 ss = sorted(step_ms)
 R["latency"] = {"prefill_ms": pre_ms, "batch": B, "bucket": T, "prefill_tokens": int(lengths.sum()),
                 "decode_step_ms_median": ss[len(ss) // 2], "decode_step_ms_p90": ss[int(len(ss) * 0.9)],
-                "decode_step_ms_first": step_ms[0], "decode_tok_per_s_batch": B * 1e3 / ss[len(ss) // 2],
-                "decode_state_mode": mode}
+                "decode_tok_per_s_batch": B * 1e3 / ss[len(ss) // 2], "decode_state": "device-resident (aliased)"}
 R["device_text"] = [tk.decode(dtoks[i].tolist()) for i in range(B)]
 save()
 log(json.dumps(R["latency"]))
+
 # batch sweep: decode step time at larger batch from a zero state (static graph: time does not depend on values)
 R["batch_sweep"] = {str(B): {"step_ms_median": ss[len(ss) // 2], "tok_per_s": B * 1e3 / ss[len(ss) // 2]}}
-for bb, (_, stb) in extra.items():
+for bb in extra_b:
     try:
-        stl = [[t.clone() for _ in range(TP)] for t in stb]
-        tokb, posb = torch.zeros(bb, dtype=torch.long), torch.full((bb,), 100)
-        times = []
-        for s in range(12):
+        tokb, posb, times = torch.zeros(bb, dtype=torch.long), torch.full((bb,), 100), []
+        for s in range(14):
             t0 = time.time()
-            outs = ranked(rep(tokb), rep(posb), *stl)
-            _ = to_cpu(outs[0][0])
+            run(tokb, posb)
             times.append((time.time() - t0) * 1e3)
-            stl = [outs[1], outs[2], outs[3]] if mode == "device-resident" else [[to_cpu(t) for t in o] for o in outs[1:4]]
             posb = posb + 1
         tt = sorted(times[2:])
         R["batch_sweep"][str(bb)] = {"step_ms_median": tt[len(tt) // 2], "tok_per_s": bb * 1e3 / tt[len(tt) // 2]}

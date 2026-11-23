@@ -226,22 +226,30 @@ class StaticQwen35TP(sq.StaticQwen35):
 
 
 class Phase(nn.Module):
-    """One forward signature for both phases (NxDModel requires all submodels to share it):
-    prefill: forward(ids[B,T], lengths[B]);  decode: forward(tok[B], pos[B], kv, conv, rec)."""
+    """Both phases with one signature, forward(x, n), and the state held in buffers updated in place, so that NxD keeps
+    it resident on the device (aliased INPUT_STATE) between calls and shares it between prefill and decode by name:
+        prefill: x = ids[B, T], n = lengths[B]   -> writes kv/conv/rec, returns logits
+        decode:  x = tok[B],    n = positions[B] -> reads and updates kv/conv/rec, returns logits
+    Buffers are named per batch size (kv_b{B}, ...) so graphs for several batch sizes can coexist."""
 
-    def __init__(self, m):
+    def __init__(self, m, batch):
         super().__init__()
-        self.m = m
+        self.m, self.b = m, batch
+        kv, conv, rec = m.pack(m.empty_state(batch, dtype=m.W("embed_tokens.weight").dtype))
+        self.register_buffer(f"kv_b{batch}", kv)
+        self.register_buffer(f"conv_b{batch}", conv)
+        self.register_buffer(f"rec_b{batch}", rec)
 
-    def forward(self, x, n, kv=None, conv=None, rec=None):
-        if kv is None:
-            return self.m.prefill_packed(x, n)
-        return self.m.decode_packed(x, n, kv, conv, rec)
+    def state(self):
+        return getattr(self, f"kv_b{self.b}"), getattr(self, f"conv_b{self.b}"), getattr(self, f"rec_b{self.b}")
 
-
-def Prefill(m):  # noqa: N802
-    return Phase(m)
-
-
-def Decode(m):  # noqa: N802
-    return Phase(m)
+    def forward(self, x, n):
+        kv, conv, rec = self.state()
+        if x.dim() == 2:
+            out = self.m.prefill_packed(x, n)
+        else:
+            out = self.m.decode_packed(x, n, kv, conv, rec)
+        kv.copy_(out[1])
+        conv.copy_(out[2])
+        rec.copy_(out[3])
+        return out[0]
