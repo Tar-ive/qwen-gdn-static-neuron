@@ -19,6 +19,7 @@ MODEL=${MODEL:-Qwen/Qwen3.5-0.8B}
 SCRIPT=${SCRIPT:-neuron/run_inf2.py}
 RUN_ARGS=${RUN_ARGS:-"--bucket 256 --steps 32"}
 PREFIX=${PREFIX:-qwen-gdn-static}
+VOLUME_GB=${VOLUME_GB:-150}
 AMI_NAME=${AMI_NAME:-"Deep Learning AMI Neuron PyTorch Inference vLLM 0.13 (Ubuntu 24.04) 20260227"}
 VENV=${VENV:-/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13}
 TAG_REPO=${TAG_REPO:-qwen-gdn-static-neuron}
@@ -73,7 +74,7 @@ launch() {  # $1 = subnet; extra args passed through
     --instance-market-options 'MarketType=spot,SpotOptions={SpotInstanceType=one-time,InstanceInterruptionBehavior=terminate}' \
     --instance-initiated-shutdown-behavior terminate --iam-instance-profile Name="$INSTANCE_PROFILE" \
     --metadata-options HttpTokens=required,HttpEndpoint=enabled \
-    --block-device-mappings '[{"DeviceName":"/dev/sda1","Ebs":{"VolumeSize":150,"VolumeType":"gp3","DeleteOnTermination":true}}]' \
+    --block-device-mappings '[{"DeviceName":"/dev/sda1","Ebs":{"VolumeSize":'"$VOLUME_GB"',"VolumeType":"gp3","DeleteOnTermination":true}}]' \
     --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$PREFIX-$RUN},{Key=expires-at,Value=$EXPIRES},{Key=repo,Value=$TAG_REPO}]" \
     --user-data "file://$STATE/user-data.sh" --query 'Instances[0].InstanceId' --output text
 }
