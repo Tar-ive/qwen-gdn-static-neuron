@@ -225,19 +225,23 @@ class StaticQwen35TP(sq.StaticQwen35):
         return (logits, *self.pack(st))
 
 
-class Prefill(nn.Module):
+class Phase(nn.Module):
+    """One forward signature for both phases (NxDModel requires all submodels to share it):
+    prefill: forward(ids[B,T], lengths[B]);  decode: forward(tok[B], pos[B], kv, conv, rec)."""
+
     def __init__(self, m):
         super().__init__()
         self.m = m
 
-    def forward(self, ids, lengths):
-        return self.m.prefill_packed(ids, lengths)
+    def forward(self, x, n, kv=None, conv=None, rec=None):
+        if kv is None:
+            return self.m.prefill_packed(x, n)
+        return self.m.decode_packed(x, n, kv, conv, rec)
 
 
-class Decode(nn.Module):
-    def __init__(self, m):
-        super().__init__()
-        self.m = m
+def Prefill(m):  # noqa: N802
+    return Phase(m)
 
-    def forward(self, tok, pos, kv, conv, rec):
-        return self.m.decode_packed(tok, pos, kv, conv, rec)
+
+def Decode(m):  # noqa: N802
+    return Phase(m)

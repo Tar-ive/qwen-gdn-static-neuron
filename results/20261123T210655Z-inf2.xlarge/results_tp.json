@@ -1,0 +1,66 @@
+{
+ "args": {
+  "ckpt": "ckpt",
+  "out": "/home/ubuntu/out",
+  "tp": 2,
+  "bucket": 256,
+  "steps": 32,
+  "cc": "--auto-cast=none --model-type=transformer -O1",
+  "skip_ref": false,
+  "decode_batches": ""
+ },
+ "host": "ip-10-42-6-242",
+ "started": "2026-11-23T21:10:04Z",
+ "env": {
+  "torch": "2.9.0+cu128",
+  "torch_neuronx": "2.9.0.2.12.22436+0f1dac25",
+  "neuronx_distributed": "?",
+  "neuronx_cc": "NeuronX Compiler version 2.23.6484.0+3b612583",
+  "neuron_ls": "instance-type: inf2.xlarge\ninstance-id: i-09881d4042b6cdbaa\n+--------+--------+----------+--------+--------------+----------+------+\n| NEURON | NEURON |  NEURON  | NEURON |     PCI      |   CPU    | NUMA |\n| DEVICE | CORES  | CORE IDS | MEMORY |     BDF      | AFFINITY | NODE |\n+--------+--------+----------+--------+--------------+----------+------+\n| 0      | 2      | 0-1      | 32 GB  | 0000:00:1f.0 | 0-3      | -1   |\n+--------+--------+----------+--------+--------------+----------+------+",
+  "cpus": 4,
+  "mem": "total        used        free      shared  buff/cache   available\nMem:              15           1          11           0           3          13"
+ },
+ "elapsed_s": 299.86473989486694,
+ "prompts": {
+  "lengths": [
+   5,
+   167
+  ],
+  "lengths_unseen": [
+   10,
+   90
+  ],
+  "bucket": 256,
+  "max_len": 320
+ },
+ "model": {
+  "layers": 24,
+  "hidden": 1024,
+  "gdn_layers": 18
+ },
+ "trace_s": 2.9571871757507324,
+ "packed_state_shapes": [
+  [
+   24,
+   320,
+   256
+  ],
+  [
+   36,
+   3072,
+   3
+  ],
+  [
+   288,
+   128,
+   128
+  ]
+ ],
+ "compile": {
+  "prefill_s": 84.92663383483887,
+  "decode_s": 117.68296813964844
+ },
+ "neff_bytes": "2868224 /home/ubuntu/out/neuronx-cc/decode/2026-11-23T21-13-06.677738/graph.neff\n3738624 /home/ubuntu/out/neuronx-cc/prefill/2026-11-23T21-13-06.675730/graph.neff",
+ "weights_s": 0.12909531593322754,
+ "weights_bytes_per_rank": 1261119616
+}
