@@ -1,0 +1,128 @@
++ S3=s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T190820Z-inf2.xlarge
++ export AWS_DEFAULT_REGION=us-east-1
++ AWS_DEFAULT_REGION=us-east-1
++ trap finish EXIT
++ fallocate -l 32G /swapfile
++ chmod 600 /swapfile
++ mkswap /swapfile
+Setting up swapspace version 1, size = 32 GiB (34359734272 bytes)
+no label, UUID=9e1371c9-5c25-4602-b331-7670dd7686e7
++ swapon /swapfile
++ mkdir -p /home/ubuntu/work /home/ubuntu/out
++ cd /home/ubuntu/work
++ aws s3 cp --quiet s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T190820Z-inf2.xlarge/code.tgz .
++ tar xzf code.tgz
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
++ export PATH=/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/bin:/opt/aws/neuron/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/snap/bin
++ PATH=/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/bin:/opt/aws/neuron/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/snap/bin
++ python -c 'from huggingface_hub import snapshot_download as d; d('\''Qwen/Qwen3.5-0.8B'\'', local_dir='\''ckpt'\'', allow_patterns=['\''*.json'\'','\''*.safetensors'\'','\''*.txt'\''])'
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files:  11%|█         | 1/9 [00:00<00:01,  7.17it/s]Fetching 9 files:  33%|███▎      | 3/9 [00:11<00:25,  4.32s/it]Fetching 9 files: 100%|██████████| 9/9 [00:11<00:00,  1.30s/it]
++ timeout 52m python -u neuron/solve_vs_doubling.py ckpt /home/ubuntu/out --bucket 256
++ sleep 120
++ sync_out
++ aws s3 sync /home/ubuntu/out s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T190820Z-inf2.xlarge/ --exclude '*.neff' --exclude '*.pt' --exclude 'neuronx-cc/*' --quiet
++ aws s3 cp --quiet /var/log/run.log s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T190820Z-inf2.xlarge/run.log
++ sleep 120
+/home/ubuntu/work/neuron/solve_vs_doubling.py:91: DeprecationWarning: Use torch_xla.device instead
+  dev = xm.xla_device()
+2026-Nov-23 19:13:16.0760 2409:2430 [0] int nccl_net_ofi_create_plugin(nccl_net_ofi_plugin_t**):213 CCOM WARN NET/OFI Failed to initialize sendrecv protocol
+2026-Nov-23 19:13:16.0762 2409:2430 [0] int nccl_net_ofi_create_plugin(nccl_net_ofi_plugin_t**):354 CCOM WARN NET/OFI aws-ofi-nccl initialization failed
+2026-Nov-23 19:13:16.0764 2409:2430 [0] ncclResult_t nccl_net_ofi_init_no_atexit_fini_v6(ncclDebugLogger_t):183 CCOM WARN NET/OFI Initializing plugin failed
+2026-Nov-23 19:13:16.0766 2409:2430 [0] net_plugin.cc:97 CCOM WARN OFI plugin initNet() failed is EFA enabled?
+..+ sync_out
++ aws s3 sync /home/ubuntu/out s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T190820Z-inf2.xlarge/ --exclude '*.neff' --exclude '*.pt' --exclude 'neuronx-cc/*' --quiet
++ aws s3 cp --quiet /var/log/run.log s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T190820Z-inf2.xlarge/run.log
++ sleep 120
+.
+Compiler status PASS
+2026-11-23 19:14:12.000318:  2409  [INFO]: Compilation Successfully Completed for model.MODULE_12321611986684679555+e30acd3a.hlo_module.pb
+{
+ "solve_triangular": {
+  "ops": [
+   "",
+   "parameter"
+  ],
+  "has_triangular_solve": false,
+  "lines": 7
+ },
+ "doubling": {
+  "ops": [
+   "",
+   "broadcast",
+   "compare",
+   "constant",
+   "convert",
+   "dot",
+   "iota",
+   "multiply",
+   "parameter",
+   "reshape",
+   "slice",
+   "subtract"
+  ],
+  "has_triangular_solve": false,
+  "lines": 102
+ }
+}
+
+B. doubling
+.
+Compiler status PASS
+{
+ "compiled": true,
+ "compile_s": 5.5307228565216064,
+ "warm_ms_per_call": 1.3988137245178223,
+ "rel_err_max": 2.2791211373718312e-07,
+ "rel_err_median": 5.203120784225135e-08,
+ "neff_bytes": 246784
+}
+
+B. solve_triangular
+.
+Compiler status PASS
+2026-11-23 19:14:29.000977:  2409  [INFO]: Compilation Successfully Completed for model.MODULE_4786455070943035626+e30acd3a.hlo_module.pb
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/torch_neuronx/xla_impl/hlo_conversion.py:470: UserWarning: Received an input tensor that was unused or used in a non-static way when traced so the tensor will be ignored. (index=0, shape=torch.Size([256, 64, 64]), dtype=torch.float32). The non-static usage could happen when the traced function expects the input tensor's shape to change (i.e., using the shape to do index slicing), which is not allowed by inference trace expecting static input shapes.
+  warnings.warn(
+.
+Compiler status PASS
+{
+ "compiled": true,
+ "compile_s": 4.286722660064697,
+ "warm_ms_per_call": 0.5417108535766602,
+ "rel_err_max": 5.5228714390676e-07,
+ "rel_err_median": 5.679373568656665e-08,
+ "neff_bytes": 1793024
+}
+
+B. rowloop
+..
+Compiler status PASS
+{
+ "compiled": true,
+ "compile_s": 30.63852858543396,
+ "warm_ms_per_call": 4.098045825958252,
+ "rel_err_max": 4.140762771553952e-07,
+ "rel_err_median": 7.999735587849166e-08,
+ "neff_bytes": 1680384
+}
+
+C. whole-model prefill with doubling
+...+ sync_out
++ aws s3 sync /home/ubuntu/out s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T190820Z-inf2.xlarge/ --exclude '*.neff' --exclude '*.pt' --exclude 'neuronx-cc/*' --quiet
++ aws s3 cp --quiet /var/log/run.log s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T190820Z-inf2.xlarge/run.log
++ sleep 120
+......+ sync_out
++ aws s3 sync /home/ubuntu/out s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T190820Z-inf2.xlarge/ --exclude '*.neff' --exclude '*.pt' --exclude 'neuronx-cc/*' --quiet
++ aws s3 cp --quiet /var/log/run.log s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T190820Z-inf2.xlarge/run.log

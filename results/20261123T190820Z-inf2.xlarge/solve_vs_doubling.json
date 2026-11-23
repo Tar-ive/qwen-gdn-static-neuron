@@ -1,0 +1,67 @@
+{
+ "args": {
+  "ckpt": "ckpt",
+  "out": "/home/ubuntu/out",
+  "bucket": 256,
+  "cc": "--auto-cast=none --model-type=transformer",
+  "skip": ""
+ },
+ "started": "2026-11-23T19:11:09Z",
+ "torch_neuronx": "2.9.0.2.12.22436+0f1dac25",
+ "hlo": {
+  "solve_triangular": {
+   "ops": [
+    "",
+    "parameter"
+   ],
+   "has_triangular_solve": false,
+   "lines": 7
+  },
+  "doubling": {
+   "ops": [
+    "",
+    "broadcast",
+    "compare",
+    "constant",
+    "convert",
+    "dot",
+    "iota",
+    "multiply",
+    "parameter",
+    "reshape",
+    "slice",
+    "subtract"
+   ],
+   "has_triangular_solve": false,
+   "lines": 102
+  }
+ },
+ "kernel": {
+  "systems": 256,
+  "L_fro_max": 41.64276885986328,
+  "doubling": {
+   "compiled": true,
+   "compile_s": 5.5307228565216064,
+   "warm_ms_per_call": 1.3988137245178223,
+   "rel_err_max": 2.2791211373718312e-07,
+   "rel_err_median": 5.203120784225135e-08,
+   "neff_bytes": 246784
+  },
+  "solve_triangular": {
+   "compiled": true,
+   "compile_s": 4.286722660064697,
+   "warm_ms_per_call": 0.5417108535766602,
+   "rel_err_max": 5.5228714390676e-07,
+   "rel_err_median": 5.679373568656665e-08,
+   "neff_bytes": 1793024
+  },
+  "rowloop": {
+   "compiled": true,
+   "compile_s": 30.63852858543396,
+   "warm_ms_per_call": 4.098045825958252,
+   "rel_err_max": 4.140762771553952e-07,
+   "rel_err_median": 7.999735587849166e-08,
+   "neff_bytes": 1680384
+  }
+ }
+}

@@ -1,0 +1,7 @@
+HloModule IrToHlo.3, entry_computation_layout={(f32[4,64,64]{2,1,0})->(f32[4,64,64]{2,1,0})}
+
+ENTRY %IrToHlo.3 (p0.1: f32[4,64,64]) -> (f32[4,64,64]) {
+  %p0.1 = f32[4,64,64]{2,1,0} parameter(0)
+  ROOT %tuple.2 = (f32[4,64,64]{2,1,0}) tuple(f32[4,64,64]{2,1,0} %p0.1)
+}
+

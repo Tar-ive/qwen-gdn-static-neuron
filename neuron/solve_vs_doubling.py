@@ -91,7 +91,7 @@ try:
     dev = xm.xla_device()
     L = torch.tril(torch.randn(4, C, C) * 0.1, -1).to(dev)
     hlo = {}
-    for name, f in (("solve_triangular", solve_inverse), ("doubling", sq.unit_lower_inverse)):
+    for name, f in (("solve_triangular", solve_inverse), ("doubling", sq.unit_lower_inverse), ("rowloop", rowloop_inverse)):
         out = f(L, sq._offdiag_masks(C).to(dev))
         txt = torch_xla._XLAC._get_xla_tensors_hlo([out])
         ops = sorted({ln.split("=")[1].strip().split("(")[0].split(" ")[-1] for ln in txt.splitlines() if " = " in ln and "(" in ln})
@@ -133,10 +133,16 @@ sq.unit_lower_inverse = _orig
 Ls = torch.cat([x.reshape(-1, C, C) for x in captured])
 Ls = Ls[Ls.flatten(1).abs().amax(1) > 0]
 N = 256
-sel = Ls[Ls.norm(dim=(-1, -2)).argsort(descending=True)[:N]].contiguous()
+order = Ls.norm(dim=(-1, -2)).argsort(descending=True)
+sel = Ls[order[:N]].contiguous()          # traced with these
+sel2 = Ls[order[N:2 * N]].contiguous()    # and evaluated also on these (disjoint): catches outputs frozen at trace time
 eye64 = torch.eye(C, dtype=torch.float64).expand(N, C, C)
-gold = torch.linalg.solve_triangular(eye64 + sel.double(), eye64, upper=False, unitriangular=True)
-scale = gold.abs().amax(dim=(-1, -2)).clamp_min(1)
+
+
+def rel_err(out, x):
+    gold = torch.linalg.solve_triangular(eye64 + x.double(), eye64, upper=False, unitriangular=True)
+    scale = gold.abs().amax(dim=(-1, -2)).clamp_min(1)
+    return (out.double() - gold).abs().amax(dim=(-1, -2)) / scale
 
 # ---------------------------------------------------------------- B. kernel level
 R["kernel"] = {"systems": N, "L_fro_max": float(sel.norm(dim=(-1, -2)).max())}
@@ -145,9 +151,11 @@ for name, f in (("doubling", sq.unit_lower_inverse), ("solve_triangular", solve_
     try:
         m, ct = trace(Fn(f), (sel,), f"k_{name}")
         out, ms = timed(m, (sel,))
-        err = ((out.double() - gold).abs().amax(dim=(-1, -2)) / scale)
+        err = rel_err(out, sel)
+        err2 = rel_err(m(sel2), sel2)
         R["kernel"][name] = {"compiled": True, "compile_s": ct, "warm_ms_per_call": ms,
                              "rel_err_max": float(err.max()), "rel_err_median": float(err.median()),
+                             "unseen_inputs_rel_err_max": float(err2.max()), "unseen_inputs_rel_err_median": float(err2.median()),
                              "neff_bytes": (os.path.getsize(nf) if os.path.exists(nf := os.path.join(args.out, "neuronx-cc", f"k_{name}", "graph.neff")) else None)}
     except Exception as e:  # noqa: BLE001
         R["kernel"][name] = {"compiled": False, "error": "".join(traceback.format_exception_only(type(e), e))[-1200:]}
@@ -170,6 +178,17 @@ class Prefill(torch.nn.Module):
         return s.m.prefill(ids_, lens)[0]   # logits only: isolates the prefill compute
 
 
+prompts2 = ["Write a haiku about the ocean at night.",
+            "def fibonacci(n):\n    \"\"\"Return the n-th Fibonacci number.\"\"\"\n" * 6]
+ids2 = [torch.tensor(tk.encode(p, add_special_tokens=False).ids) for p in prompts2]
+lengths2 = torch.tensor([len(x) for x in ids2])
+batch2 = torch.full((B, T), tk.token_to_id("<|endoftext|>"), dtype=torch.long)
+for i, x in enumerate(ids2):
+    batch2[i, :len(x)] = x
+with torch.no_grad():
+    ref_logits2, _ = ref.prefill(batch2, lengths2)
+R["prompts2_lengths"] = lengths2.tolist()
+
 if "model" not in skip:
     model = sq.StaticQwen35.from_pretrained(args.ckpt, max_len=T + 64, dtype=torch.bfloat16).eval()
     R["prefill"] = {}
@@ -180,8 +199,12 @@ if "model" not in skip:
             m, ct = trace(Prefill(model), (batch, lengths), f"prefill_{name}")
             out, ms = timed(m, (batch, lengths), warm=2, reps=10)
             k = kl(out, ref_logits)
+            out2 = m(batch2, lengths2)
+            k2 = kl(out2, ref_logits2)
             R["prefill"][name] = {"compiled": True, "compile_s": ct, "warm_ms": ms, "kl": k.tolist(),
-                                  "argmax_eq": (out.argmax(-1) == ref_logits.argmax(-1)).tolist()}
+                                  "argmax_eq": (out.argmax(-1) == ref_logits.argmax(-1)).tolist(),
+                                  "unseen_batch_kl": k2.tolist(),
+                                  "unseen_batch_argmax_eq": (out2.argmax(-1) == ref_logits2.argmax(-1)).tolist()}
         except Exception as e:  # noqa: BLE001
             R["prefill"][name] = {"compiled": False, "error": "".join(traceback.format_exception_only(type(e), e))[-1200:]}
         sq.unit_lower_inverse = _orig
