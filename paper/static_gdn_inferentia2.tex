@@ -1,0 +1,511 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
+\usepackage{enumitem}
+\setlist{nosep, leftmargin=*}
+\emergencystretch=3em
+\newtheorem{proposition}{Proposition}
+
+\title{Gated DeltaNet on AWS Inferentia2 Without a Triangular Solve:\\
+Exact Static Graphs for Hybrid Qwen3.5/Qwen3.8 Models}
+\author{Saksham Adhikari}
+\date{Technical report, November 2026 \\ \small Not peer reviewed.}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Qwen3.5 and Qwen3.8 interleave three Gated DeltaNet (GDN) linear-attention layers with every full-attention layer. The
+chunked GDN algorithm inverts a unit lower-triangular $64\times64$ matrix in every chunk, and the PyTorch reference does this
+with \texttt{torch.linalg.solve\_triangular}. Existing Neuron ports replace that step with NKI kernels that run only on
+Trainium2, and Neuron SDK 2.29 removed NKI-kernel support for Trainium1 and Inferentia2 in NxD Inference. We first show what happens to
+\texttt{solve\_triangular} on Inferentia2 under SDK 2.28, the last SDK for that chip. It \emph{compiles without error and is
+wrong}. torch-xla has no device lowering for the operator, so tracing runs it on the host and freezes its output into the
+compiled graph as a constant. The result is exact on the tracing input and has median relative error 0.56 on any other input.
+Traced inside the whole model, it compiles and then crashes at run time. We then remove the operator. The inverse is computed
+exactly by $\log_2 64=6$ block-doubling steps of dense matrix products under constant masks. Padded positions use a gate and
+step size that provably leave the recurrent state unchanged. All state is explicit and fixed-shape, and no tensor exceeds
+rank~4. On an Inferentia2 chip the doubling inverse is accurate to $1.6\times10^{-7}$ on real systems it was not traced with,
+and it is $2.9\times$ faster than the only other formulation that generalises, the row-by-row loop used as a fallback in
+Hugging Face Transformers. The whole Qwen3.5-0.8B model compiles to one prefill and one decode graph. With bf16 weights it
+reproduces 32 of 32 greedy tokens of the fp32 reference on both test prompts, with KL divergence at most $7.3\times10^{-4}$,
+including on prompts it was not traced with. Prefill of a $2\times256$ batch takes 41--52\,ms and a batch-2 decode step 21.7\,ms.
+All device runs used Spot instances and cost about \$0.20 in total.
+\end{abstract}
+
+\section{Introduction}
+Hybrid decoders replace most softmax-attention layers with linear-attention or state-space layers. These keep a fixed-size
+recurrent state instead of a growing KV cache~\cite{lieber2024jamba,minimax2025,nemotronh2025,kimi2025linear}. The Qwen family
+adopted Gated DeltaNet~\cite{yang2025gdn} in Qwen3-Next~\cite{qwen3next}, then in Qwen3.5~\cite{qwen35} and
+Qwen3.8~\cite{qwen38card,qiu2026qwen38next}. Qwen3.8-27B has 64 layers in a 3:1 GDN-to-attention pattern.
+
+Prefill uses the chunkwise-parallel form of the delta rule~\cite{yang2024deltanet}. Each chunk of $C=64$ tokens needs the
+inverse of a unit lower-triangular matrix (the UT transform~\cite{joffrain2006ut}). GPU libraries implement it in Triton
+kernels~\cite{fla}. The Hugging Face reference calls \texttt{torch.linalg.solve\_triangular}, with a 63-step loop of in-place
+row updates as a fallback~\cite{hftransformers}. The Neuron documentation reports unsupported operators with error
+NCC\_EVRF001~\cite{neuronevrf001}. The usual explanation for the difficulty is that the accelerator ``needs fixed tensor
+sizes'', but that is not the problem here: the chunk is $64\times64$ in every call.
+
+The Neuron ports of this family that we found replace the inverse with NKI kernels on Trainium2: NxD Inference's Qwen3.5
+contrib models~\cite{nxdicontrib}, the NKI library's \texttt{gdn\_cte}~\cite{nkilibgdn} and a community
+kernel~\cite{jburtoft}. NxD Inference's notes also record that the plain PyTorch chunk path, which builds rank-5 tensors,
+crashes neuronx-cc code generation (NCC\_INLA001)~\cite{nxdicontrib}. Since SDK 2.29, NxD Inference no longer supports NKI
+kernels on Trainium1 or Inferentia2, and users there are told to stay on SDK 2.28~\cite{neuron229}. On those chips, the inverse has to be expressed with operators
+the compiler handles on its own.
+
+\paragraph{Contributions.}
+\begin{enumerate}
+\item \textbf{A silent failure mode.} On Inferentia2 with SDK 2.28 and \texttt{torch\_neuronx.trace},
+\texttt{solve\_triangular} is not rejected. It is evaluated on the host at trace time and its output is baked into the NEFF.
+The graph is exact on the tracing input and wrong on every other input (median relative error 0.56). A whole-model graph
+containing it compiles and then segfaults. A test that evaluates on its tracing input cannot detect this; we evaluate every
+graph on inputs it was not traced with (Section~\ref{sec:solve}).
+\item \textbf{An exact matmul-only inverse} with a proof. It costs 12 dense $C\times C$ products per chunk. On device it is
+accurate to fp32 rounding on unseen real systems, and $2.9\times$ faster to run and $5\times$ faster to compile than the
+generalising row loop (Sections~\ref{sec:inverse},~\ref{sec:device}).
+\item \textbf{One static graph per phase} for the whole hybrid model. It uses a padding rule ($g=0,\ \beta=0$) proven to leave
+the state unchanged, explicit fixed-shape state, rank-$\le4$ tensors and matmul prefix sums (Section~\ref{sec:graph}).
+\item \textbf{Measurements on a real checkpoint, CPU and Inferentia2.} These include the first Gated DeltaNet hybrid we know
+of to run on Inferentia2. They also show that random-weight tests miss the instability of the Neumann alternative
+(Sections~\ref{sec:eval},~\ref{sec:device}).
+\item \textbf{A reproducible, cost-bounded recipe.} One-time Spot instances upload their results and terminate themselves.
+Code and raw results are released (Section~\ref{sec:repro}).
+\end{enumerate}
+
+\section{Background}
+\paragraph{Gated delta rule.} For one head with keys and queries $k_t,q_t\in\mathbb{R}^{d_k}$ (L2-normalised), values
+$v_t\in\mathbb{R}^{d_v}$, decay $\alpha_t=e^{g_t}\in(0,1]$ and step size $\beta_t\in(0,1)$, the state $S_t\in\mathbb{R}^{d_k\times d_v}$
+evolves as
+\begin{equation}
+S_t = \alpha_t S_{t-1} + k_t\,\beta_t\big(v_t - \alpha_t S_{t-1}^{\top}k_t\big)^{\top}, \qquad o_t = S_t^{\top} q_t .
+\label{eq:rec}
+\end{equation}
+Qwen3.5/3.8 compute $\beta_t=\sigma(\cdot)$ and $g_t=-e^{A}\,\mathrm{softplus}(\cdot+\delta)$ per value head from the hidden
+state, after a depthwise causal convolution (kernel 4) and SiLU on $[q;k;v]$. A gated RMSNorm follows the core.
+
+\paragraph{Chunked form.} Within a chunk of $C$ positions, let $\gamma_i=\sum_{j\le i} g_j$ and
+$\Gamma_{ij}=e^{\gamma_i-\gamma_j}$ for $i\ge j$ (0 otherwise). The UT system is $T = I + L$ with
+$L = \mathrm{tril}\big((\beta\odot K)K^{\top}\odot\Gamma,\,-1\big)$. Then
+\begin{equation}
+U = T^{-1}(\beta\odot V), \quad W = T^{-1}(\beta\odot e^{\gamma}\odot K), \quad
+V' = U - W S, \quad O = (e^{\gamma}\odot Q)S + (QK^{\top}\odot\Gamma)\,V',
+\label{eq:chunk}
+\end{equation}
+followed by $S \leftarrow e^{\gamma_C} S + (e^{\gamma_C-\gamma}\odot K)^{\top} V'$. Everything in~\eqref{eq:chunk} is a dense
+product except $T^{-1}$.
+
+\paragraph{Conditioning.} Under these conditions (unit-norm keys, $\beta,\alpha\in(0,1]$), every entry of $T^{-1}$ is bounded by
+1 in magnitude~\cite{sobczyk2026tri}. Sobczyk et al.\ find power-series (Neumann) inversion unstable in fp32 at $C\ge64$, and
+recursive inversion stable. Classical analysis of blocked triangular inversion is in~\cite{ducroz1992,higham2002}.
+
+\section{What \texttt{solve\_triangular} does on Inferentia2}\label{sec:solve}
+\texttt{torch\_neuronx.trace} records the model through torch-xla and hands the resulting HLO to neuronx-cc. We traced a module
+that returns $(I+L)^{-1}$ through \texttt{solve\_triangular} and dumped the HLO that torch-xla produced for it. The HLO is the
+identity on a single parameter: there is no triangular-solve, loop or arithmetic instruction. torch-xla had no lowering for
+the operator, ran it on the host, and passed its \emph{result} to the device as data. During tracing, that data becomes a constant
+of the compiled graph.
+
+The compiler therefore reports success. Table~\ref{tab:kernel} shows the consequence: on the 256 systems used for tracing,
+the output matches fp64 to $5.5\times10^{-7}$, but on 256 other real systems from the same checkpoint, the median relative error is
+0.56 and the maximum 1.44. The graph returns the tracing input's inverse whatever it is given. Inside the whole model, where
+the solve's input depends on the prompt, the same trace compiled (one graph split around the host computation) and then
+crashed the process with a segmentation fault before producing output. The rejection reported elsewhere (NCC\_EVRF001) is
+not what a torch-neuronx user sees; what they see is a graph that passes a same-input check.
+
+\section{A matmul-only exact inverse}\label{sec:inverse}
+Let $D_b$ be the block-diagonal part of $T$ with $b\times b$ diagonal blocks, so $D_1=I$ and $D_C=T$. Let $O_b = T\odot M_b$,
+where the constant 0/1 mask $M_b$ selects the lower-left $b\times b$ sub-block inside each diagonal $2b\times2b$ block. Then
+$D_{2b}=D_b+O_b$.
+
+\begin{proposition}
+If $X_b = D_b^{-1}$, then $X_{2b} = X_b - X_b O_b X_b$ equals $D_{2b}^{-1}$ exactly.
+\end{proposition}
+\begin{proof}
+$D_{2b}(X_b - X_bO_bX_b) = I + O_bX_b - O_bX_b - O_bX_bO_bX_b = I - (O_bX_bO_b)X_b$, using $D_bX_b=I$. Within each $2b$ block,
+$O_b$ is nonzero only in (lower-half rows, upper-half columns). $X_b$ is block-diagonal at size $b$, so $O_bX_b$ has the same
+support. In $(O_bX_b)O_b$ the summation index must be an upper-half column of the first factor and a lower-half row of the
+second at the same time, so the product is zero.
+\end{proof}
+
+Starting from $X_1=I$, six steps give $T^{-1}$ for $C=64$. Each step uses two dense $C\times C$ products and an elementwise
+mask. There is no data-dependent indexing, no division and no loop over rows. Every intermediate $X_b$ is the exact inverse of
+a principal block-diagonal part of $T$, so its entries obey the same unit bound~\cite{sobczyk2026tri}. By contrast, the
+Neumann product $(I-L)(I+L^2)(I+L^4)\cdots$ forms powers $L^{2^j}$ whose entries grow with $\lVert L\rVert$ before they cancel,
+which is what fails in fp32 (Table~\ref{tab:inverse}).
+
+\paragraph{Cost.} The dense form spends $6\times 2\times 2C^3\approx 6.3$\,MFLOP per chunk and head, against about 11\,MFLOP
+for the rest of the chunk with $d_k=d_v=128$. Only about 0.2\,MFLOP of the doubling work is non-zero. A kernel could skip the
+zeros, but the dense form keeps the graph to operators that every backend lowers. Its HLO has 102 instructions of 11 kinds,
+mostly \texttt{dot}, \texttt{multiply} and \texttt{subtract}. The row loop needs 2280 instructions with
+\texttt{dynamic-update-slice} (Table~\ref{tab:kernel}).
+
+\section{One static graph per phase}\label{sec:graph}
+\paragraph{Padding that leaves the state unchanged.}
+Prompts are right-padded to a bucket length that is a multiple of $C$. At padded positions we set $\beta_t=0$ and $g_t=0$
+($\alpha_t=1$), and zero the convolution input.
+\begin{proposition}
+With $\beta_t=0$, $g_t=0$ at every padded position (all after the real tokens), the final state equals that of the unpadded
+sequence, and every real-position output is unchanged.
+\end{proposition}
+\begin{proof}
+In~\eqref{eq:rec}, $\beta_t=0,\alpha_t=1$ gives $S_t=S_{t-1}$. In the chunked form, a padded row $i$ of $L$ is
+$\beta_i(\cdot)=0$, so row $i$ of $T^{-1}$ is $e_i^{\top}$. Row $i$ of $\beta\odot V$ and of $\beta\odot e^\gamma\odot K$ is
+zero, so rows $i$ of $U$ and $W$, and hence of $V'$, are zero, and the padded row adds nothing to the state update. Because
+$g_i=0$, $\gamma$ does not change after the last real token, so the chunk decay $e^{\gamma_C}$ and the key scaling of the real
+rows are those of the unpadded chunk. Real outputs depend only on earlier positions by causality.
+\end{proof}
+The final convolution window must hold the last three \emph{real} inputs of each row. We gather it at index
+$\ell+\{0,1,2\}$ from the input left-padded by three zeros, where $\ell$ is the row's length, so batches with mixed prompt
+lengths are exact. Full-attention layers need no change: causal masking already hides later padded keys.
+
+\paragraph{Explicit state.} Prefill maps $(\texttt{ids}[B,T],\ \ell[B])$ to the last-token logits and a flat tuple of state
+tensors. Decode maps $(\texttt{tok}[B],\ \texttt{pos}[B],\ \text{state})$ to logits and the new state. The state holds a KV cache
+$[B,h_{kv},N_{\max},256]$ per full-attention layer, a convolution window $[B,d_{conv},3]$ and an fp32 recurrent state
+$[B,h_v,128,128]$ per GDN layer. Decode writes the KV slot with a one-hot \texttt{where} blend and masks attention by comparing
+against \texttt{pos}; there is no scatter or dynamic slice.
+
+\paragraph{Rank $\le4$, matmul prefix sums, no control flow.} Batch and heads are folded into one dimension inside the chunk
+computation, so no tensor exceeds rank~4; rank~5 is what triggers NCC\_INLA001~\cite{nxdicontrib}. The within-chunk prefix sum
+$\gamma$ is a product with a constant upper-triangular matrix of ones, so it runs on the Tensor engine rather than as a scan.
+The loop over chunks is unrolled to $T/C$ steps at trace time. For Qwen3.8-27B the per-sequence GDN state is
+$48\times48\times128\times128\times4$\,B $\approx 151$\,MB in fp32, and the KV cache adds 64\,KiB per token in bf16.
+
+\section{Evaluation on CPU}\label{sec:eval}
+We compare against Hugging Face Transformers 5.24 (\texttt{Qwen3\_5}, eager attention, its PyTorch GDN path with
+\texttt{solve\_triangular}) in fp32 on CPU. We use the real Qwen3.5-0.8B checkpoint (24 layers, 18 GDN). Qwen3.8 has no
+official checkpoint under 27B and shares \texttt{model\_type}~\texttt{qwen3\_5}. The batch holds prompts of 5 and 167 tokens,
+right-padded to a 256-token bucket.
+
+\begin{table}[t]
+\centering\small
+\begin{tabular}{rrrrr}
+\toprule
+GDN layer & $\max\lVert L\rVert_F$ & $\max|T^{-1}|$ & doubling (ours) & Neumann product \\
+\midrule
+0  & 6.6  & 1 & $1.7\times10^{-7}$ & $2.0\times10^{-5}$ \\
+5  & 29.6 & 1 & $1.2\times10^{-7}$ & $9.8\times10^{4}$ \\
+8  & 41.6 & 1 & $1.9\times10^{-7}$ & $1.3\times10^{10}$ \\
+18 & 35.2 & 1 & $1.8\times10^{-7}$ & $6.7\times10^{8}$ \\
+22 & 31.4 & 1 & $1.6\times10^{-7}$ & $8.6\times10^{9}$ \\
+\midrule
+all 18 layers & $\le 41.6$ & 1 & $\le 2.6\times10^{-7}$ & up to $1.3\times10^{10}$ \\
+\bottomrule
+\end{tabular}
+\caption{Inverse of every real UT system in the prefill, CPU fp32: max entry error relative to an fp64
+\texttt{solve\_triangular}, worst chunk and head. The measured $\max|T^{-1}|=1$ matches the unit bound
+of~\cite{sobczyk2026tri}. The Neumann product is wrong wherever $\lVert L\rVert_F\gtrsim15$.}
+\label{tab:inverse}
+\end{table}
+
+\begin{table}[t]
+\centering\small
+\begin{tabular}{p{0.34\linewidth}p{0.29\linewidth}p{0.29\linewidth}}
+\toprule
+Check & Qwen3.5-0.8B (real weights) & 27B head layout (random) \\
+\midrule
+Prefill last-token logits vs.\ HF (unpadded) & max $|\Delta|$ $3.2\times10^{-5}$, same argmax & max $|\Delta|$ $2.0\times10^{-5}$, same argmax \\
+Greedy decode, 24 steps vs.\ HF \texttt{generate} & 24/24 identical; KL $\le3.7\times10^{-7}$ & 24/24 identical; KL $\le1.0\times10^{-6}$ \\
+\texttt{torch.export} prefill / decode & 43 / 33 aten ops, max rank 4 & 43 / 33 aten ops, max rank 4 \\
+Forbidden ops (solve, linalg, nonzero, \texttt{item}) & none & none \\
+\bottomrule
+\end{tabular}
+\caption{CPU agreement with the reference. The second column uses a random-weight model with Qwen3.8-27B's head layout (48 GDN
+value heads per 16 key heads, 24/4 attention heads, head dim 256, partial RoPE 0.25) to exercise the grouped-value path.}
+\label{tab:e2e}
+\end{table}
+
+Tables~\ref{tab:inverse} and~\ref{tab:e2e} show the inverse is accurate to fp32 rounding on every real system and that the
+whole model agrees with the reference. On the random-weight model, $\lVert L\rVert_F\le2$ and the Neumann product is also
+accurate. A test suite built only on random weights would have accepted an inverse that fails on the real
+checkpoint~\cite{jburtoft}.
+
+\section{Evaluation on Inferentia2}\label{sec:device}
+\paragraph{Setup.} One Inferentia2 chip (two NeuronCores, 32\,GB), on Spot \texttt{inf2.xlarge} and, when that type had no
+Spot capacity, \texttt{inf2.8xlarge} (same chip, more host CPU). We used the AWS Neuron 2.28 DLAMI: torch-neuronx
+2.9.0.2.12, neuronx-cc 2.23. Graphs were compiled with \texttt{torch\_neuronx.trace}~\cite{neurontrace}, one prefill graph per bucket~\cite{nxdibucketing}, and \texttt{--auto-cast=none}, so the fp32
+parts of the recurrence stay fp32. Weights are bf16 and inlined into the NEFF. The reference is the same static model in fp32
+on the host, which matches Transformers to $3\times10^{-5}$ (Table~\ref{tab:e2e}). Every graph is evaluated on its tracing
+input and on inputs it was not traced with.
+
+\begin{table}[t]
+\centering\small
+\begin{tabular}{lrrrrr}
+\toprule
+formulation & HLO instr. & compile & warm call & err.\ (traced input) & err.\ (unseen inputs) \\
+\midrule
+\texttt{solve\_triangular} & 7 (identity) & 4.3\,s & 0.53\,ms & $5.5\times10^{-7}$ & \textbf{1.44} (median 0.56) \\
+row loop (HF fallback) & 2280 & 26.9\,s & 4.05\,ms & $4.1\times10^{-7}$ & $1.6\times10^{-7}$ \\
+doubling (ours) & 102 & 5.3\,s & \textbf{1.41\,ms} & $2.3\times10^{-7}$ & $\mathbf{1.6\times10^{-7}}$ \\
+\bottomrule
+\end{tabular}
+\caption{Inverse alone on Inferentia2: 256 real UT systems from Qwen3.5-0.8B, the hardest by $\lVert L\rVert_F$ (up to 41.6),
+fp32. Errors are the max entry error relative to fp64, worst system. ``Unseen'' is the next 256 hardest systems, evaluated
+with the graph traced on the first 256. The solve's warm time is a host-to-device copy of a constant.}
+\label{tab:kernel}
+\end{table}
+
+\paragraph{Inverse.} Table~\ref{tab:kernel}. Of the formulations that compute on the device, the doubling inverse is the most
+accurate and the fastest: $2.9\times$ faster per call and $5.1\times$ faster to compile than the row loop, with a NEFF
+$6.8\times$ smaller (247\,KB vs.\ 1.7\,MB).
+
+\begin{table}[t]
+\centering\small
+\begin{tabular}{lrr}
+\toprule
+& prompt A (5 tok.) & prompt B (167 tok.) \\
+\midrule
+KL(fp32 $\Vert$ device) at prefill & $7.3\times10^{-4}$ & $4.0\times10^{-4}$ \\
+max / mean per-step KL, 32 steps (teacher-forced) & $7.3\times10^{-4}$ / $1.3\times10^{-4}$ & $4.0\times10^{-4}$ / $4.4\times10^{-5}$ \\
+argmax agreement, teacher-forced & 32/32 & 32/32 \\
+identical greedy prefix vs.\ fp32 & 32/32 & 32/32 \\
+\midrule
+& prompt C (10 tok.) & prompt D (90 tok.) \\
+\midrule
+prefill KL, prompts not traced with & $5.8\times10^{-4}$ & $2.4\times10^{-4}$ \\
+argmax equal & yes & yes \\
+\bottomrule
+\end{tabular}
+\caption{Whole model on Inferentia2 (bf16 weights, fp32 GDN state) vs.\ the fp32 host reference. The top block uses the batch the
+graphs were traced with. The bottom block is a different batch run through the same prefill graph.}
+\label{tab:device}
+\end{table}
+
+\paragraph{Whole model.} Both phases compile as single graphs: prefill $[2\times256]$ in 346\,s and decode $[2\times1]$ in
+496\,s on \texttt{inf2.xlarge} (279\,s for prefill on \texttt{inf2.8xlarge}). Each NEFF is 1.6\,GB with the weights inlined.
+Table~\ref{tab:device} gives the fidelity. Greedy decoding on the device reproduces all 32 tokens of the fp32 reference for both
+prompts, and the per-step KL stays below $10^{-3}$, the size expected from bf16 weights. The prefill graph is equally accurate on
+a batch it was not traced with, which is the check that \texttt{solve\_triangular} fails.
+
+\paragraph{Latency.} Prefill of the $2\times256$ bucket (172 real tokens) takes 52\,ms when it also returns the state, and 41\,ms
+for logits only. A batch-2 decode step takes 21.7\,ms (p90 21.9\,ms), or 92 tokens/s. That step time includes copying the whole
+state, 51\,MB each way, between host and device, because the traced decode graph takes and returns the state as ordinary
+tensors. Keeping the state resident on the device (input/output aliasing) is the obvious next step and would lower it. We
+did not profile the share of device time spent in the inverse inside the full model.
+
+\paragraph{Cost.} Three Spot runs, about 25, 11 and 23 minutes, at \$0.09/h (\texttt{inf2.xlarge}) and \$0.31--0.37/h
+(\texttt{inf2.8xlarge}) in us-east-1, cost about \$0.20 in total. One run was reclaimed by Spot and repeated. Each instance
+downloads the checkpoint, runs, uploads results to S3 and terminates itself, with a hard power-off as a backstop.
+
+\section{Scaling to Qwen3.8-27B}
+Qwen3.8-27B is 54\,GB in bf16 and needs tensor parallelism. TP=8 on \texttt{inf2.24xlarge} (four chips, 128\,GB of HBM in use)
+divides the 16 GDN key heads (2 key and 6 value heads per core) and the 24 query heads, and replicates each of the 4 KV heads
+twice. GDN heads are independent, so the recurrence needs no collectives beyond the usual all-reduce after the output
+projections. We describe this configuration but did not run it. The chunk loop unrolls $T/C$ times in each of 48 GDN
+layers, so compile time grows linearly with the bucket. Long contexts call for moderate buckets with chunked prefill across
+calls, which the explicit state interface already supports, or an NKI kernel for the scan.
+
+\section{Related work}
+The delta rule's chunkwise form and its WY/UT representation come from parallel
+DeltaNet~\cite{yang2024deltanet,bischof1987wy,joffrain2006ut}; Gated DeltaNet adds the decay gate~\cite{yang2025gdn}.
+Related linear-attention and SSM layers include~\cite{katharopoulos2020,schlag2021,yang2024gla,dao2024mamba2}. For the
+triangular inverse, FLA combines 16-row forward substitution with Schur merges~\cite{fla}. Sobczyk et al.\ analyse direct and
+iterative inversion on NPUs~\cite{sobczyk2026tri}. A multiplication-only approximate inverse has been proposed for quantized GDN
+on mobile NPUs~\cite{zhang2026goodenough}; ours is exact. On Neuron, the existing ports are NKI-based and target
+Trainium2~\cite{nxdicontrib,nkilibgdn,jburtoft}. Serving systems manage hybrid state alongside paged KV
+caches~\cite{vllmhybrid,sglanghybrid}.
+
+\section{Limitations}
+\begin{itemize}
+\item Only Qwen3.5-0.8B ran on device, at one bucket (256) and batch 2. Qwen3.8-27B was validated only through its head layout
+on random weights, on CPU.
+\item The solve-triangular finding is for torch-neuronx tracing on SDK 2.28. Other front ends, such as NxD Inference's model
+builder, or other SDK versions may behave differently.
+\item The decode latency includes host round-trips of the state. Neither phase was profiled at the engine level.
+\item The dense doubling inverse spends FLOPs on zero blocks, and a $64\times64$ product underuses the $128\times128$ Tensor
+engine.
+\item The multimodal encoder and the multi-token-prediction head are out of scope.
+\end{itemize}
+
+\section{Reproducibility}\label{sec:repro}
+Code, launch scripts and raw JSON results are in the accompanying repository:
+\begin{itemize}
+\item \texttt{static\_qwen.py} (the model) and \texttt{test\_static.py} (CPU checks);
+\item \texttt{neuron/run\_inf2.py} and \texttt{neuron/solve\_vs\_doubling.py} (device runs);
+\item \texttt{infra/inf2\_spot.sh} (Spot launcher);
+\item \texttt{results/} (device runs 20261123T183627Z, 20261123T190820Z and 20261123T194739Z).
+\end{itemize}
+CPU checks used PyTorch 2.15, Transformers 5.24 and Python 3.12.
+
+\section{Conclusion}
+On Inferentia2, \texttt{solve\_triangular} in Gated DeltaNet fails silently: it compiles, but its output is frozen at trace time.
+Six masked doubling steps of dense products replace it exactly, run on the device, stay accurate to fp32 rounding on real
+checkpoints where the Neumann product fails by ten orders of magnitude, and are $2.9\times$ faster than the row-loop
+alternative. With state-neutral padding, explicit fixed-shape state and rank-4 tensors, the whole hybrid model becomes one static
+graph per phase. On an Inferentia2 chip it reproduces the fp32 reference token for token. This route works on Inferentia2 and
+Trainium1, where NKI-based ports are no longer supported.
+
+
+\begin{thebibliography}{99}
+\bibitem{bischof1987wy}
+C.~Bischof and C.~Van~Loan.
+\newblock The WY representation for products of Householder matrices.
+\newblock \emph{SIAM Journal on Scientific and Statistical Computing}, 8(1):s2--s13, 1987.
+
+\bibitem{dao2024mamba2}
+T.~Dao and A.~Gu.
+\newblock Transformers are SSMs: Generalized models and efficient algorithms through structured state space duality.
+\newblock In \emph{Proceedings of ICML}, 2024. arXiv:2405.21060.
+
+\bibitem{ducroz1992}
+J.~J. Du~Croz and N.~J. Higham.
+\newblock Stability of methods for matrix inversion.
+\newblock \emph{IMA Journal of Numerical Analysis}, 12(1):1--19, 1992. (LAPACK Working Note 27.)
+
+\bibitem{fla}
+S.~Yang and Y.~Zhang.
+\newblock FLA: A Triton-based library for hardware-efficient implementations of linear attention mechanism.
+\newblock Software, \url{https://github.com/fla-org/flash-linear-attention} (\texttt{fla/ops/utils/solve\_tril.py}), accessed
+November 2026. Not peer reviewed.
+
+\bibitem{hftransformers}
+Hugging Face.
+\newblock \texttt{transformers}: \texttt{models/qwen3\_5/modeling\_qwen3\_5.py}, \texttt{torch\_chunk\_gated\_delta\_rule}.
+\newblock Software, \url{https://github.com/huggingface/transformers}, main branch, accessed November 2026. Not peer reviewed.
+
+\bibitem{higham2002}
+N.~J. Higham.
+\newblock \emph{Accuracy and Stability of Numerical Algorithms}.
+\newblock SIAM, 2nd edition, 2002.
+
+\bibitem{jburtoft}
+jburtoft (Hugging Face user).
+\newblock \texttt{qwen35-gdn-deltanet-neuron-kernels} (formerly \texttt{qwen35-deltanet-tkg-full}): NKI kernels for Qwen3.5 Gated
+DeltaNet, v15.
+\newblock Software, \url{https://huggingface.co/kernels/jburtoft/qwen35-deltanet-tkg-full}, accessed November 2026. Community
+artifact; not peer reviewed.
+
+\bibitem{joffrain2006ut}
+T.~Joffrain, T.~M. Low, E.~S. Quintana-Ort\'i, R.~van~de~Geijn, and F.~G. Van~Zee.
+\newblock Accumulating Householder transformations, revisited.
+\newblock \emph{ACM Transactions on Mathematical Software}, 32(2):169--179, 2006.
+
+\bibitem{katharopoulos2020}
+A.~Katharopoulos, A.~Vyas, N.~Pappas, and F.~Fleuret.
+\newblock Transformers are RNNs: Fast autoregressive transformers with linear attention.
+\newblock In \emph{Proceedings of ICML}, 2020. arXiv:2006.16236.
+
+\bibitem{kimi2025linear}
+Kimi Team.
+\newblock Kimi Linear: An expressive, efficient attention architecture.
+\newblock arXiv:2510.26692, 2025.
+
+\bibitem{lieber2024jamba}
+O.~Lieber et~al.
+\newblock Jamba: A hybrid Transformer-Mamba language model.
+\newblock arXiv:2403.19887, 2024.
+
+\bibitem{minimax2025}
+MiniMax (A.~Li et~al.).
+\newblock MiniMax-01: Scaling foundation models with lightning attention.
+\newblock arXiv:2501.08313, 2025.
+
+\bibitem{nemotronh2025}
+NVIDIA (A.~Blakeman et~al.).
+\newblock Nemotron-H: A family of accurate and efficient hybrid Mamba-Transformer models.
+\newblock arXiv:2504.03624, 2025.
+
+\bibitem{neuron229}
+AWS Neuron.
+\newblock Neuron 2.29.0 release notes (NxD Inference component) and Neuron 2.30 announcements.
+\newblock \url{https://awsdocs-neuron.readthedocs-hosted.com/en/latest/release-notes/2.29.0.html}, accessed November 2026.
+
+\bibitem{neuronevrf001}
+AWS Neuron.
+\newblock Neuron compiler error code \texttt{NCC\_EVRF001}: unsupported operator.
+\newblock \url{https://awsdocs-neuron.readthedocs-hosted.com/en/v2.28.0/compiler/error-codes/EVRF001.html}, accessed November 2026.
+
+\bibitem{neurontrace}
+AWS Neuron.
+\newblock PyTorch Neuron (\texttt{torch-neuronx}) tracing API for inference, SDK v2.28.0.
+\newblock
+\url{https://awsdocs-neuron.readthedocs-hosted.com/en/v2.28.0/frameworks/torch/torch-neuronx/api-reference-guide/inference/api-torch-neuronx-trace.html},
+accessed November 2026.
+
+\bibitem{nkilibgdn}
+AWS Neuron.
+\newblock NKI library, \texttt{nkilib.experimental.gdn} (\texttt{gdn\_cte}, \texttt{gdn\_cte\_schur}, \texttt{gdn\_cte\_neumann}) and
+README.
+\newblock Software, \url{https://github.com/aws-neuron/nki-library}, accessed November 2026. Not peer reviewed.
+
+\bibitem{nxdibucketing}
+AWS Neuron.
+\newblock NxD Inference API reference guide: bucketing (\texttt{context\_encoding\_buckets}, \texttt{token\_generation\_buckets}).
+\newblock \url{https://awsdocs-neuron.readthedocs-hosted.com/en/latest/libraries/nxd-inference/api-guides/api-guide.html}, accessed
+November 2026.
+
+\bibitem{nxdicontrib}
+AWS Neuron and contributors.
+\newblock NxD Inference contrib models \texttt{Qwen3.5-2B} and \texttt{Qwen3.5-35B-A3B}; pull request \#173 (Qwen3.6-27B, open).
+\newblock Software, \url{https://github.com/aws-neuron/neuronx-distributed-inference}, accessed November 2026. Not peer reviewed.
+
+\bibitem{qiu2026qwen38next}
+Z.~Qiu, Z.~Wang, X.~Li, et~al.\ (36 authors).
+\newblock On the design of Qwen3.8-Next architecture: Evaluation, efficiency, and training stability.
+\newblock arXiv:2608.30320, 2026. (The text refers to the model as Qwen3.8-Flash-Next.)
+
+\bibitem{qwen35}
+Qwen Team.
+\newblock Qwen3.5: Towards native multimodal agents.
+\newblock Blog, \url{https://qwen.ai/blog?id=qwen3.5}, February 2026; model card \texttt{Qwen/Qwen3.5-397B-A17B}.
+
+\bibitem{qwen38card}
+Qwen Team.
+\newblock \texttt{Qwen/Qwen3.8-27B} model card and \texttt{config.json}.
+\newblock \url{https://huggingface.co/Qwen/Qwen3.8-27B}, August 2026, accessed November 2026.
+
+\bibitem{qwen3next}
+Qwen Team.
+\newblock Qwen3-Next (blog) and \texttt{Qwen/Qwen3-Next-80B-A3B-Instruct} model card.
+\newblock \url{https://huggingface.co/Qwen/Qwen3-Next-80B-A3B-Instruct}, September 2025, accessed November 2026.
+
+\bibitem{schlag2021}
+I.~Schlag, K.~Irie, and J.~Schmidhuber.
+\newblock Linear Transformers are secretly fast weight programmers.
+\newblock In \emph{Proceedings of ICML}, 2021. arXiv:2102.11174.
+
+\bibitem{sglanghybrid}
+SGLang contributors.
+\newblock Hybrid model prefix-cache checkpoints (\texttt{--hybrid-cache-checkpoints-level}).
+\newblock Documentation, \url{https://github.com/sgl-project/sglang} (\texttt{docs/docs/advanced\_features/hybrid\_cache\_checkpoints.mdx}),
+accessed November 2026. Not peer reviewed.
+
+\bibitem{sobczyk2026tri}
+A.~Sobczyk, G.~Gottardo, C.~K. Matzoros, M.~De~Vita, F.~Skogh, A.~Zouzias, and J.~Zhuang.
+\newblock Fast and stable triangular inversion for delta-rule linear transformers.
+\newblock In \emph{Advances in Neural Information Processing Systems}, 2026. arXiv:2605.21325 (v2, extended version).
+
+\bibitem{vllmhybrid}
+vLLM contributors.
+\newblock Hybrid KV cache manager (design document).
+\newblock \url{https://github.com/vllm-project/vllm} (\texttt{docs/design/hybrid\_kv\_cache\_manager.md}), accessed November 2026. Not
+peer reviewed.
+
+\bibitem{yang2024deltanet}
+S.~Yang, B.~Wang, Y.~Zhang, Y.~Shen, and Y.~Kim.
+\newblock Parallelizing linear transformers with the delta rule over sequence length.
+\newblock In \emph{Advances in Neural Information Processing Systems}, 2024. arXiv:2406.06484.
+
+\bibitem{yang2024gla}
+S.~Yang, B.~Wang, Y.~Shen, R.~Panda, and Y.~Kim.
+\newblock Gated linear attention transformers with hardware-efficient training.
+\newblock In \emph{Proceedings of ICML}, 2024. arXiv:2312.06635.
+
+\bibitem{yang2025gdn}
+S.~Yang, J.~Kautz, and A.~Hatamizadeh.
+\newblock Gated delta networks: Improving Mamba2 with delta rule.
+\newblock In \emph{International Conference on Learning Representations (ICLR)}, 2025. arXiv:2412.06464.
+
+\bibitem{zhang2026goodenough}
+L.~Zhang, Y.~Ren, K.~Zhang, T.~Liu, L.~Ge, D.~Li, M.~H. Langston, Y.~Huang, W.~W. Zeng, and L.~Zhang.
+\newblock When good enough is optimal: Multiplication-only matrix inversion approximation for quantized Gated DeltaNet.
+\newblock Poster, AdaptFM Workshop at ICML 2026. arXiv:2606.06034.
+
+\end{thebibliography}
+\end{document}
