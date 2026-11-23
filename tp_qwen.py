@@ -246,7 +246,10 @@ class Phase(nn.Module):
     def forward(self, x, n):
         kv, conv, rec = self.state()
         if x.dim() == 2:
+            # prefill ignores the old state, but the graph must read a buffer for NxD to alias it (otherwise HLO
+            # lowering fails with "parameter not found in lowering context"); 0 * old keeps the values unchanged.
             out = self.m.prefill_packed(x, n)
+            out = (out[0], *(new + 0 * old for new, old in zip(out[1:], (kv, conv, rec))))
         else:
             out = self.m.decode_packed(x, n, kv, conv, rec)
         kv.copy_(out[1])
