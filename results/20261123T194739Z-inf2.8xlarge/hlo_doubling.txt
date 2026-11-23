@@ -1,0 +1,102 @@
+HloModule IrToHlo.98, entry_computation_layout={(f32[6,64,64]{2,1,0}, f32[4,64,64]{2,1,0})->(f32[4,64,64]{2,1,0})}
+
+ENTRY %IrToHlo.98 (p0.18: f32[6,64,64], p1.21: f32[4,64,64]) -> (f32[4,64,64]) {
+  %iota.7 = u32[64]{0} iota(), iota_dimension=0
+  %broadcast.10 = u32[64,64]{1,0} broadcast(u32[64]{0} %iota.7), dimensions={0}
+  %iota.8 = u32[64]{0} iota(), iota_dimension=0
+  %broadcast.9 = u32[64,64]{1,0} broadcast(u32[64]{0} %iota.8), dimensions={1}
+  %compare.11 = pred[64,64]{1,0} compare(u32[64,64]{1,0} %broadcast.10, u32[64,64]{1,0} %broadcast.9), direction=EQ
+  %convert.12 = f32[64,64]{1,0} convert(pred[64,64]{1,0} %compare.11)
+  %reshape.13 = f32[1,64,64]{2,1,0} reshape(f32[64,64]{1,0} %convert.12)
+  %broadcast.14 = f32[1,64,64]{2,1,0} broadcast(f32[1,64,64]{2,1,0} %reshape.13), dimensions={0,1,2}
+  %reshape.15 = f32[64,64]{1,0} reshape(f32[1,64,64]{2,1,0} %broadcast.14)
+  %broadcast.16 = f32[4,64,64]{2,1,0} broadcast(f32[64,64]{1,0} %reshape.15), dimensions={1,2}
+  %broadcast.25 = f32[4,64,64]{2,1,0} broadcast(f32[4,64,64]{2,1,0} %broadcast.16), dimensions={0,1,2}
+  %p1.21 = f32[4,64,64]{2,1,0} parameter(1)
+  %p0.18 = f32[6,64,64]{2,1,0} parameter(0)
+  %slice.19 = f32[1,64,64]{2,1,0} slice(f32[6,64,64]{2,1,0} %p0.18), slice={[0:1], [0:64], [0:64]}
+  %reshape.20 = f32[64,64]{1,0} reshape(f32[1,64,64]{2,1,0} %slice.19)
+  %broadcast.22 = f32[4,64,64]{2,1,0} broadcast(f32[64,64]{1,0} %reshape.20), dimensions={1,2}
+  %multiply.23 = f32[4,64,64]{2,1,0} multiply(f32[4,64,64]{2,1,0} %p1.21, f32[4,64,64]{2,1,0} %broadcast.22)
+  %broadcast.24 = f32[4,64,64]{2,1,0} broadcast(f32[4,64,64]{2,1,0} %multiply.23), dimensions={0,1,2}
+  %dot.26 = f32[4,64,64]{2,1,0} dot(f32[4,64,64]{2,1,0} %broadcast.25, f32[4,64,64]{2,1,0} %broadcast.24), lhs_batch_dims={0}, lhs_contracting_dims={2}, rhs_batch_dims={0}, rhs_contracting_dims={1}
+  %broadcast.27 = f32[4,64,64]{2,1,0} broadcast(f32[4,64,64]{2,1,0} %dot.26), dimensions={0,1,2}
+  %broadcast.17 = f32[4,64,64]{2,1,0} broadcast(f32[4,64,64]{2,1,0} %broadcast.16), dimensions={0,1,2}
+  %dot.28 = f32[4,64,64]{2,1,0} dot(f32[4,64,64]{2,1,0} %broadcast.27, f32[4,64,64]{2,1,0} %broadcast.17), lhs_batch_dims={0}, lhs_contracting_dims={2}, rhs_batch_dims={0}, rhs_contracting_dims={1}
+  %constant.6 = f32[] constant(1)
+  %broadcast.29 = f32[4,64,64]{2,1,0} broadcast(f32[] %constant.6), dimensions={}
+  %multiply.30 = f32[4,64,64]{2,1,0} multiply(f32[4,64,64]{2,1,0} %dot.28, f32[4,64,64]{2,1,0} %broadcast.29)
+  %subtract.31 = f32[4,64,64]{2,1,0} subtract(f32[4,64,64]{2,1,0} %broadcast.16, f32[4,64,64]{2,1,0} %multiply.30)
+  %broadcast.38 = f32[4,64,64]{2,1,0} broadcast(f32[4,64,64]{2,1,0} %subtract.31), dimensions={0,1,2}
+  %slice.33 = f32[1,64,64]{2,1,0} slice(f32[6,64,64]{2,1,0} %p0.18), slice={[1:2], [0:64], [0:64]}
+  %reshape.34 = f32[64,64]{1,0} reshape(f32[1,64,64]{2,1,0} %slice.33)
+  %broadcast.35 = f32[4,64,64]{2,1,0} broadcast(f32[64,64]{1,0} %reshape.34), dimensions={1,2}
+  %multiply.36 = f32[4,64,64]{2,1,0} multiply(f32[4,64,64]{2,1,0} %p1.21, f32[4,64,64]{2,1,0} %broadcast.35)
+  %broadcast.37 = f32[4,64,64]{2,1,0} broadcast(f32[4,64,64]{2,1,0} %multiply.36), dimensions={0,1,2}
+  %dot.39 = f32[4,64,64]{2,1,0} dot(f32[4,64,64]{2,1,0} %broadcast.38, f32[4,64,64]{2,1,0} %broadcast.37), lhs_batch_dims={0}, lhs_contracting_dims={2}, rhs_batch_dims={0}, rhs_contracting_dims={1}
+  %broadcast.40 = f32[4,64,64]{2,1,0} broadcast(f32[4,64,64]{2,1,0} %dot.39), dimensions={0,1,2}
+  %broadcast.32 = f32[4,64,64]{2,1,0} broadcast(f32[4,64,64]{2,1,0} %subtract.31), dimensions={0,1,2}
+  %dot.41 = f32[4,64,64]{2,1,0} dot(f32[4,64,64]{2,1,0} %broadcast.40, f32[4,64,64]{2,1,0} %broadcast.32), lhs_batch_dims={0}, lhs_contracting_dims={2}, rhs_batch_dims={0}, rhs_contracting_dims={1}
+  %constant.5 = f32[] constant(1)
+  %broadcast.42 = f32[4,64,64]{2,1,0} broadcast(f32[] %constant.5), dimensions={}
+  %multiply.43 = f32[4,64,64]{2,1,0} multiply(f32[4,64,64]{2,1,0} %dot.41, f32[4,64,64]{2,1,0} %broadcast.42)
+  %subtract.44 = f32[4,64,64]{2,1,0} subtract(f32[4,64,64]{2,1,0} %subtract.31, f32[4,64,64]{2,1,0} %multiply.43)
+  %broadcast.51 = f32[4,64,64]{2,1,0} broadcast(f32[4,64,64]{2,1,0} %subtract.44), dimensions={0,1,2}
+  %slice.46 = f32[1,64,64]{2,1,0} slice(f32[6,64,64]{2,1,0} %p0.18), slice={[2:3], [0:64], [0:64]}
+  %reshape.47 = f32[64,64]{1,0} reshape(f32[1,64,64]{2,1,0} %slice.46)
+  %broadcast.48 = f32[4,64,64]{2,1,0} broadcast(f32[64,64]{1,0} %reshape.47), dimensions={1,2}
+  %multiply.49 = f32[4,64,64]{2,1,0} multiply(f32[4,64,64]{2,1,0} %p1.21, f32[4,64,64]{2,1,0} %broadcast.48)
+  %broadcast.50 = f32[4,64,64]{2,1,0} broadcast(f32[4,64,64]{2,1,0} %multiply.49), dimensions={0,1,2}
+  %dot.52 = f32[4,64,64]{2,1,0} dot(f32[4,64,64]{2,1,0} %broadcast.51, f32[4,64,64]{2,1,0} %broadcast.50), lhs_batch_dims={0}, lhs_contracting_dims={2}, rhs_batch_dims={0}, rhs_contracting_dims={1}
+  %broadcast.53 = f32[4,64,64]{2,1,0} broadcast(f32[4,64,64]{2,1,0} %dot.52), dimensions={0,1,2}
+  %broadcast.45 = f32[4,64,64]{2,1,0} broadcast(f32[4,64,64]{2,1,0} %subtract.44), dimensions={0,1,2}
+  %dot.54 = f32[4,64,64]{2,1,0} dot(f32[4,64,64]{2,1,0} %broadcast.53, f32[4,64,64]{2,1,0} %broadcast.45), lhs_batch_dims={0}, lhs_contracting_dims={2}, rhs_batch_dims={0}, rhs_contracting_dims={1}
+  %constant.4 = f32[] constant(1)
+  %broadcast.55 = f32[4,64,64]{2,1,0} broadcast(f32[] %constant.4), dimensions={}
+  %multiply.56 = f32[4,64,64]{2,1,0} multiply(f32[4,64,64]{2,1,0} %dot.54, f32[4,64,64]{2,1,0} %broadcast.55)
+  %subtract.57 = f32[4,64,64]{2,1,0} subtract(f32[4,64,64]{2,1,0} %subtract.44, f32[4,64,64]{2,1,0} %multiply.56)
+  %broadcast.64 = f32[4,64,64]{2,1,0} broadcast(f32[4,64,64]{2,1,0} %subtract.57), dimensions={0,1,2}
+  %slice.59 = f32[1,64,64]{2,1,0} slice(f32[6,64,64]{2,1,0} %p0.18), slice={[3:4], [0:64], [0:64]}
+  %reshape.60 = f32[64,64]{1,0} reshape(f32[1,64,64]{2,1,0} %slice.59)
+  %broadcast.61 = f32[4,64,64]{2,1,0} broadcast(f32[64,64]{1,0} %reshape.60), dimensions={1,2}
+  %multiply.62 = f32[4,64,64]{2,1,0} multiply(f32[4,64,64]{2,1,0} %p1.21, f32[4,64,64]{2,1,0} %broadcast.61)
+  %broadcast.63 = f32[4,64,64]{2,1,0} broadcast(f32[4,64,64]{2,1,0} %multiply.62), dimensions={0,1,2}
+  %dot.65 = f32[4,64,64]{2,1,0} dot(f32[4,64,64]{2,1,0} %broadcast.64, f32[4,64,64]{2,1,0} %broadcast.63), lhs_batch_dims={0}, lhs_contracting_dims={2}, rhs_batch_dims={0}, rhs_contracting_dims={1}
+  %broadcast.66 = f32[4,64,64]{2,1,0} broadcast(f32[4,64,64]{2,1,0} %dot.65), dimensions={0,1,2}
+  %broadcast.58 = f32[4,64,64]{2,1,0} broadcast(f32[4,64,64]{2,1,0} %subtract.57), dimensions={0,1,2}
+  %dot.67 = f32[4,64,64]{2,1,0} dot(f32[4,64,64]{2,1,0} %broadcast.66, f32[4,64,64]{2,1,0} %broadcast.58), lhs_batch_dims={0}, lhs_contracting_dims={2}, rhs_batch_dims={0}, rhs_contracting_dims={1}
+  %constant.3 = f32[] constant(1)
+  %broadcast.68 = f32[4,64,64]{2,1,0} broadcast(f32[] %constant.3), dimensions={}
+  %multiply.69 = f32[4,64,64]{2,1,0} multiply(f32[4,64,64]{2,1,0} %dot.67, f32[4,64,64]{2,1,0} %broadcast.68)
+  %subtract.70 = f32[4,64,64]{2,1,0} subtract(f32[4,64,64]{2,1,0} %subtract.57, f32[4,64,64]{2,1,0} %multiply.69)
+  %broadcast.77 = f32[4,64,64]{2,1,0} broadcast(f32[4,64,64]{2,1,0} %subtract.70), dimensions={0,1,2}
+  %slice.72 = f32[1,64,64]{2,1,0} slice(f32[6,64,64]{2,1,0} %p0.18), slice={[4:5], [0:64], [0:64]}
+  %reshape.73 = f32[64,64]{1,0} reshape(f32[1,64,64]{2,1,0} %slice.72)
+  %broadcast.74 = f32[4,64,64]{2,1,0} broadcast(f32[64,64]{1,0} %reshape.73), dimensions={1,2}
+  %multiply.75 = f32[4,64,64]{2,1,0} multiply(f32[4,64,64]{2,1,0} %p1.21, f32[4,64,64]{2,1,0} %broadcast.74)
+  %broadcast.76 = f32[4,64,64]{2,1,0} broadcast(f32[4,64,64]{2,1,0} %multiply.75), dimensions={0,1,2}
+  %dot.78 = f32[4,64,64]{2,1,0} dot(f32[4,64,64]{2,1,0} %broadcast.77, f32[4,64,64]{2,1,0} %broadcast.76), lhs_batch_dims={0}, lhs_contracting_dims={2}, rhs_batch_dims={0}, rhs_contracting_dims={1}
+  %broadcast.79 = f32[4,64,64]{2,1,0} broadcast(f32[4,64,64]{2,1,0} %dot.78), dimensions={0,1,2}
+  %broadcast.71 = f32[4,64,64]{2,1,0} broadcast(f32[4,64,64]{2,1,0} %subtract.70), dimensions={0,1,2}
+  %dot.80 = f32[4,64,64]{2,1,0} dot(f32[4,64,64]{2,1,0} %broadcast.79, f32[4,64,64]{2,1,0} %broadcast.71), lhs_batch_dims={0}, lhs_contracting_dims={2}, rhs_batch_dims={0}, rhs_contracting_dims={1}
+  %constant.2 = f32[] constant(1)
+  %broadcast.81 = f32[4,64,64]{2,1,0} broadcast(f32[] %constant.2), dimensions={}
+  %multiply.82 = f32[4,64,64]{2,1,0} multiply(f32[4,64,64]{2,1,0} %dot.80, f32[4,64,64]{2,1,0} %broadcast.81)
+  %subtract.83 = f32[4,64,64]{2,1,0} subtract(f32[4,64,64]{2,1,0} %subtract.70, f32[4,64,64]{2,1,0} %multiply.82)
+  %broadcast.90 = f32[4,64,64]{2,1,0} broadcast(f32[4,64,64]{2,1,0} %subtract.83), dimensions={0,1,2}
+  %slice.85 = f32[1,64,64]{2,1,0} slice(f32[6,64,64]{2,1,0} %p0.18), slice={[5:6], [0:64], [0:64]}
+  %reshape.86 = f32[64,64]{1,0} reshape(f32[1,64,64]{2,1,0} %slice.85)
+  %broadcast.87 = f32[4,64,64]{2,1,0} broadcast(f32[64,64]{1,0} %reshape.86), dimensions={1,2}
+  %multiply.88 = f32[4,64,64]{2,1,0} multiply(f32[4,64,64]{2,1,0} %p1.21, f32[4,64,64]{2,1,0} %broadcast.87)
+  %broadcast.89 = f32[4,64,64]{2,1,0} broadcast(f32[4,64,64]{2,1,0} %multiply.88), dimensions={0,1,2}
+  %dot.91 = f32[4,64,64]{2,1,0} dot(f32[4,64,64]{2,1,0} %broadcast.90, f32[4,64,64]{2,1,0} %broadcast.89), lhs_batch_dims={0}, lhs_contracting_dims={2}, rhs_batch_dims={0}, rhs_contracting_dims={1}
+  %broadcast.92 = f32[4,64,64]{2,1,0} broadcast(f32[4,64,64]{2,1,0} %dot.91), dimensions={0,1,2}
+  %broadcast.84 = f32[4,64,64]{2,1,0} broadcast(f32[4,64,64]{2,1,0} %subtract.83), dimensions={0,1,2}
+  %dot.93 = f32[4,64,64]{2,1,0} dot(f32[4,64,64]{2,1,0} %broadcast.92, f32[4,64,64]{2,1,0} %broadcast.84), lhs_batch_dims={0}, lhs_contracting_dims={2}, rhs_batch_dims={0}, rhs_contracting_dims={1}
+  %constant.1 = f32[] constant(1)
+  %broadcast.94 = f32[4,64,64]{2,1,0} broadcast(f32[] %constant.1), dimensions={}
+  %multiply.95 = f32[4,64,64]{2,1,0} multiply(f32[4,64,64]{2,1,0} %dot.93, f32[4,64,64]{2,1,0} %broadcast.94)
+  %subtract.96 = f32[4,64,64]{2,1,0} subtract(f32[4,64,64]{2,1,0} %subtract.83, f32[4,64,64]{2,1,0} %multiply.95)
+  ROOT %tuple.97 = (f32[4,64,64]{2,1,0}) tuple(f32[4,64,64]{2,1,0} %subtract.96)
+}
+

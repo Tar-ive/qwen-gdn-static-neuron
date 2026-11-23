@@ -1,0 +1,2280 @@
+HloModule IrToHlo.2150, entry_computation_layout={(f32[64,64]{1,0}, f32[4,64,64]{2,1,0})->(f32[4,64,64]{2,1,0})}
+
+%AddComputation.77 (x.78: f32[], y.79: f32[]) -> f32[] {
+  %x.78 = f32[] parameter(0)
+  %y.79 = f32[] parameter(1)
+  ROOT %add.80 = f32[] add(f32[] %x.78, f32[] %y.79)
+}
+
+%AddComputation.110 (x.111: f32[], y.112: f32[]) -> f32[] {
+  %x.111 = f32[] parameter(0)
+  %y.112 = f32[] parameter(1)
+  ROOT %add.113 = f32[] add(f32[] %x.111, f32[] %y.112)
+}
+
+%AddComputation.143 (x.144: f32[], y.145: f32[]) -> f32[] {
+  %x.144 = f32[] parameter(0)
+  %y.145 = f32[] parameter(1)
+  ROOT %add.146 = f32[] add(f32[] %x.144, f32[] %y.145)
+}
+
+%AddComputation.176 (x.177: f32[], y.178: f32[]) -> f32[] {
+  %x.177 = f32[] parameter(0)
+  %y.178 = f32[] parameter(1)
+  ROOT %add.179 = f32[] add(f32[] %x.177, f32[] %y.178)
+}
+
+%AddComputation.209 (x.210: f32[], y.211: f32[]) -> f32[] {
+  %x.210 = f32[] parameter(0)
+  %y.211 = f32[] parameter(1)
+  ROOT %add.212 = f32[] add(f32[] %x.210, f32[] %y.211)
+}
+
+%AddComputation.242 (x.243: f32[], y.244: f32[]) -> f32[] {
+  %x.243 = f32[] parameter(0)
+  %y.244 = f32[] parameter(1)
+  ROOT %add.245 = f32[] add(f32[] %x.243, f32[] %y.244)
+}
+
+%AddComputation.275 (x.276: f32[], y.277: f32[]) -> f32[] {
+  %x.276 = f32[] parameter(0)
+  %y.277 = f32[] parameter(1)
+  ROOT %add.278 = f32[] add(f32[] %x.276, f32[] %y.277)
+}
+
+%AddComputation.308 (x.309: f32[], y.310: f32[]) -> f32[] {
+  %x.309 = f32[] parameter(0)
+  %y.310 = f32[] parameter(1)
+  ROOT %add.311 = f32[] add(f32[] %x.309, f32[] %y.310)
+}
+
+%AddComputation.341 (x.342: f32[], y.343: f32[]) -> f32[] {
+  %x.342 = f32[] parameter(0)
+  %y.343 = f32[] parameter(1)
+  ROOT %add.344 = f32[] add(f32[] %x.342, f32[] %y.343)
+}
+
+%AddComputation.374 (x.375: f32[], y.376: f32[]) -> f32[] {
+  %x.375 = f32[] parameter(0)
+  %y.376 = f32[] parameter(1)
+  ROOT %add.377 = f32[] add(f32[] %x.375, f32[] %y.376)
+}
+
+%AddComputation.407 (x.408: f32[], y.409: f32[]) -> f32[] {
+  %x.408 = f32[] parameter(0)
+  %y.409 = f32[] parameter(1)
+  ROOT %add.410 = f32[] add(f32[] %x.408, f32[] %y.409)
+}
+
+%AddComputation.440 (x.441: f32[], y.442: f32[]) -> f32[] {
+  %x.441 = f32[] parameter(0)
+  %y.442 = f32[] parameter(1)
+  ROOT %add.443 = f32[] add(f32[] %x.441, f32[] %y.442)
+}
+
+%AddComputation.473 (x.474: f32[], y.475: f32[]) -> f32[] {
+  %x.474 = f32[] parameter(0)
+  %y.475 = f32[] parameter(1)
+  ROOT %add.476 = f32[] add(f32[] %x.474, f32[] %y.475)
+}
+
+%AddComputation.506 (x.507: f32[], y.508: f32[]) -> f32[] {
+  %x.507 = f32[] parameter(0)
+  %y.508 = f32[] parameter(1)
+  ROOT %add.509 = f32[] add(f32[] %x.507, f32[] %y.508)
+}
+
+%AddComputation.539 (x.540: f32[], y.541: f32[]) -> f32[] {
+  %x.540 = f32[] parameter(0)
+  %y.541 = f32[] parameter(1)
+  ROOT %add.542 = f32[] add(f32[] %x.540, f32[] %y.541)
+}
+
+%AddComputation.572 (x.573: f32[], y.574: f32[]) -> f32[] {
+  %x.573 = f32[] parameter(0)
+  %y.574 = f32[] parameter(1)
+  ROOT %add.575 = f32[] add(f32[] %x.573, f32[] %y.574)
+}
+
+%AddComputation.605 (x.606: f32[], y.607: f32[]) -> f32[] {
+  %x.606 = f32[] parameter(0)
+  %y.607 = f32[] parameter(1)
+  ROOT %add.608 = f32[] add(f32[] %x.606, f32[] %y.607)
+}
+
+%AddComputation.638 (x.639: f32[], y.640: f32[]) -> f32[] {
+  %x.639 = f32[] parameter(0)
+  %y.640 = f32[] parameter(1)
+  ROOT %add.641 = f32[] add(f32[] %x.639, f32[] %y.640)
+}
+
+%AddComputation.671 (x.672: f32[], y.673: f32[]) -> f32[] {
+  %x.672 = f32[] parameter(0)
+  %y.673 = f32[] parameter(1)
+  ROOT %add.674 = f32[] add(f32[] %x.672, f32[] %y.673)
+}
+
+%AddComputation.704 (x.705: f32[], y.706: f32[]) -> f32[] {
+  %x.705 = f32[] parameter(0)
+  %y.706 = f32[] parameter(1)
+  ROOT %add.707 = f32[] add(f32[] %x.705, f32[] %y.706)
+}
+
+%AddComputation.737 (x.738: f32[], y.739: f32[]) -> f32[] {
+  %x.738 = f32[] parameter(0)
+  %y.739 = f32[] parameter(1)
+  ROOT %add.740 = f32[] add(f32[] %x.738, f32[] %y.739)
+}
+
+%AddComputation.770 (x.771: f32[], y.772: f32[]) -> f32[] {
+  %x.771 = f32[] parameter(0)
+  %y.772 = f32[] parameter(1)
+  ROOT %add.773 = f32[] add(f32[] %x.771, f32[] %y.772)
+}
+
+%AddComputation.803 (x.804: f32[], y.805: f32[]) -> f32[] {
+  %x.804 = f32[] parameter(0)
+  %y.805 = f32[] parameter(1)
+  ROOT %add.806 = f32[] add(f32[] %x.804, f32[] %y.805)
+}
+
+%AddComputation.836 (x.837: f32[], y.838: f32[]) -> f32[] {
+  %x.837 = f32[] parameter(0)
+  %y.838 = f32[] parameter(1)
+  ROOT %add.839 = f32[] add(f32[] %x.837, f32[] %y.838)
+}
+
+%AddComputation.869 (x.870: f32[], y.871: f32[]) -> f32[] {
+  %x.870 = f32[] parameter(0)
+  %y.871 = f32[] parameter(1)
+  ROOT %add.872 = f32[] add(f32[] %x.870, f32[] %y.871)
+}
+
+%AddComputation.902 (x.903: f32[], y.904: f32[]) -> f32[] {
+  %x.903 = f32[] parameter(0)
+  %y.904 = f32[] parameter(1)
+  ROOT %add.905 = f32[] add(f32[] %x.903, f32[] %y.904)
+}
+
+%AddComputation.935 (x.936: f32[], y.937: f32[]) -> f32[] {
+  %x.936 = f32[] parameter(0)
+  %y.937 = f32[] parameter(1)
+  ROOT %add.938 = f32[] add(f32[] %x.936, f32[] %y.937)
+}
+
+%AddComputation.968 (x.969: f32[], y.970: f32[]) -> f32[] {
+  %x.969 = f32[] parameter(0)
+  %y.970 = f32[] parameter(1)
+  ROOT %add.971 = f32[] add(f32[] %x.969, f32[] %y.970)
+}
+
+%AddComputation.1001 (x.1002: f32[], y.1003: f32[]) -> f32[] {
+  %x.1002 = f32[] parameter(0)
+  %y.1003 = f32[] parameter(1)
+  ROOT %add.1004 = f32[] add(f32[] %x.1002, f32[] %y.1003)
+}
+
+%AddComputation.1034 (x.1035: f32[], y.1036: f32[]) -> f32[] {
+  %x.1035 = f32[] parameter(0)
+  %y.1036 = f32[] parameter(1)
+  ROOT %add.1037 = f32[] add(f32[] %x.1035, f32[] %y.1036)
+}
+
+%AddComputation.1067 (x.1068: f32[], y.1069: f32[]) -> f32[] {
+  %x.1068 = f32[] parameter(0)
+  %y.1069 = f32[] parameter(1)
+  ROOT %add.1070 = f32[] add(f32[] %x.1068, f32[] %y.1069)
+}
+
+%AddComputation.1100 (x.1101: f32[], y.1102: f32[]) -> f32[] {
+  %x.1101 = f32[] parameter(0)
+  %y.1102 = f32[] parameter(1)
+  ROOT %add.1103 = f32[] add(f32[] %x.1101, f32[] %y.1102)
+}
+
+%AddComputation.1133 (x.1134: f32[], y.1135: f32[]) -> f32[] {
+  %x.1134 = f32[] parameter(0)
+  %y.1135 = f32[] parameter(1)
+  ROOT %add.1136 = f32[] add(f32[] %x.1134, f32[] %y.1135)
+}
+
+%AddComputation.1166 (x.1167: f32[], y.1168: f32[]) -> f32[] {
+  %x.1167 = f32[] parameter(0)
+  %y.1168 = f32[] parameter(1)
+  ROOT %add.1169 = f32[] add(f32[] %x.1167, f32[] %y.1168)
+}
+
+%AddComputation.1199 (x.1200: f32[], y.1201: f32[]) -> f32[] {
+  %x.1200 = f32[] parameter(0)
+  %y.1201 = f32[] parameter(1)
+  ROOT %add.1202 = f32[] add(f32[] %x.1200, f32[] %y.1201)
+}
+
+%AddComputation.1232 (x.1233: f32[], y.1234: f32[]) -> f32[] {
+  %x.1233 = f32[] parameter(0)
+  %y.1234 = f32[] parameter(1)
+  ROOT %add.1235 = f32[] add(f32[] %x.1233, f32[] %y.1234)
+}
+
+%AddComputation.1265 (x.1266: f32[], y.1267: f32[]) -> f32[] {
+  %x.1266 = f32[] parameter(0)
+  %y.1267 = f32[] parameter(1)
+  ROOT %add.1268 = f32[] add(f32[] %x.1266, f32[] %y.1267)
+}
+
+%AddComputation.1298 (x.1299: f32[], y.1300: f32[]) -> f32[] {
+  %x.1299 = f32[] parameter(0)
+  %y.1300 = f32[] parameter(1)
+  ROOT %add.1301 = f32[] add(f32[] %x.1299, f32[] %y.1300)
+}
+
+%AddComputation.1331 (x.1332: f32[], y.1333: f32[]) -> f32[] {
+  %x.1332 = f32[] parameter(0)
+  %y.1333 = f32[] parameter(1)
+  ROOT %add.1334 = f32[] add(f32[] %x.1332, f32[] %y.1333)
+}
+
+%AddComputation.1364 (x.1365: f32[], y.1366: f32[]) -> f32[] {
+  %x.1365 = f32[] parameter(0)
+  %y.1366 = f32[] parameter(1)
+  ROOT %add.1367 = f32[] add(f32[] %x.1365, f32[] %y.1366)
+}
+
+%AddComputation.1397 (x.1398: f32[], y.1399: f32[]) -> f32[] {
+  %x.1398 = f32[] parameter(0)
+  %y.1399 = f32[] parameter(1)
+  ROOT %add.1400 = f32[] add(f32[] %x.1398, f32[] %y.1399)
+}
+
+%AddComputation.1430 (x.1431: f32[], y.1432: f32[]) -> f32[] {
+  %x.1431 = f32[] parameter(0)
+  %y.1432 = f32[] parameter(1)
+  ROOT %add.1433 = f32[] add(f32[] %x.1431, f32[] %y.1432)
+}
+
+%AddComputation.1463 (x.1464: f32[], y.1465: f32[]) -> f32[] {
+  %x.1464 = f32[] parameter(0)
+  %y.1465 = f32[] parameter(1)
+  ROOT %add.1466 = f32[] add(f32[] %x.1464, f32[] %y.1465)
+}
+
+%AddComputation.1496 (x.1497: f32[], y.1498: f32[]) -> f32[] {
+  %x.1497 = f32[] parameter(0)
+  %y.1498 = f32[] parameter(1)
+  ROOT %add.1499 = f32[] add(f32[] %x.1497, f32[] %y.1498)
+}
+
+%AddComputation.1529 (x.1530: f32[], y.1531: f32[]) -> f32[] {
+  %x.1530 = f32[] parameter(0)
+  %y.1531 = f32[] parameter(1)
+  ROOT %add.1532 = f32[] add(f32[] %x.1530, f32[] %y.1531)
+}
+
+%AddComputation.1562 (x.1563: f32[], y.1564: f32[]) -> f32[] {
+  %x.1563 = f32[] parameter(0)
+  %y.1564 = f32[] parameter(1)
+  ROOT %add.1565 = f32[] add(f32[] %x.1563, f32[] %y.1564)
+}
+
+%AddComputation.1595 (x.1596: f32[], y.1597: f32[]) -> f32[] {
+  %x.1596 = f32[] parameter(0)
+  %y.1597 = f32[] parameter(1)
+  ROOT %add.1598 = f32[] add(f32[] %x.1596, f32[] %y.1597)
+}
+
+%AddComputation.1628 (x.1629: f32[], y.1630: f32[]) -> f32[] {
+  %x.1629 = f32[] parameter(0)
+  %y.1630 = f32[] parameter(1)
+  ROOT %add.1631 = f32[] add(f32[] %x.1629, f32[] %y.1630)
+}
+
+%AddComputation.1661 (x.1662: f32[], y.1663: f32[]) -> f32[] {
+  %x.1662 = f32[] parameter(0)
+  %y.1663 = f32[] parameter(1)
+  ROOT %add.1664 = f32[] add(f32[] %x.1662, f32[] %y.1663)
+}
+
+%AddComputation.1694 (x.1695: f32[], y.1696: f32[]) -> f32[] {
+  %x.1695 = f32[] parameter(0)
+  %y.1696 = f32[] parameter(1)
+  ROOT %add.1697 = f32[] add(f32[] %x.1695, f32[] %y.1696)
+}
+
+%AddComputation.1727 (x.1728: f32[], y.1729: f32[]) -> f32[] {
+  %x.1728 = f32[] parameter(0)
+  %y.1729 = f32[] parameter(1)
+  ROOT %add.1730 = f32[] add(f32[] %x.1728, f32[] %y.1729)
+}
+
+%AddComputation.1760 (x.1761: f32[], y.1762: f32[]) -> f32[] {
+  %x.1761 = f32[] parameter(0)
+  %y.1762 = f32[] parameter(1)
+  ROOT %add.1763 = f32[] add(f32[] %x.1761, f32[] %y.1762)
+}
+
+%AddComputation.1793 (x.1794: f32[], y.1795: f32[]) -> f32[] {
+  %x.1794 = f32[] parameter(0)
+  %y.1795 = f32[] parameter(1)
+  ROOT %add.1796 = f32[] add(f32[] %x.1794, f32[] %y.1795)
+}
+
+%AddComputation.1826 (x.1827: f32[], y.1828: f32[]) -> f32[] {
+  %x.1827 = f32[] parameter(0)
+  %y.1828 = f32[] parameter(1)
+  ROOT %add.1829 = f32[] add(f32[] %x.1827, f32[] %y.1828)
+}
+
+%AddComputation.1859 (x.1860: f32[], y.1861: f32[]) -> f32[] {
+  %x.1860 = f32[] parameter(0)
+  %y.1861 = f32[] parameter(1)
+  ROOT %add.1862 = f32[] add(f32[] %x.1860, f32[] %y.1861)
+}
+
+%AddComputation.1892 (x.1893: f32[], y.1894: f32[]) -> f32[] {
+  %x.1893 = f32[] parameter(0)
+  %y.1894 = f32[] parameter(1)
+  ROOT %add.1895 = f32[] add(f32[] %x.1893, f32[] %y.1894)
+}
+
+%AddComputation.1925 (x.1926: f32[], y.1927: f32[]) -> f32[] {
+  %x.1926 = f32[] parameter(0)
+  %y.1927 = f32[] parameter(1)
+  ROOT %add.1928 = f32[] add(f32[] %x.1926, f32[] %y.1927)
+}
+
+%AddComputation.1958 (x.1959: f32[], y.1960: f32[]) -> f32[] {
+  %x.1959 = f32[] parameter(0)
+  %y.1960 = f32[] parameter(1)
+  ROOT %add.1961 = f32[] add(f32[] %x.1959, f32[] %y.1960)
+}
+
+%AddComputation.1991 (x.1992: f32[], y.1993: f32[]) -> f32[] {
+  %x.1992 = f32[] parameter(0)
+  %y.1993 = f32[] parameter(1)
+  ROOT %add.1994 = f32[] add(f32[] %x.1992, f32[] %y.1993)
+}
+
+%AddComputation.2024 (x.2025: f32[], y.2026: f32[]) -> f32[] {
+  %x.2025 = f32[] parameter(0)
+  %y.2026 = f32[] parameter(1)
+  ROOT %add.2027 = f32[] add(f32[] %x.2025, f32[] %y.2026)
+}
+
+%AddComputation.2057 (x.2058: f32[], y.2059: f32[]) -> f32[] {
+  %x.2058 = f32[] parameter(0)
+  %y.2059 = f32[] parameter(1)
+  ROOT %add.2060 = f32[] add(f32[] %x.2058, f32[] %y.2059)
+}
+
+%AddComputation.2090 (x.2091: f32[], y.2092: f32[]) -> f32[] {
+  %x.2091 = f32[] parameter(0)
+  %y.2092 = f32[] parameter(1)
+  ROOT %add.2093 = f32[] add(f32[] %x.2091, f32[] %y.2092)
+}
+
+%AddComputation.2123 (x.2124: f32[], y.2125: f32[]) -> f32[] {
+  %x.2124 = f32[] parameter(0)
+  %y.2125 = f32[] parameter(1)
+  ROOT %add.2126 = f32[] add(f32[] %x.2124, f32[] %y.2125)
+}
+
+ENTRY %IrToHlo.2150 (p0.2: f32[64,64], p1.66: f32[4,64,64]) -> (f32[4,64,64]) {
+  %constant.76 = s32[] constant(1)
+  %constant.109 = s32[] constant(2)
+  %constant.142 = s32[] constant(3)
+  %constant.175 = s32[] constant(4)
+  %constant.208 = s32[] constant(5)
+  %constant.241 = s32[] constant(6)
+  %constant.274 = s32[] constant(7)
+  %constant.307 = s32[] constant(8)
+  %constant.340 = s32[] constant(9)
+  %constant.373 = s32[] constant(10)
+  %constant.406 = s32[] constant(11)
+  %constant.439 = s32[] constant(12)
+  %constant.472 = s32[] constant(13)
+  %constant.505 = s32[] constant(14)
+  %constant.538 = s32[] constant(15)
+  %constant.571 = s32[] constant(16)
+  %constant.604 = s32[] constant(17)
+  %constant.637 = s32[] constant(18)
+  %constant.670 = s32[] constant(19)
+  %constant.703 = s32[] constant(20)
+  %constant.736 = s32[] constant(21)
+  %constant.769 = s32[] constant(22)
+  %constant.802 = s32[] constant(23)
+  %constant.835 = s32[] constant(24)
+  %constant.868 = s32[] constant(25)
+  %constant.901 = s32[] constant(26)
+  %constant.934 = s32[] constant(27)
+  %constant.967 = s32[] constant(28)
+  %constant.1000 = s32[] constant(29)
+  %constant.1033 = s32[] constant(30)
+  %constant.1066 = s32[] constant(31)
+  %constant.1099 = s32[] constant(32)
+  %constant.1132 = s32[] constant(33)
+  %constant.1165 = s32[] constant(34)
+  %constant.1198 = s32[] constant(35)
+  %constant.1231 = s32[] constant(36)
+  %constant.1264 = s32[] constant(37)
+  %constant.1297 = s32[] constant(38)
+  %constant.1330 = s32[] constant(39)
+  %constant.1363 = s32[] constant(40)
+  %constant.1396 = s32[] constant(41)
+  %constant.1429 = s32[] constant(42)
+  %constant.1462 = s32[] constant(43)
+  %constant.1495 = s32[] constant(44)
+  %constant.1528 = s32[] constant(45)
+  %constant.1561 = s32[] constant(46)
+  %constant.1594 = s32[] constant(47)
+  %constant.1627 = s32[] constant(48)
+  %constant.1660 = s32[] constant(49)
+  %constant.1693 = s32[] constant(50)
+  %constant.1726 = s32[] constant(51)
+  %constant.1759 = s32[] constant(52)
+  %constant.1792 = s32[] constant(53)
+  %constant.1825 = s32[] constant(54)
+  %constant.1858 = s32[] constant(55)
+  %constant.1891 = s32[] constant(56)
+  %constant.1924 = s32[] constant(57)
+  %constant.1957 = s32[] constant(58)
+  %constant.1990 = s32[] constant(59)
+  %constant.2023 = s32[] constant(60)
+  %constant.2056 = s32[] constant(61)
+  %constant.2089 = s32[] constant(62)
+  %constant.2122 = s32[] constant(63)
+  %p1.66 = f32[4,64,64]{2,1,0} parameter(1)
+  %negate.67 = f32[4,64,64]{2,1,0} negate(f32[4,64,64]{2,1,0} %p1.66)
+  %constant.87 = pred[] constant(true)
+  %broadcast.88 = pred[4,1]{1,0} broadcast(pred[] %constant.87), dimensions={}
+  %constant.89 = pred[] constant(false)
+  %pad.92 = pred[4,64]{1,0} pad(pred[4,1]{1,0} %broadcast.88, pred[] %constant.89), padding=0_0x0_63
+  %slice.70 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %negate.67), slice={[0:4], [1:2], [0:64]}
+  %reshape.71 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.70)
+  %slice.72 = f32[4,1]{1,0} slice(f32[4,64]{1,0} %reshape.71), slice={[0:4], [0:1]}
+  %reshape.73 = f32[4,1,1]{2,1,0} reshape(f32[4,1]{1,0} %slice.72)
+  %slice.68 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %negate.67), slice={[0:4], [0:1], [0:64]}
+  %slice.69 = f32[4,1,1]{2,1,0} slice(f32[4,1,64]{2,1,0} %slice.68), slice={[0:4], [0:1], [0:1]}
+  %multiply.74 = f32[4,1,1]{2,1,0} multiply(f32[4,1,1]{2,1,0} %reshape.73, f32[4,1,1]{2,1,0} %slice.69)
+  %constant.75 = f32[] constant(0)
+  %reduce.81 = f32[4,1]{1,0} reduce(f32[4,1,1]{2,1,0} %multiply.74, f32[] %constant.75), dimensions={1}, to_apply=%AddComputation.77
+  %constant.65 = f32[] constant(1)
+  %broadcast.82 = f32[4,1]{1,0} broadcast(f32[] %constant.65), dimensions={}
+  %multiply.83 = f32[4,1]{1,0} multiply(f32[4,1]{1,0} %reduce.81, f32[4,1]{1,0} %broadcast.82)
+  %add.84 = f32[4,1]{1,0} add(f32[4,1]{1,0} %slice.72, f32[4,1]{1,0} %multiply.83)
+  %constant.90 = f32[] constant(0)
+  %pad.91 = f32[4,64]{1,0} pad(f32[4,1]{1,0} %add.84, f32[] %constant.90), padding=0_0x0_63
+  %slice.85 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %negate.67), slice={[0:4], [1:2], [0:64]}
+  %reshape.86 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.85)
+  %select.93 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.92, f32[4,64]{1,0} %pad.91, f32[4,64]{1,0} %reshape.86)
+  %reshape.94 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.93)
+  %constant.95 = s64[] constant(0)
+  %constant.96 = s64[] constant(1)
+  %constant.97 = s64[] constant(0)
+  %dynamic-update-slice.98 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %negate.67, f32[4,1,64]{2,1,0} %reshape.94, s64[] %constant.95, s64[] %constant.96, s64[] %constant.97)
+  %constant.120 = pred[] constant(true)
+  %broadcast.121 = pred[4,2]{1,0} broadcast(pred[] %constant.120), dimensions={}
+  %constant.122 = pred[] constant(false)
+  %pad.125 = pred[4,64]{1,0} pad(pred[4,2]{1,0} %broadcast.121, pred[] %constant.122), padding=0_0x0_62
+  %slice.101 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.98), slice={[0:4], [2:3], [0:64]}
+  %reshape.102 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.101)
+  %slice.103 = f32[4,2]{1,0} slice(f32[4,64]{1,0} %reshape.102), slice={[0:4], [0:2]}
+  %reshape.104 = f32[4,2,1]{2,1,0} reshape(f32[4,2]{1,0} %slice.103)
+  %reshape.105 = f32[4,2]{1,0} reshape(f32[4,2,1]{2,1,0} %reshape.104)
+  %broadcast.106 = f32[4,2,2]{2,1,0} broadcast(f32[4,2]{1,0} %reshape.105), dimensions={0,1}
+  %slice.99 = f32[4,2,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.98), slice={[0:4], [0:2], [0:64]}
+  %slice.100 = f32[4,2,2]{2,1,0} slice(f32[4,2,64]{2,1,0} %slice.99), slice={[0:4], [0:2], [0:2]}
+  %multiply.107 = f32[4,2,2]{2,1,0} multiply(f32[4,2,2]{2,1,0} %broadcast.106, f32[4,2,2]{2,1,0} %slice.100)
+  %constant.108 = f32[] constant(0)
+  %reduce.114 = f32[4,2]{1,0} reduce(f32[4,2,2]{2,1,0} %multiply.107, f32[] %constant.108), dimensions={1}, to_apply=%AddComputation.110
+  %constant.64 = f32[] constant(1)
+  %broadcast.115 = f32[4,2]{1,0} broadcast(f32[] %constant.64), dimensions={}
+  %multiply.116 = f32[4,2]{1,0} multiply(f32[4,2]{1,0} %reduce.114, f32[4,2]{1,0} %broadcast.115)
+  %add.117 = f32[4,2]{1,0} add(f32[4,2]{1,0} %slice.103, f32[4,2]{1,0} %multiply.116)
+  %constant.123 = f32[] constant(0)
+  %pad.124 = f32[4,64]{1,0} pad(f32[4,2]{1,0} %add.117, f32[] %constant.123), padding=0_0x0_62
+  %slice.118 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.98), slice={[0:4], [2:3], [0:64]}
+  %reshape.119 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.118)
+  %select.126 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.125, f32[4,64]{1,0} %pad.124, f32[4,64]{1,0} %reshape.119)
+  %reshape.127 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.126)
+  %constant.128 = s64[] constant(0)
+  %constant.129 = s64[] constant(2)
+  %constant.130 = s64[] constant(0)
+  %dynamic-update-slice.131 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.98, f32[4,1,64]{2,1,0} %reshape.127, s64[] %constant.128, s64[] %constant.129, s64[] %constant.130)
+  %constant.153 = pred[] constant(true)
+  %broadcast.154 = pred[4,3]{1,0} broadcast(pred[] %constant.153), dimensions={}
+  %constant.155 = pred[] constant(false)
+  %pad.158 = pred[4,64]{1,0} pad(pred[4,3]{1,0} %broadcast.154, pred[] %constant.155), padding=0_0x0_61
+  %slice.134 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.131), slice={[0:4], [3:4], [0:64]}
+  %reshape.135 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.134)
+  %slice.136 = f32[4,3]{1,0} slice(f32[4,64]{1,0} %reshape.135), slice={[0:4], [0:3]}
+  %reshape.137 = f32[4,3,1]{2,1,0} reshape(f32[4,3]{1,0} %slice.136)
+  %reshape.138 = f32[4,3]{1,0} reshape(f32[4,3,1]{2,1,0} %reshape.137)
+  %broadcast.139 = f32[4,3,3]{2,1,0} broadcast(f32[4,3]{1,0} %reshape.138), dimensions={0,1}
+  %slice.132 = f32[4,3,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.131), slice={[0:4], [0:3], [0:64]}
+  %slice.133 = f32[4,3,3]{2,1,0} slice(f32[4,3,64]{2,1,0} %slice.132), slice={[0:4], [0:3], [0:3]}
+  %multiply.140 = f32[4,3,3]{2,1,0} multiply(f32[4,3,3]{2,1,0} %broadcast.139, f32[4,3,3]{2,1,0} %slice.133)
+  %constant.141 = f32[] constant(0)
+  %reduce.147 = f32[4,3]{1,0} reduce(f32[4,3,3]{2,1,0} %multiply.140, f32[] %constant.141), dimensions={1}, to_apply=%AddComputation.143
+  %constant.63 = f32[] constant(1)
+  %broadcast.148 = f32[4,3]{1,0} broadcast(f32[] %constant.63), dimensions={}
+  %multiply.149 = f32[4,3]{1,0} multiply(f32[4,3]{1,0} %reduce.147, f32[4,3]{1,0} %broadcast.148)
+  %add.150 = f32[4,3]{1,0} add(f32[4,3]{1,0} %slice.136, f32[4,3]{1,0} %multiply.149)
+  %constant.156 = f32[] constant(0)
+  %pad.157 = f32[4,64]{1,0} pad(f32[4,3]{1,0} %add.150, f32[] %constant.156), padding=0_0x0_61
+  %slice.151 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.131), slice={[0:4], [3:4], [0:64]}
+  %reshape.152 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.151)
+  %select.159 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.158, f32[4,64]{1,0} %pad.157, f32[4,64]{1,0} %reshape.152)
+  %reshape.160 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.159)
+  %constant.161 = s64[] constant(0)
+  %constant.162 = s64[] constant(3)
+  %constant.163 = s64[] constant(0)
+  %dynamic-update-slice.164 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.131, f32[4,1,64]{2,1,0} %reshape.160, s64[] %constant.161, s64[] %constant.162, s64[] %constant.163)
+  %constant.186 = pred[] constant(true)
+  %broadcast.187 = pred[4,4]{1,0} broadcast(pred[] %constant.186), dimensions={}
+  %constant.188 = pred[] constant(false)
+  %pad.191 = pred[4,64]{1,0} pad(pred[4,4]{1,0} %broadcast.187, pred[] %constant.188), padding=0_0x0_60
+  %slice.167 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.164), slice={[0:4], [4:5], [0:64]}
+  %reshape.168 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.167)
+  %slice.169 = f32[4,4]{1,0} slice(f32[4,64]{1,0} %reshape.168), slice={[0:4], [0:4]}
+  %reshape.170 = f32[4,4,1]{2,1,0} reshape(f32[4,4]{1,0} %slice.169)
+  %reshape.171 = f32[4,4]{1,0} reshape(f32[4,4,1]{2,1,0} %reshape.170)
+  %broadcast.172 = f32[4,4,4]{2,1,0} broadcast(f32[4,4]{1,0} %reshape.171), dimensions={0,1}
+  %slice.165 = f32[4,4,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.164), slice={[0:4], [0:4], [0:64]}
+  %slice.166 = f32[4,4,4]{2,1,0} slice(f32[4,4,64]{2,1,0} %slice.165), slice={[0:4], [0:4], [0:4]}
+  %multiply.173 = f32[4,4,4]{2,1,0} multiply(f32[4,4,4]{2,1,0} %broadcast.172, f32[4,4,4]{2,1,0} %slice.166)
+  %constant.174 = f32[] constant(0)
+  %reduce.180 = f32[4,4]{1,0} reduce(f32[4,4,4]{2,1,0} %multiply.173, f32[] %constant.174), dimensions={1}, to_apply=%AddComputation.176
+  %constant.62 = f32[] constant(1)
+  %broadcast.181 = f32[4,4]{1,0} broadcast(f32[] %constant.62), dimensions={}
+  %multiply.182 = f32[4,4]{1,0} multiply(f32[4,4]{1,0} %reduce.180, f32[4,4]{1,0} %broadcast.181)
+  %add.183 = f32[4,4]{1,0} add(f32[4,4]{1,0} %slice.169, f32[4,4]{1,0} %multiply.182)
+  %constant.189 = f32[] constant(0)
+  %pad.190 = f32[4,64]{1,0} pad(f32[4,4]{1,0} %add.183, f32[] %constant.189), padding=0_0x0_60
+  %slice.184 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.164), slice={[0:4], [4:5], [0:64]}
+  %reshape.185 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.184)
+  %select.192 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.191, f32[4,64]{1,0} %pad.190, f32[4,64]{1,0} %reshape.185)
+  %reshape.193 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.192)
+  %constant.194 = s64[] constant(0)
+  %constant.195 = s64[] constant(4)
+  %constant.196 = s64[] constant(0)
+  %dynamic-update-slice.197 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.164, f32[4,1,64]{2,1,0} %reshape.193, s64[] %constant.194, s64[] %constant.195, s64[] %constant.196)
+  %constant.219 = pred[] constant(true)
+  %broadcast.220 = pred[4,5]{1,0} broadcast(pred[] %constant.219), dimensions={}
+  %constant.221 = pred[] constant(false)
+  %pad.224 = pred[4,64]{1,0} pad(pred[4,5]{1,0} %broadcast.220, pred[] %constant.221), padding=0_0x0_59
+  %slice.200 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.197), slice={[0:4], [5:6], [0:64]}
+  %reshape.201 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.200)
+  %slice.202 = f32[4,5]{1,0} slice(f32[4,64]{1,0} %reshape.201), slice={[0:4], [0:5]}
+  %reshape.203 = f32[4,5,1]{2,1,0} reshape(f32[4,5]{1,0} %slice.202)
+  %reshape.204 = f32[4,5]{1,0} reshape(f32[4,5,1]{2,1,0} %reshape.203)
+  %broadcast.205 = f32[4,5,5]{2,1,0} broadcast(f32[4,5]{1,0} %reshape.204), dimensions={0,1}
+  %slice.198 = f32[4,5,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.197), slice={[0:4], [0:5], [0:64]}
+  %slice.199 = f32[4,5,5]{2,1,0} slice(f32[4,5,64]{2,1,0} %slice.198), slice={[0:4], [0:5], [0:5]}
+  %multiply.206 = f32[4,5,5]{2,1,0} multiply(f32[4,5,5]{2,1,0} %broadcast.205, f32[4,5,5]{2,1,0} %slice.199)
+  %constant.207 = f32[] constant(0)
+  %reduce.213 = f32[4,5]{1,0} reduce(f32[4,5,5]{2,1,0} %multiply.206, f32[] %constant.207), dimensions={1}, to_apply=%AddComputation.209
+  %constant.61 = f32[] constant(1)
+  %broadcast.214 = f32[4,5]{1,0} broadcast(f32[] %constant.61), dimensions={}
+  %multiply.215 = f32[4,5]{1,0} multiply(f32[4,5]{1,0} %reduce.213, f32[4,5]{1,0} %broadcast.214)
+  %add.216 = f32[4,5]{1,0} add(f32[4,5]{1,0} %slice.202, f32[4,5]{1,0} %multiply.215)
+  %constant.222 = f32[] constant(0)
+  %pad.223 = f32[4,64]{1,0} pad(f32[4,5]{1,0} %add.216, f32[] %constant.222), padding=0_0x0_59
+  %slice.217 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.197), slice={[0:4], [5:6], [0:64]}
+  %reshape.218 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.217)
+  %select.225 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.224, f32[4,64]{1,0} %pad.223, f32[4,64]{1,0} %reshape.218)
+  %reshape.226 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.225)
+  %constant.227 = s64[] constant(0)
+  %constant.228 = s64[] constant(5)
+  %constant.229 = s64[] constant(0)
+  %dynamic-update-slice.230 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.197, f32[4,1,64]{2,1,0} %reshape.226, s64[] %constant.227, s64[] %constant.228, s64[] %constant.229)
+  %constant.252 = pred[] constant(true)
+  %broadcast.253 = pred[4,6]{1,0} broadcast(pred[] %constant.252), dimensions={}
+  %constant.254 = pred[] constant(false)
+  %pad.257 = pred[4,64]{1,0} pad(pred[4,6]{1,0} %broadcast.253, pred[] %constant.254), padding=0_0x0_58
+  %slice.233 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.230), slice={[0:4], [6:7], [0:64]}
+  %reshape.234 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.233)
+  %slice.235 = f32[4,6]{1,0} slice(f32[4,64]{1,0} %reshape.234), slice={[0:4], [0:6]}
+  %reshape.236 = f32[4,6,1]{2,1,0} reshape(f32[4,6]{1,0} %slice.235)
+  %reshape.237 = f32[4,6]{1,0} reshape(f32[4,6,1]{2,1,0} %reshape.236)
+  %broadcast.238 = f32[4,6,6]{2,1,0} broadcast(f32[4,6]{1,0} %reshape.237), dimensions={0,1}
+  %slice.231 = f32[4,6,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.230), slice={[0:4], [0:6], [0:64]}
+  %slice.232 = f32[4,6,6]{2,1,0} slice(f32[4,6,64]{2,1,0} %slice.231), slice={[0:4], [0:6], [0:6]}
+  %multiply.239 = f32[4,6,6]{2,1,0} multiply(f32[4,6,6]{2,1,0} %broadcast.238, f32[4,6,6]{2,1,0} %slice.232)
+  %constant.240 = f32[] constant(0)
+  %reduce.246 = f32[4,6]{1,0} reduce(f32[4,6,6]{2,1,0} %multiply.239, f32[] %constant.240), dimensions={1}, to_apply=%AddComputation.242
+  %constant.60 = f32[] constant(1)
+  %broadcast.247 = f32[4,6]{1,0} broadcast(f32[] %constant.60), dimensions={}
+  %multiply.248 = f32[4,6]{1,0} multiply(f32[4,6]{1,0} %reduce.246, f32[4,6]{1,0} %broadcast.247)
+  %add.249 = f32[4,6]{1,0} add(f32[4,6]{1,0} %slice.235, f32[4,6]{1,0} %multiply.248)
+  %constant.255 = f32[] constant(0)
+  %pad.256 = f32[4,64]{1,0} pad(f32[4,6]{1,0} %add.249, f32[] %constant.255), padding=0_0x0_58
+  %slice.250 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.230), slice={[0:4], [6:7], [0:64]}
+  %reshape.251 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.250)
+  %select.258 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.257, f32[4,64]{1,0} %pad.256, f32[4,64]{1,0} %reshape.251)
+  %reshape.259 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.258)
+  %constant.260 = s64[] constant(0)
+  %constant.261 = s64[] constant(6)
+  %constant.262 = s64[] constant(0)
+  %dynamic-update-slice.263 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.230, f32[4,1,64]{2,1,0} %reshape.259, s64[] %constant.260, s64[] %constant.261, s64[] %constant.262)
+  %constant.285 = pred[] constant(true)
+  %broadcast.286 = pred[4,7]{1,0} broadcast(pred[] %constant.285), dimensions={}
+  %constant.287 = pred[] constant(false)
+  %pad.290 = pred[4,64]{1,0} pad(pred[4,7]{1,0} %broadcast.286, pred[] %constant.287), padding=0_0x0_57
+  %slice.266 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.263), slice={[0:4], [7:8], [0:64]}
+  %reshape.267 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.266)
+  %slice.268 = f32[4,7]{1,0} slice(f32[4,64]{1,0} %reshape.267), slice={[0:4], [0:7]}
+  %reshape.269 = f32[4,7,1]{2,1,0} reshape(f32[4,7]{1,0} %slice.268)
+  %reshape.270 = f32[4,7]{1,0} reshape(f32[4,7,1]{2,1,0} %reshape.269)
+  %broadcast.271 = f32[4,7,7]{2,1,0} broadcast(f32[4,7]{1,0} %reshape.270), dimensions={0,1}
+  %slice.264 = f32[4,7,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.263), slice={[0:4], [0:7], [0:64]}
+  %slice.265 = f32[4,7,7]{2,1,0} slice(f32[4,7,64]{2,1,0} %slice.264), slice={[0:4], [0:7], [0:7]}
+  %multiply.272 = f32[4,7,7]{2,1,0} multiply(f32[4,7,7]{2,1,0} %broadcast.271, f32[4,7,7]{2,1,0} %slice.265)
+  %constant.273 = f32[] constant(0)
+  %reduce.279 = f32[4,7]{1,0} reduce(f32[4,7,7]{2,1,0} %multiply.272, f32[] %constant.273), dimensions={1}, to_apply=%AddComputation.275
+  %constant.59 = f32[] constant(1)
+  %broadcast.280 = f32[4,7]{1,0} broadcast(f32[] %constant.59), dimensions={}
+  %multiply.281 = f32[4,7]{1,0} multiply(f32[4,7]{1,0} %reduce.279, f32[4,7]{1,0} %broadcast.280)
+  %add.282 = f32[4,7]{1,0} add(f32[4,7]{1,0} %slice.268, f32[4,7]{1,0} %multiply.281)
+  %constant.288 = f32[] constant(0)
+  %pad.289 = f32[4,64]{1,0} pad(f32[4,7]{1,0} %add.282, f32[] %constant.288), padding=0_0x0_57
+  %slice.283 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.263), slice={[0:4], [7:8], [0:64]}
+  %reshape.284 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.283)
+  %select.291 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.290, f32[4,64]{1,0} %pad.289, f32[4,64]{1,0} %reshape.284)
+  %reshape.292 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.291)
+  %constant.293 = s64[] constant(0)
+  %constant.294 = s64[] constant(7)
+  %constant.295 = s64[] constant(0)
+  %dynamic-update-slice.296 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.263, f32[4,1,64]{2,1,0} %reshape.292, s64[] %constant.293, s64[] %constant.294, s64[] %constant.295)
+  %constant.318 = pred[] constant(true)
+  %broadcast.319 = pred[4,8]{1,0} broadcast(pred[] %constant.318), dimensions={}
+  %constant.320 = pred[] constant(false)
+  %pad.323 = pred[4,64]{1,0} pad(pred[4,8]{1,0} %broadcast.319, pred[] %constant.320), padding=0_0x0_56
+  %slice.299 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.296), slice={[0:4], [8:9], [0:64]}
+  %reshape.300 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.299)
+  %slice.301 = f32[4,8]{1,0} slice(f32[4,64]{1,0} %reshape.300), slice={[0:4], [0:8]}
+  %reshape.302 = f32[4,8,1]{2,1,0} reshape(f32[4,8]{1,0} %slice.301)
+  %reshape.303 = f32[4,8]{1,0} reshape(f32[4,8,1]{2,1,0} %reshape.302)
+  %broadcast.304 = f32[4,8,8]{2,1,0} broadcast(f32[4,8]{1,0} %reshape.303), dimensions={0,1}
+  %slice.297 = f32[4,8,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.296), slice={[0:4], [0:8], [0:64]}
+  %slice.298 = f32[4,8,8]{2,1,0} slice(f32[4,8,64]{2,1,0} %slice.297), slice={[0:4], [0:8], [0:8]}
+  %multiply.305 = f32[4,8,8]{2,1,0} multiply(f32[4,8,8]{2,1,0} %broadcast.304, f32[4,8,8]{2,1,0} %slice.298)
+  %constant.306 = f32[] constant(0)
+  %reduce.312 = f32[4,8]{1,0} reduce(f32[4,8,8]{2,1,0} %multiply.305, f32[] %constant.306), dimensions={1}, to_apply=%AddComputation.308
+  %constant.58 = f32[] constant(1)
+  %broadcast.313 = f32[4,8]{1,0} broadcast(f32[] %constant.58), dimensions={}
+  %multiply.314 = f32[4,8]{1,0} multiply(f32[4,8]{1,0} %reduce.312, f32[4,8]{1,0} %broadcast.313)
+  %add.315 = f32[4,8]{1,0} add(f32[4,8]{1,0} %slice.301, f32[4,8]{1,0} %multiply.314)
+  %constant.321 = f32[] constant(0)
+  %pad.322 = f32[4,64]{1,0} pad(f32[4,8]{1,0} %add.315, f32[] %constant.321), padding=0_0x0_56
+  %slice.316 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.296), slice={[0:4], [8:9], [0:64]}
+  %reshape.317 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.316)
+  %select.324 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.323, f32[4,64]{1,0} %pad.322, f32[4,64]{1,0} %reshape.317)
+  %reshape.325 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.324)
+  %constant.326 = s64[] constant(0)
+  %constant.327 = s64[] constant(8)
+  %constant.328 = s64[] constant(0)
+  %dynamic-update-slice.329 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.296, f32[4,1,64]{2,1,0} %reshape.325, s64[] %constant.326, s64[] %constant.327, s64[] %constant.328)
+  %constant.351 = pred[] constant(true)
+  %broadcast.352 = pred[4,9]{1,0} broadcast(pred[] %constant.351), dimensions={}
+  %constant.353 = pred[] constant(false)
+  %pad.356 = pred[4,64]{1,0} pad(pred[4,9]{1,0} %broadcast.352, pred[] %constant.353), padding=0_0x0_55
+  %slice.332 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.329), slice={[0:4], [9:10], [0:64]}
+  %reshape.333 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.332)
+  %slice.334 = f32[4,9]{1,0} slice(f32[4,64]{1,0} %reshape.333), slice={[0:4], [0:9]}
+  %reshape.335 = f32[4,9,1]{2,1,0} reshape(f32[4,9]{1,0} %slice.334)
+  %reshape.336 = f32[4,9]{1,0} reshape(f32[4,9,1]{2,1,0} %reshape.335)
+  %broadcast.337 = f32[4,9,9]{2,1,0} broadcast(f32[4,9]{1,0} %reshape.336), dimensions={0,1}
+  %slice.330 = f32[4,9,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.329), slice={[0:4], [0:9], [0:64]}
+  %slice.331 = f32[4,9,9]{2,1,0} slice(f32[4,9,64]{2,1,0} %slice.330), slice={[0:4], [0:9], [0:9]}
+  %multiply.338 = f32[4,9,9]{2,1,0} multiply(f32[4,9,9]{2,1,0} %broadcast.337, f32[4,9,9]{2,1,0} %slice.331)
+  %constant.339 = f32[] constant(0)
+  %reduce.345 = f32[4,9]{1,0} reduce(f32[4,9,9]{2,1,0} %multiply.338, f32[] %constant.339), dimensions={1}, to_apply=%AddComputation.341
+  %constant.57 = f32[] constant(1)
+  %broadcast.346 = f32[4,9]{1,0} broadcast(f32[] %constant.57), dimensions={}
+  %multiply.347 = f32[4,9]{1,0} multiply(f32[4,9]{1,0} %reduce.345, f32[4,9]{1,0} %broadcast.346)
+  %add.348 = f32[4,9]{1,0} add(f32[4,9]{1,0} %slice.334, f32[4,9]{1,0} %multiply.347)
+  %constant.354 = f32[] constant(0)
+  %pad.355 = f32[4,64]{1,0} pad(f32[4,9]{1,0} %add.348, f32[] %constant.354), padding=0_0x0_55
+  %slice.349 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.329), slice={[0:4], [9:10], [0:64]}
+  %reshape.350 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.349)
+  %select.357 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.356, f32[4,64]{1,0} %pad.355, f32[4,64]{1,0} %reshape.350)
+  %reshape.358 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.357)
+  %constant.359 = s64[] constant(0)
+  %constant.360 = s64[] constant(9)
+  %constant.361 = s64[] constant(0)
+  %dynamic-update-slice.362 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.329, f32[4,1,64]{2,1,0} %reshape.358, s64[] %constant.359, s64[] %constant.360, s64[] %constant.361)
+  %constant.384 = pred[] constant(true)
+  %broadcast.385 = pred[4,10]{1,0} broadcast(pred[] %constant.384), dimensions={}
+  %constant.386 = pred[] constant(false)
+  %pad.389 = pred[4,64]{1,0} pad(pred[4,10]{1,0} %broadcast.385, pred[] %constant.386), padding=0_0x0_54
+  %slice.365 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.362), slice={[0:4], [10:11], [0:64]}
+  %reshape.366 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.365)
+  %slice.367 = f32[4,10]{1,0} slice(f32[4,64]{1,0} %reshape.366), slice={[0:4], [0:10]}
+  %reshape.368 = f32[4,10,1]{2,1,0} reshape(f32[4,10]{1,0} %slice.367)
+  %reshape.369 = f32[4,10]{1,0} reshape(f32[4,10,1]{2,1,0} %reshape.368)
+  %broadcast.370 = f32[4,10,10]{2,1,0} broadcast(f32[4,10]{1,0} %reshape.369), dimensions={0,1}
+  %slice.363 = f32[4,10,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.362), slice={[0:4], [0:10], [0:64]}
+  %slice.364 = f32[4,10,10]{2,1,0} slice(f32[4,10,64]{2,1,0} %slice.363), slice={[0:4], [0:10], [0:10]}
+  %multiply.371 = f32[4,10,10]{2,1,0} multiply(f32[4,10,10]{2,1,0} %broadcast.370, f32[4,10,10]{2,1,0} %slice.364)
+  %constant.372 = f32[] constant(0)
+  %reduce.378 = f32[4,10]{1,0} reduce(f32[4,10,10]{2,1,0} %multiply.371, f32[] %constant.372), dimensions={1}, to_apply=%AddComputation.374
+  %constant.56 = f32[] constant(1)
+  %broadcast.379 = f32[4,10]{1,0} broadcast(f32[] %constant.56), dimensions={}
+  %multiply.380 = f32[4,10]{1,0} multiply(f32[4,10]{1,0} %reduce.378, f32[4,10]{1,0} %broadcast.379)
+  %add.381 = f32[4,10]{1,0} add(f32[4,10]{1,0} %slice.367, f32[4,10]{1,0} %multiply.380)
+  %constant.387 = f32[] constant(0)
+  %pad.388 = f32[4,64]{1,0} pad(f32[4,10]{1,0} %add.381, f32[] %constant.387), padding=0_0x0_54
+  %slice.382 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.362), slice={[0:4], [10:11], [0:64]}
+  %reshape.383 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.382)
+  %select.390 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.389, f32[4,64]{1,0} %pad.388, f32[4,64]{1,0} %reshape.383)
+  %reshape.391 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.390)
+  %constant.392 = s64[] constant(0)
+  %constant.393 = s64[] constant(10)
+  %constant.394 = s64[] constant(0)
+  %dynamic-update-slice.395 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.362, f32[4,1,64]{2,1,0} %reshape.391, s64[] %constant.392, s64[] %constant.393, s64[] %constant.394)
+  %constant.417 = pred[] constant(true)
+  %broadcast.418 = pred[4,11]{1,0} broadcast(pred[] %constant.417), dimensions={}
+  %constant.419 = pred[] constant(false)
+  %pad.422 = pred[4,64]{1,0} pad(pred[4,11]{1,0} %broadcast.418, pred[] %constant.419), padding=0_0x0_53
+  %slice.398 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.395), slice={[0:4], [11:12], [0:64]}
+  %reshape.399 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.398)
+  %slice.400 = f32[4,11]{1,0} slice(f32[4,64]{1,0} %reshape.399), slice={[0:4], [0:11]}
+  %reshape.401 = f32[4,11,1]{2,1,0} reshape(f32[4,11]{1,0} %slice.400)
+  %reshape.402 = f32[4,11]{1,0} reshape(f32[4,11,1]{2,1,0} %reshape.401)
+  %broadcast.403 = f32[4,11,11]{2,1,0} broadcast(f32[4,11]{1,0} %reshape.402), dimensions={0,1}
+  %slice.396 = f32[4,11,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.395), slice={[0:4], [0:11], [0:64]}
+  %slice.397 = f32[4,11,11]{2,1,0} slice(f32[4,11,64]{2,1,0} %slice.396), slice={[0:4], [0:11], [0:11]}
+  %multiply.404 = f32[4,11,11]{2,1,0} multiply(f32[4,11,11]{2,1,0} %broadcast.403, f32[4,11,11]{2,1,0} %slice.397)
+  %constant.405 = f32[] constant(0)
+  %reduce.411 = f32[4,11]{1,0} reduce(f32[4,11,11]{2,1,0} %multiply.404, f32[] %constant.405), dimensions={1}, to_apply=%AddComputation.407
+  %constant.55 = f32[] constant(1)
+  %broadcast.412 = f32[4,11]{1,0} broadcast(f32[] %constant.55), dimensions={}
+  %multiply.413 = f32[4,11]{1,0} multiply(f32[4,11]{1,0} %reduce.411, f32[4,11]{1,0} %broadcast.412)
+  %add.414 = f32[4,11]{1,0} add(f32[4,11]{1,0} %slice.400, f32[4,11]{1,0} %multiply.413)
+  %constant.420 = f32[] constant(0)
+  %pad.421 = f32[4,64]{1,0} pad(f32[4,11]{1,0} %add.414, f32[] %constant.420), padding=0_0x0_53
+  %slice.415 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.395), slice={[0:4], [11:12], [0:64]}
+  %reshape.416 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.415)
+  %select.423 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.422, f32[4,64]{1,0} %pad.421, f32[4,64]{1,0} %reshape.416)
+  %reshape.424 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.423)
+  %constant.425 = s64[] constant(0)
+  %constant.426 = s64[] constant(11)
+  %constant.427 = s64[] constant(0)
+  %dynamic-update-slice.428 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.395, f32[4,1,64]{2,1,0} %reshape.424, s64[] %constant.425, s64[] %constant.426, s64[] %constant.427)
+  %constant.450 = pred[] constant(true)
+  %broadcast.451 = pred[4,12]{1,0} broadcast(pred[] %constant.450), dimensions={}
+  %constant.452 = pred[] constant(false)
+  %pad.455 = pred[4,64]{1,0} pad(pred[4,12]{1,0} %broadcast.451, pred[] %constant.452), padding=0_0x0_52
+  %slice.431 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.428), slice={[0:4], [12:13], [0:64]}
+  %reshape.432 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.431)
+  %slice.433 = f32[4,12]{1,0} slice(f32[4,64]{1,0} %reshape.432), slice={[0:4], [0:12]}
+  %reshape.434 = f32[4,12,1]{2,1,0} reshape(f32[4,12]{1,0} %slice.433)
+  %reshape.435 = f32[4,12]{1,0} reshape(f32[4,12,1]{2,1,0} %reshape.434)
+  %broadcast.436 = f32[4,12,12]{2,1,0} broadcast(f32[4,12]{1,0} %reshape.435), dimensions={0,1}
+  %slice.429 = f32[4,12,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.428), slice={[0:4], [0:12], [0:64]}
+  %slice.430 = f32[4,12,12]{2,1,0} slice(f32[4,12,64]{2,1,0} %slice.429), slice={[0:4], [0:12], [0:12]}
+  %multiply.437 = f32[4,12,12]{2,1,0} multiply(f32[4,12,12]{2,1,0} %broadcast.436, f32[4,12,12]{2,1,0} %slice.430)
+  %constant.438 = f32[] constant(0)
+  %reduce.444 = f32[4,12]{1,0} reduce(f32[4,12,12]{2,1,0} %multiply.437, f32[] %constant.438), dimensions={1}, to_apply=%AddComputation.440
+  %constant.54 = f32[] constant(1)
+  %broadcast.445 = f32[4,12]{1,0} broadcast(f32[] %constant.54), dimensions={}
+  %multiply.446 = f32[4,12]{1,0} multiply(f32[4,12]{1,0} %reduce.444, f32[4,12]{1,0} %broadcast.445)
+  %add.447 = f32[4,12]{1,0} add(f32[4,12]{1,0} %slice.433, f32[4,12]{1,0} %multiply.446)
+  %constant.453 = f32[] constant(0)
+  %pad.454 = f32[4,64]{1,0} pad(f32[4,12]{1,0} %add.447, f32[] %constant.453), padding=0_0x0_52
+  %slice.448 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.428), slice={[0:4], [12:13], [0:64]}
+  %reshape.449 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.448)
+  %select.456 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.455, f32[4,64]{1,0} %pad.454, f32[4,64]{1,0} %reshape.449)
+  %reshape.457 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.456)
+  %constant.458 = s64[] constant(0)
+  %constant.459 = s64[] constant(12)
+  %constant.460 = s64[] constant(0)
+  %dynamic-update-slice.461 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.428, f32[4,1,64]{2,1,0} %reshape.457, s64[] %constant.458, s64[] %constant.459, s64[] %constant.460)
+  %constant.483 = pred[] constant(true)
+  %broadcast.484 = pred[4,13]{1,0} broadcast(pred[] %constant.483), dimensions={}
+  %constant.485 = pred[] constant(false)
+  %pad.488 = pred[4,64]{1,0} pad(pred[4,13]{1,0} %broadcast.484, pred[] %constant.485), padding=0_0x0_51
+  %slice.464 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.461), slice={[0:4], [13:14], [0:64]}
+  %reshape.465 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.464)
+  %slice.466 = f32[4,13]{1,0} slice(f32[4,64]{1,0} %reshape.465), slice={[0:4], [0:13]}
+  %reshape.467 = f32[4,13,1]{2,1,0} reshape(f32[4,13]{1,0} %slice.466)
+  %reshape.468 = f32[4,13]{1,0} reshape(f32[4,13,1]{2,1,0} %reshape.467)
+  %broadcast.469 = f32[4,13,13]{2,1,0} broadcast(f32[4,13]{1,0} %reshape.468), dimensions={0,1}
+  %slice.462 = f32[4,13,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.461), slice={[0:4], [0:13], [0:64]}
+  %slice.463 = f32[4,13,13]{2,1,0} slice(f32[4,13,64]{2,1,0} %slice.462), slice={[0:4], [0:13], [0:13]}
+  %multiply.470 = f32[4,13,13]{2,1,0} multiply(f32[4,13,13]{2,1,0} %broadcast.469, f32[4,13,13]{2,1,0} %slice.463)
+  %constant.471 = f32[] constant(0)
+  %reduce.477 = f32[4,13]{1,0} reduce(f32[4,13,13]{2,1,0} %multiply.470, f32[] %constant.471), dimensions={1}, to_apply=%AddComputation.473
+  %constant.53 = f32[] constant(1)
+  %broadcast.478 = f32[4,13]{1,0} broadcast(f32[] %constant.53), dimensions={}
+  %multiply.479 = f32[4,13]{1,0} multiply(f32[4,13]{1,0} %reduce.477, f32[4,13]{1,0} %broadcast.478)
+  %add.480 = f32[4,13]{1,0} add(f32[4,13]{1,0} %slice.466, f32[4,13]{1,0} %multiply.479)
+  %constant.486 = f32[] constant(0)
+  %pad.487 = f32[4,64]{1,0} pad(f32[4,13]{1,0} %add.480, f32[] %constant.486), padding=0_0x0_51
+  %slice.481 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.461), slice={[0:4], [13:14], [0:64]}
+  %reshape.482 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.481)
+  %select.489 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.488, f32[4,64]{1,0} %pad.487, f32[4,64]{1,0} %reshape.482)
+  %reshape.490 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.489)
+  %constant.491 = s64[] constant(0)
+  %constant.492 = s64[] constant(13)
+  %constant.493 = s64[] constant(0)
+  %dynamic-update-slice.494 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.461, f32[4,1,64]{2,1,0} %reshape.490, s64[] %constant.491, s64[] %constant.492, s64[] %constant.493)
+  %constant.516 = pred[] constant(true)
+  %broadcast.517 = pred[4,14]{1,0} broadcast(pred[] %constant.516), dimensions={}
+  %constant.518 = pred[] constant(false)
+  %pad.521 = pred[4,64]{1,0} pad(pred[4,14]{1,0} %broadcast.517, pred[] %constant.518), padding=0_0x0_50
+  %slice.497 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.494), slice={[0:4], [14:15], [0:64]}
+  %reshape.498 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.497)
+  %slice.499 = f32[4,14]{1,0} slice(f32[4,64]{1,0} %reshape.498), slice={[0:4], [0:14]}
+  %reshape.500 = f32[4,14,1]{2,1,0} reshape(f32[4,14]{1,0} %slice.499)
+  %reshape.501 = f32[4,14]{1,0} reshape(f32[4,14,1]{2,1,0} %reshape.500)
+  %broadcast.502 = f32[4,14,14]{2,1,0} broadcast(f32[4,14]{1,0} %reshape.501), dimensions={0,1}
+  %slice.495 = f32[4,14,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.494), slice={[0:4], [0:14], [0:64]}
+  %slice.496 = f32[4,14,14]{2,1,0} slice(f32[4,14,64]{2,1,0} %slice.495), slice={[0:4], [0:14], [0:14]}
+  %multiply.503 = f32[4,14,14]{2,1,0} multiply(f32[4,14,14]{2,1,0} %broadcast.502, f32[4,14,14]{2,1,0} %slice.496)
+  %constant.504 = f32[] constant(0)
+  %reduce.510 = f32[4,14]{1,0} reduce(f32[4,14,14]{2,1,0} %multiply.503, f32[] %constant.504), dimensions={1}, to_apply=%AddComputation.506
+  %constant.52 = f32[] constant(1)
+  %broadcast.511 = f32[4,14]{1,0} broadcast(f32[] %constant.52), dimensions={}
+  %multiply.512 = f32[4,14]{1,0} multiply(f32[4,14]{1,0} %reduce.510, f32[4,14]{1,0} %broadcast.511)
+  %add.513 = f32[4,14]{1,0} add(f32[4,14]{1,0} %slice.499, f32[4,14]{1,0} %multiply.512)
+  %constant.519 = f32[] constant(0)
+  %pad.520 = f32[4,64]{1,0} pad(f32[4,14]{1,0} %add.513, f32[] %constant.519), padding=0_0x0_50
+  %slice.514 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.494), slice={[0:4], [14:15], [0:64]}
+  %reshape.515 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.514)
+  %select.522 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.521, f32[4,64]{1,0} %pad.520, f32[4,64]{1,0} %reshape.515)
+  %reshape.523 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.522)
+  %constant.524 = s64[] constant(0)
+  %constant.525 = s64[] constant(14)
+  %constant.526 = s64[] constant(0)
+  %dynamic-update-slice.527 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.494, f32[4,1,64]{2,1,0} %reshape.523, s64[] %constant.524, s64[] %constant.525, s64[] %constant.526)
+  %constant.549 = pred[] constant(true)
+  %broadcast.550 = pred[4,15]{1,0} broadcast(pred[] %constant.549), dimensions={}
+  %constant.551 = pred[] constant(false)
+  %pad.554 = pred[4,64]{1,0} pad(pred[4,15]{1,0} %broadcast.550, pred[] %constant.551), padding=0_0x0_49
+  %slice.530 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.527), slice={[0:4], [15:16], [0:64]}
+  %reshape.531 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.530)
+  %slice.532 = f32[4,15]{1,0} slice(f32[4,64]{1,0} %reshape.531), slice={[0:4], [0:15]}
+  %reshape.533 = f32[4,15,1]{2,1,0} reshape(f32[4,15]{1,0} %slice.532)
+  %reshape.534 = f32[4,15]{1,0} reshape(f32[4,15,1]{2,1,0} %reshape.533)
+  %broadcast.535 = f32[4,15,15]{2,1,0} broadcast(f32[4,15]{1,0} %reshape.534), dimensions={0,1}
+  %slice.528 = f32[4,15,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.527), slice={[0:4], [0:15], [0:64]}
+  %slice.529 = f32[4,15,15]{2,1,0} slice(f32[4,15,64]{2,1,0} %slice.528), slice={[0:4], [0:15], [0:15]}
+  %multiply.536 = f32[4,15,15]{2,1,0} multiply(f32[4,15,15]{2,1,0} %broadcast.535, f32[4,15,15]{2,1,0} %slice.529)
+  %constant.537 = f32[] constant(0)
+  %reduce.543 = f32[4,15]{1,0} reduce(f32[4,15,15]{2,1,0} %multiply.536, f32[] %constant.537), dimensions={1}, to_apply=%AddComputation.539
+  %constant.51 = f32[] constant(1)
+  %broadcast.544 = f32[4,15]{1,0} broadcast(f32[] %constant.51), dimensions={}
+  %multiply.545 = f32[4,15]{1,0} multiply(f32[4,15]{1,0} %reduce.543, f32[4,15]{1,0} %broadcast.544)
+  %add.546 = f32[4,15]{1,0} add(f32[4,15]{1,0} %slice.532, f32[4,15]{1,0} %multiply.545)
+  %constant.552 = f32[] constant(0)
+  %pad.553 = f32[4,64]{1,0} pad(f32[4,15]{1,0} %add.546, f32[] %constant.552), padding=0_0x0_49
+  %slice.547 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.527), slice={[0:4], [15:16], [0:64]}
+  %reshape.548 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.547)
+  %select.555 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.554, f32[4,64]{1,0} %pad.553, f32[4,64]{1,0} %reshape.548)
+  %reshape.556 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.555)
+  %constant.557 = s64[] constant(0)
+  %constant.558 = s64[] constant(15)
+  %constant.559 = s64[] constant(0)
+  %dynamic-update-slice.560 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.527, f32[4,1,64]{2,1,0} %reshape.556, s64[] %constant.557, s64[] %constant.558, s64[] %constant.559)
+  %constant.582 = pred[] constant(true)
+  %broadcast.583 = pred[4,16]{1,0} broadcast(pred[] %constant.582), dimensions={}
+  %constant.584 = pred[] constant(false)
+  %pad.587 = pred[4,64]{1,0} pad(pred[4,16]{1,0} %broadcast.583, pred[] %constant.584), padding=0_0x0_48
+  %slice.563 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.560), slice={[0:4], [16:17], [0:64]}
+  %reshape.564 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.563)
+  %slice.565 = f32[4,16]{1,0} slice(f32[4,64]{1,0} %reshape.564), slice={[0:4], [0:16]}
+  %reshape.566 = f32[4,16,1]{2,1,0} reshape(f32[4,16]{1,0} %slice.565)
+  %reshape.567 = f32[4,16]{1,0} reshape(f32[4,16,1]{2,1,0} %reshape.566)
+  %broadcast.568 = f32[4,16,16]{2,1,0} broadcast(f32[4,16]{1,0} %reshape.567), dimensions={0,1}
+  %slice.561 = f32[4,16,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.560), slice={[0:4], [0:16], [0:64]}
+  %slice.562 = f32[4,16,16]{2,1,0} slice(f32[4,16,64]{2,1,0} %slice.561), slice={[0:4], [0:16], [0:16]}
+  %multiply.569 = f32[4,16,16]{2,1,0} multiply(f32[4,16,16]{2,1,0} %broadcast.568, f32[4,16,16]{2,1,0} %slice.562)
+  %constant.570 = f32[] constant(0)
+  %reduce.576 = f32[4,16]{1,0} reduce(f32[4,16,16]{2,1,0} %multiply.569, f32[] %constant.570), dimensions={1}, to_apply=%AddComputation.572
+  %constant.50 = f32[] constant(1)
+  %broadcast.577 = f32[4,16]{1,0} broadcast(f32[] %constant.50), dimensions={}
+  %multiply.578 = f32[4,16]{1,0} multiply(f32[4,16]{1,0} %reduce.576, f32[4,16]{1,0} %broadcast.577)
+  %add.579 = f32[4,16]{1,0} add(f32[4,16]{1,0} %slice.565, f32[4,16]{1,0} %multiply.578)
+  %constant.585 = f32[] constant(0)
+  %pad.586 = f32[4,64]{1,0} pad(f32[4,16]{1,0} %add.579, f32[] %constant.585), padding=0_0x0_48
+  %slice.580 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.560), slice={[0:4], [16:17], [0:64]}
+  %reshape.581 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.580)
+  %select.588 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.587, f32[4,64]{1,0} %pad.586, f32[4,64]{1,0} %reshape.581)
+  %reshape.589 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.588)
+  %constant.590 = s64[] constant(0)
+  %constant.591 = s64[] constant(16)
+  %constant.592 = s64[] constant(0)
+  %dynamic-update-slice.593 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.560, f32[4,1,64]{2,1,0} %reshape.589, s64[] %constant.590, s64[] %constant.591, s64[] %constant.592)
+  %constant.615 = pred[] constant(true)
+  %broadcast.616 = pred[4,17]{1,0} broadcast(pred[] %constant.615), dimensions={}
+  %constant.617 = pred[] constant(false)
+  %pad.620 = pred[4,64]{1,0} pad(pred[4,17]{1,0} %broadcast.616, pred[] %constant.617), padding=0_0x0_47
+  %slice.596 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.593), slice={[0:4], [17:18], [0:64]}
+  %reshape.597 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.596)
+  %slice.598 = f32[4,17]{1,0} slice(f32[4,64]{1,0} %reshape.597), slice={[0:4], [0:17]}
+  %reshape.599 = f32[4,17,1]{2,1,0} reshape(f32[4,17]{1,0} %slice.598)
+  %reshape.600 = f32[4,17]{1,0} reshape(f32[4,17,1]{2,1,0} %reshape.599)
+  %broadcast.601 = f32[4,17,17]{2,1,0} broadcast(f32[4,17]{1,0} %reshape.600), dimensions={0,1}
+  %slice.594 = f32[4,17,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.593), slice={[0:4], [0:17], [0:64]}
+  %slice.595 = f32[4,17,17]{2,1,0} slice(f32[4,17,64]{2,1,0} %slice.594), slice={[0:4], [0:17], [0:17]}
+  %multiply.602 = f32[4,17,17]{2,1,0} multiply(f32[4,17,17]{2,1,0} %broadcast.601, f32[4,17,17]{2,1,0} %slice.595)
+  %constant.603 = f32[] constant(0)
+  %reduce.609 = f32[4,17]{1,0} reduce(f32[4,17,17]{2,1,0} %multiply.602, f32[] %constant.603), dimensions={1}, to_apply=%AddComputation.605
+  %constant.49 = f32[] constant(1)
+  %broadcast.610 = f32[4,17]{1,0} broadcast(f32[] %constant.49), dimensions={}
+  %multiply.611 = f32[4,17]{1,0} multiply(f32[4,17]{1,0} %reduce.609, f32[4,17]{1,0} %broadcast.610)
+  %add.612 = f32[4,17]{1,0} add(f32[4,17]{1,0} %slice.598, f32[4,17]{1,0} %multiply.611)
+  %constant.618 = f32[] constant(0)
+  %pad.619 = f32[4,64]{1,0} pad(f32[4,17]{1,0} %add.612, f32[] %constant.618), padding=0_0x0_47
+  %slice.613 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.593), slice={[0:4], [17:18], [0:64]}
+  %reshape.614 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.613)
+  %select.621 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.620, f32[4,64]{1,0} %pad.619, f32[4,64]{1,0} %reshape.614)
+  %reshape.622 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.621)
+  %constant.623 = s64[] constant(0)
+  %constant.624 = s64[] constant(17)
+  %constant.625 = s64[] constant(0)
+  %dynamic-update-slice.626 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.593, f32[4,1,64]{2,1,0} %reshape.622, s64[] %constant.623, s64[] %constant.624, s64[] %constant.625)
+  %constant.648 = pred[] constant(true)
+  %broadcast.649 = pred[4,18]{1,0} broadcast(pred[] %constant.648), dimensions={}
+  %constant.650 = pred[] constant(false)
+  %pad.653 = pred[4,64]{1,0} pad(pred[4,18]{1,0} %broadcast.649, pred[] %constant.650), padding=0_0x0_46
+  %slice.629 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.626), slice={[0:4], [18:19], [0:64]}
+  %reshape.630 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.629)
+  %slice.631 = f32[4,18]{1,0} slice(f32[4,64]{1,0} %reshape.630), slice={[0:4], [0:18]}
+  %reshape.632 = f32[4,18,1]{2,1,0} reshape(f32[4,18]{1,0} %slice.631)
+  %reshape.633 = f32[4,18]{1,0} reshape(f32[4,18,1]{2,1,0} %reshape.632)
+  %broadcast.634 = f32[4,18,18]{2,1,0} broadcast(f32[4,18]{1,0} %reshape.633), dimensions={0,1}
+  %slice.627 = f32[4,18,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.626), slice={[0:4], [0:18], [0:64]}
+  %slice.628 = f32[4,18,18]{2,1,0} slice(f32[4,18,64]{2,1,0} %slice.627), slice={[0:4], [0:18], [0:18]}
+  %multiply.635 = f32[4,18,18]{2,1,0} multiply(f32[4,18,18]{2,1,0} %broadcast.634, f32[4,18,18]{2,1,0} %slice.628)
+  %constant.636 = f32[] constant(0)
+  %reduce.642 = f32[4,18]{1,0} reduce(f32[4,18,18]{2,1,0} %multiply.635, f32[] %constant.636), dimensions={1}, to_apply=%AddComputation.638
+  %constant.48 = f32[] constant(1)
+  %broadcast.643 = f32[4,18]{1,0} broadcast(f32[] %constant.48), dimensions={}
+  %multiply.644 = f32[4,18]{1,0} multiply(f32[4,18]{1,0} %reduce.642, f32[4,18]{1,0} %broadcast.643)
+  %add.645 = f32[4,18]{1,0} add(f32[4,18]{1,0} %slice.631, f32[4,18]{1,0} %multiply.644)
+  %constant.651 = f32[] constant(0)
+  %pad.652 = f32[4,64]{1,0} pad(f32[4,18]{1,0} %add.645, f32[] %constant.651), padding=0_0x0_46
+  %slice.646 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.626), slice={[0:4], [18:19], [0:64]}
+  %reshape.647 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.646)
+  %select.654 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.653, f32[4,64]{1,0} %pad.652, f32[4,64]{1,0} %reshape.647)
+  %reshape.655 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.654)
+  %constant.656 = s64[] constant(0)
+  %constant.657 = s64[] constant(18)
+  %constant.658 = s64[] constant(0)
+  %dynamic-update-slice.659 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.626, f32[4,1,64]{2,1,0} %reshape.655, s64[] %constant.656, s64[] %constant.657, s64[] %constant.658)
+  %constant.681 = pred[] constant(true)
+  %broadcast.682 = pred[4,19]{1,0} broadcast(pred[] %constant.681), dimensions={}
+  %constant.683 = pred[] constant(false)
+  %pad.686 = pred[4,64]{1,0} pad(pred[4,19]{1,0} %broadcast.682, pred[] %constant.683), padding=0_0x0_45
+  %slice.662 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.659), slice={[0:4], [19:20], [0:64]}
+  %reshape.663 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.662)
+  %slice.664 = f32[4,19]{1,0} slice(f32[4,64]{1,0} %reshape.663), slice={[0:4], [0:19]}
+  %reshape.665 = f32[4,19,1]{2,1,0} reshape(f32[4,19]{1,0} %slice.664)
+  %reshape.666 = f32[4,19]{1,0} reshape(f32[4,19,1]{2,1,0} %reshape.665)
+  %broadcast.667 = f32[4,19,19]{2,1,0} broadcast(f32[4,19]{1,0} %reshape.666), dimensions={0,1}
+  %slice.660 = f32[4,19,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.659), slice={[0:4], [0:19], [0:64]}
+  %slice.661 = f32[4,19,19]{2,1,0} slice(f32[4,19,64]{2,1,0} %slice.660), slice={[0:4], [0:19], [0:19]}
+  %multiply.668 = f32[4,19,19]{2,1,0} multiply(f32[4,19,19]{2,1,0} %broadcast.667, f32[4,19,19]{2,1,0} %slice.661)
+  %constant.669 = f32[] constant(0)
+  %reduce.675 = f32[4,19]{1,0} reduce(f32[4,19,19]{2,1,0} %multiply.668, f32[] %constant.669), dimensions={1}, to_apply=%AddComputation.671
+  %constant.47 = f32[] constant(1)
+  %broadcast.676 = f32[4,19]{1,0} broadcast(f32[] %constant.47), dimensions={}
+  %multiply.677 = f32[4,19]{1,0} multiply(f32[4,19]{1,0} %reduce.675, f32[4,19]{1,0} %broadcast.676)
+  %add.678 = f32[4,19]{1,0} add(f32[4,19]{1,0} %slice.664, f32[4,19]{1,0} %multiply.677)
+  %constant.684 = f32[] constant(0)
+  %pad.685 = f32[4,64]{1,0} pad(f32[4,19]{1,0} %add.678, f32[] %constant.684), padding=0_0x0_45
+  %slice.679 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.659), slice={[0:4], [19:20], [0:64]}
+  %reshape.680 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.679)
+  %select.687 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.686, f32[4,64]{1,0} %pad.685, f32[4,64]{1,0} %reshape.680)
+  %reshape.688 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.687)
+  %constant.689 = s64[] constant(0)
+  %constant.690 = s64[] constant(19)
+  %constant.691 = s64[] constant(0)
+  %dynamic-update-slice.692 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.659, f32[4,1,64]{2,1,0} %reshape.688, s64[] %constant.689, s64[] %constant.690, s64[] %constant.691)
+  %constant.714 = pred[] constant(true)
+  %broadcast.715 = pred[4,20]{1,0} broadcast(pred[] %constant.714), dimensions={}
+  %constant.716 = pred[] constant(false)
+  %pad.719 = pred[4,64]{1,0} pad(pred[4,20]{1,0} %broadcast.715, pred[] %constant.716), padding=0_0x0_44
+  %slice.695 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.692), slice={[0:4], [20:21], [0:64]}
+  %reshape.696 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.695)
+  %slice.697 = f32[4,20]{1,0} slice(f32[4,64]{1,0} %reshape.696), slice={[0:4], [0:20]}
+  %reshape.698 = f32[4,20,1]{2,1,0} reshape(f32[4,20]{1,0} %slice.697)
+  %reshape.699 = f32[4,20]{1,0} reshape(f32[4,20,1]{2,1,0} %reshape.698)
+  %broadcast.700 = f32[4,20,20]{2,1,0} broadcast(f32[4,20]{1,0} %reshape.699), dimensions={0,1}
+  %slice.693 = f32[4,20,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.692), slice={[0:4], [0:20], [0:64]}
+  %slice.694 = f32[4,20,20]{2,1,0} slice(f32[4,20,64]{2,1,0} %slice.693), slice={[0:4], [0:20], [0:20]}
+  %multiply.701 = f32[4,20,20]{2,1,0} multiply(f32[4,20,20]{2,1,0} %broadcast.700, f32[4,20,20]{2,1,0} %slice.694)
+  %constant.702 = f32[] constant(0)
+  %reduce.708 = f32[4,20]{1,0} reduce(f32[4,20,20]{2,1,0} %multiply.701, f32[] %constant.702), dimensions={1}, to_apply=%AddComputation.704
+  %constant.46 = f32[] constant(1)
+  %broadcast.709 = f32[4,20]{1,0} broadcast(f32[] %constant.46), dimensions={}
+  %multiply.710 = f32[4,20]{1,0} multiply(f32[4,20]{1,0} %reduce.708, f32[4,20]{1,0} %broadcast.709)
+  %add.711 = f32[4,20]{1,0} add(f32[4,20]{1,0} %slice.697, f32[4,20]{1,0} %multiply.710)
+  %constant.717 = f32[] constant(0)
+  %pad.718 = f32[4,64]{1,0} pad(f32[4,20]{1,0} %add.711, f32[] %constant.717), padding=0_0x0_44
+  %slice.712 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.692), slice={[0:4], [20:21], [0:64]}
+  %reshape.713 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.712)
+  %select.720 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.719, f32[4,64]{1,0} %pad.718, f32[4,64]{1,0} %reshape.713)
+  %reshape.721 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.720)
+  %constant.722 = s64[] constant(0)
+  %constant.723 = s64[] constant(20)
+  %constant.724 = s64[] constant(0)
+  %dynamic-update-slice.725 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.692, f32[4,1,64]{2,1,0} %reshape.721, s64[] %constant.722, s64[] %constant.723, s64[] %constant.724)
+  %constant.747 = pred[] constant(true)
+  %broadcast.748 = pred[4,21]{1,0} broadcast(pred[] %constant.747), dimensions={}
+  %constant.749 = pred[] constant(false)
+  %pad.752 = pred[4,64]{1,0} pad(pred[4,21]{1,0} %broadcast.748, pred[] %constant.749), padding=0_0x0_43
+  %slice.728 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.725), slice={[0:4], [21:22], [0:64]}
+  %reshape.729 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.728)
+  %slice.730 = f32[4,21]{1,0} slice(f32[4,64]{1,0} %reshape.729), slice={[0:4], [0:21]}
+  %reshape.731 = f32[4,21,1]{2,1,0} reshape(f32[4,21]{1,0} %slice.730)
+  %reshape.732 = f32[4,21]{1,0} reshape(f32[4,21,1]{2,1,0} %reshape.731)
+  %broadcast.733 = f32[4,21,21]{2,1,0} broadcast(f32[4,21]{1,0} %reshape.732), dimensions={0,1}
+  %slice.726 = f32[4,21,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.725), slice={[0:4], [0:21], [0:64]}
+  %slice.727 = f32[4,21,21]{2,1,0} slice(f32[4,21,64]{2,1,0} %slice.726), slice={[0:4], [0:21], [0:21]}
+  %multiply.734 = f32[4,21,21]{2,1,0} multiply(f32[4,21,21]{2,1,0} %broadcast.733, f32[4,21,21]{2,1,0} %slice.727)
+  %constant.735 = f32[] constant(0)
+  %reduce.741 = f32[4,21]{1,0} reduce(f32[4,21,21]{2,1,0} %multiply.734, f32[] %constant.735), dimensions={1}, to_apply=%AddComputation.737
+  %constant.45 = f32[] constant(1)
+  %broadcast.742 = f32[4,21]{1,0} broadcast(f32[] %constant.45), dimensions={}
+  %multiply.743 = f32[4,21]{1,0} multiply(f32[4,21]{1,0} %reduce.741, f32[4,21]{1,0} %broadcast.742)
+  %add.744 = f32[4,21]{1,0} add(f32[4,21]{1,0} %slice.730, f32[4,21]{1,0} %multiply.743)
+  %constant.750 = f32[] constant(0)
+  %pad.751 = f32[4,64]{1,0} pad(f32[4,21]{1,0} %add.744, f32[] %constant.750), padding=0_0x0_43
+  %slice.745 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.725), slice={[0:4], [21:22], [0:64]}
+  %reshape.746 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.745)
+  %select.753 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.752, f32[4,64]{1,0} %pad.751, f32[4,64]{1,0} %reshape.746)
+  %reshape.754 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.753)
+  %constant.755 = s64[] constant(0)
+  %constant.756 = s64[] constant(21)
+  %constant.757 = s64[] constant(0)
+  %dynamic-update-slice.758 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.725, f32[4,1,64]{2,1,0} %reshape.754, s64[] %constant.755, s64[] %constant.756, s64[] %constant.757)
+  %constant.780 = pred[] constant(true)
+  %broadcast.781 = pred[4,22]{1,0} broadcast(pred[] %constant.780), dimensions={}
+  %constant.782 = pred[] constant(false)
+  %pad.785 = pred[4,64]{1,0} pad(pred[4,22]{1,0} %broadcast.781, pred[] %constant.782), padding=0_0x0_42
+  %slice.761 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.758), slice={[0:4], [22:23], [0:64]}
+  %reshape.762 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.761)
+  %slice.763 = f32[4,22]{1,0} slice(f32[4,64]{1,0} %reshape.762), slice={[0:4], [0:22]}
+  %reshape.764 = f32[4,22,1]{2,1,0} reshape(f32[4,22]{1,0} %slice.763)
+  %reshape.765 = f32[4,22]{1,0} reshape(f32[4,22,1]{2,1,0} %reshape.764)
+  %broadcast.766 = f32[4,22,22]{2,1,0} broadcast(f32[4,22]{1,0} %reshape.765), dimensions={0,1}
+  %slice.759 = f32[4,22,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.758), slice={[0:4], [0:22], [0:64]}
+  %slice.760 = f32[4,22,22]{2,1,0} slice(f32[4,22,64]{2,1,0} %slice.759), slice={[0:4], [0:22], [0:22]}
+  %multiply.767 = f32[4,22,22]{2,1,0} multiply(f32[4,22,22]{2,1,0} %broadcast.766, f32[4,22,22]{2,1,0} %slice.760)
+  %constant.768 = f32[] constant(0)
+  %reduce.774 = f32[4,22]{1,0} reduce(f32[4,22,22]{2,1,0} %multiply.767, f32[] %constant.768), dimensions={1}, to_apply=%AddComputation.770
+  %constant.44 = f32[] constant(1)
+  %broadcast.775 = f32[4,22]{1,0} broadcast(f32[] %constant.44), dimensions={}
+  %multiply.776 = f32[4,22]{1,0} multiply(f32[4,22]{1,0} %reduce.774, f32[4,22]{1,0} %broadcast.775)
+  %add.777 = f32[4,22]{1,0} add(f32[4,22]{1,0} %slice.763, f32[4,22]{1,0} %multiply.776)
+  %constant.783 = f32[] constant(0)
+  %pad.784 = f32[4,64]{1,0} pad(f32[4,22]{1,0} %add.777, f32[] %constant.783), padding=0_0x0_42
+  %slice.778 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.758), slice={[0:4], [22:23], [0:64]}
+  %reshape.779 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.778)
+  %select.786 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.785, f32[4,64]{1,0} %pad.784, f32[4,64]{1,0} %reshape.779)
+  %reshape.787 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.786)
+  %constant.788 = s64[] constant(0)
+  %constant.789 = s64[] constant(22)
+  %constant.790 = s64[] constant(0)
+  %dynamic-update-slice.791 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.758, f32[4,1,64]{2,1,0} %reshape.787, s64[] %constant.788, s64[] %constant.789, s64[] %constant.790)
+  %constant.813 = pred[] constant(true)
+  %broadcast.814 = pred[4,23]{1,0} broadcast(pred[] %constant.813), dimensions={}
+  %constant.815 = pred[] constant(false)
+  %pad.818 = pred[4,64]{1,0} pad(pred[4,23]{1,0} %broadcast.814, pred[] %constant.815), padding=0_0x0_41
+  %slice.794 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.791), slice={[0:4], [23:24], [0:64]}
+  %reshape.795 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.794)
+  %slice.796 = f32[4,23]{1,0} slice(f32[4,64]{1,0} %reshape.795), slice={[0:4], [0:23]}
+  %reshape.797 = f32[4,23,1]{2,1,0} reshape(f32[4,23]{1,0} %slice.796)
+  %reshape.798 = f32[4,23]{1,0} reshape(f32[4,23,1]{2,1,0} %reshape.797)
+  %broadcast.799 = f32[4,23,23]{2,1,0} broadcast(f32[4,23]{1,0} %reshape.798), dimensions={0,1}
+  %slice.792 = f32[4,23,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.791), slice={[0:4], [0:23], [0:64]}
+  %slice.793 = f32[4,23,23]{2,1,0} slice(f32[4,23,64]{2,1,0} %slice.792), slice={[0:4], [0:23], [0:23]}
+  %multiply.800 = f32[4,23,23]{2,1,0} multiply(f32[4,23,23]{2,1,0} %broadcast.799, f32[4,23,23]{2,1,0} %slice.793)
+  %constant.801 = f32[] constant(0)
+  %reduce.807 = f32[4,23]{1,0} reduce(f32[4,23,23]{2,1,0} %multiply.800, f32[] %constant.801), dimensions={1}, to_apply=%AddComputation.803
+  %constant.43 = f32[] constant(1)
+  %broadcast.808 = f32[4,23]{1,0} broadcast(f32[] %constant.43), dimensions={}
+  %multiply.809 = f32[4,23]{1,0} multiply(f32[4,23]{1,0} %reduce.807, f32[4,23]{1,0} %broadcast.808)
+  %add.810 = f32[4,23]{1,0} add(f32[4,23]{1,0} %slice.796, f32[4,23]{1,0} %multiply.809)
+  %constant.816 = f32[] constant(0)
+  %pad.817 = f32[4,64]{1,0} pad(f32[4,23]{1,0} %add.810, f32[] %constant.816), padding=0_0x0_41
+  %slice.811 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.791), slice={[0:4], [23:24], [0:64]}
+  %reshape.812 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.811)
+  %select.819 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.818, f32[4,64]{1,0} %pad.817, f32[4,64]{1,0} %reshape.812)
+  %reshape.820 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.819)
+  %constant.821 = s64[] constant(0)
+  %constant.822 = s64[] constant(23)
+  %constant.823 = s64[] constant(0)
+  %dynamic-update-slice.824 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.791, f32[4,1,64]{2,1,0} %reshape.820, s64[] %constant.821, s64[] %constant.822, s64[] %constant.823)
+  %constant.846 = pred[] constant(true)
+  %broadcast.847 = pred[4,24]{1,0} broadcast(pred[] %constant.846), dimensions={}
+  %constant.848 = pred[] constant(false)
+  %pad.851 = pred[4,64]{1,0} pad(pred[4,24]{1,0} %broadcast.847, pred[] %constant.848), padding=0_0x0_40
+  %slice.827 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.824), slice={[0:4], [24:25], [0:64]}
+  %reshape.828 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.827)
+  %slice.829 = f32[4,24]{1,0} slice(f32[4,64]{1,0} %reshape.828), slice={[0:4], [0:24]}
+  %reshape.830 = f32[4,24,1]{2,1,0} reshape(f32[4,24]{1,0} %slice.829)
+  %reshape.831 = f32[4,24]{1,0} reshape(f32[4,24,1]{2,1,0} %reshape.830)
+  %broadcast.832 = f32[4,24,24]{2,1,0} broadcast(f32[4,24]{1,0} %reshape.831), dimensions={0,1}
+  %slice.825 = f32[4,24,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.824), slice={[0:4], [0:24], [0:64]}
+  %slice.826 = f32[4,24,24]{2,1,0} slice(f32[4,24,64]{2,1,0} %slice.825), slice={[0:4], [0:24], [0:24]}
+  %multiply.833 = f32[4,24,24]{2,1,0} multiply(f32[4,24,24]{2,1,0} %broadcast.832, f32[4,24,24]{2,1,0} %slice.826)
+  %constant.834 = f32[] constant(0)
+  %reduce.840 = f32[4,24]{1,0} reduce(f32[4,24,24]{2,1,0} %multiply.833, f32[] %constant.834), dimensions={1}, to_apply=%AddComputation.836
+  %constant.42 = f32[] constant(1)
+  %broadcast.841 = f32[4,24]{1,0} broadcast(f32[] %constant.42), dimensions={}
+  %multiply.842 = f32[4,24]{1,0} multiply(f32[4,24]{1,0} %reduce.840, f32[4,24]{1,0} %broadcast.841)
+  %add.843 = f32[4,24]{1,0} add(f32[4,24]{1,0} %slice.829, f32[4,24]{1,0} %multiply.842)
+  %constant.849 = f32[] constant(0)
+  %pad.850 = f32[4,64]{1,0} pad(f32[4,24]{1,0} %add.843, f32[] %constant.849), padding=0_0x0_40
+  %slice.844 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.824), slice={[0:4], [24:25], [0:64]}
+  %reshape.845 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.844)
+  %select.852 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.851, f32[4,64]{1,0} %pad.850, f32[4,64]{1,0} %reshape.845)
+  %reshape.853 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.852)
+  %constant.854 = s64[] constant(0)
+  %constant.855 = s64[] constant(24)
+  %constant.856 = s64[] constant(0)
+  %dynamic-update-slice.857 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.824, f32[4,1,64]{2,1,0} %reshape.853, s64[] %constant.854, s64[] %constant.855, s64[] %constant.856)
+  %constant.879 = pred[] constant(true)
+  %broadcast.880 = pred[4,25]{1,0} broadcast(pred[] %constant.879), dimensions={}
+  %constant.881 = pred[] constant(false)
+  %pad.884 = pred[4,64]{1,0} pad(pred[4,25]{1,0} %broadcast.880, pred[] %constant.881), padding=0_0x0_39
+  %slice.860 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.857), slice={[0:4], [25:26], [0:64]}
+  %reshape.861 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.860)
+  %slice.862 = f32[4,25]{1,0} slice(f32[4,64]{1,0} %reshape.861), slice={[0:4], [0:25]}
+  %reshape.863 = f32[4,25,1]{2,1,0} reshape(f32[4,25]{1,0} %slice.862)
+  %reshape.864 = f32[4,25]{1,0} reshape(f32[4,25,1]{2,1,0} %reshape.863)
+  %broadcast.865 = f32[4,25,25]{2,1,0} broadcast(f32[4,25]{1,0} %reshape.864), dimensions={0,1}
+  %slice.858 = f32[4,25,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.857), slice={[0:4], [0:25], [0:64]}
+  %slice.859 = f32[4,25,25]{2,1,0} slice(f32[4,25,64]{2,1,0} %slice.858), slice={[0:4], [0:25], [0:25]}
+  %multiply.866 = f32[4,25,25]{2,1,0} multiply(f32[4,25,25]{2,1,0} %broadcast.865, f32[4,25,25]{2,1,0} %slice.859)
+  %constant.867 = f32[] constant(0)
+  %reduce.873 = f32[4,25]{1,0} reduce(f32[4,25,25]{2,1,0} %multiply.866, f32[] %constant.867), dimensions={1}, to_apply=%AddComputation.869
+  %constant.41 = f32[] constant(1)
+  %broadcast.874 = f32[4,25]{1,0} broadcast(f32[] %constant.41), dimensions={}
+  %multiply.875 = f32[4,25]{1,0} multiply(f32[4,25]{1,0} %reduce.873, f32[4,25]{1,0} %broadcast.874)
+  %add.876 = f32[4,25]{1,0} add(f32[4,25]{1,0} %slice.862, f32[4,25]{1,0} %multiply.875)
+  %constant.882 = f32[] constant(0)
+  %pad.883 = f32[4,64]{1,0} pad(f32[4,25]{1,0} %add.876, f32[] %constant.882), padding=0_0x0_39
+  %slice.877 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.857), slice={[0:4], [25:26], [0:64]}
+  %reshape.878 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.877)
+  %select.885 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.884, f32[4,64]{1,0} %pad.883, f32[4,64]{1,0} %reshape.878)
+  %reshape.886 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.885)
+  %constant.887 = s64[] constant(0)
+  %constant.888 = s64[] constant(25)
+  %constant.889 = s64[] constant(0)
+  %dynamic-update-slice.890 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.857, f32[4,1,64]{2,1,0} %reshape.886, s64[] %constant.887, s64[] %constant.888, s64[] %constant.889)
+  %constant.912 = pred[] constant(true)
+  %broadcast.913 = pred[4,26]{1,0} broadcast(pred[] %constant.912), dimensions={}
+  %constant.914 = pred[] constant(false)
+  %pad.917 = pred[4,64]{1,0} pad(pred[4,26]{1,0} %broadcast.913, pred[] %constant.914), padding=0_0x0_38
+  %slice.893 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.890), slice={[0:4], [26:27], [0:64]}
+  %reshape.894 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.893)
+  %slice.895 = f32[4,26]{1,0} slice(f32[4,64]{1,0} %reshape.894), slice={[0:4], [0:26]}
+  %reshape.896 = f32[4,26,1]{2,1,0} reshape(f32[4,26]{1,0} %slice.895)
+  %reshape.897 = f32[4,26]{1,0} reshape(f32[4,26,1]{2,1,0} %reshape.896)
+  %broadcast.898 = f32[4,26,26]{2,1,0} broadcast(f32[4,26]{1,0} %reshape.897), dimensions={0,1}
+  %slice.891 = f32[4,26,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.890), slice={[0:4], [0:26], [0:64]}
+  %slice.892 = f32[4,26,26]{2,1,0} slice(f32[4,26,64]{2,1,0} %slice.891), slice={[0:4], [0:26], [0:26]}
+  %multiply.899 = f32[4,26,26]{2,1,0} multiply(f32[4,26,26]{2,1,0} %broadcast.898, f32[4,26,26]{2,1,0} %slice.892)
+  %constant.900 = f32[] constant(0)
+  %reduce.906 = f32[4,26]{1,0} reduce(f32[4,26,26]{2,1,0} %multiply.899, f32[] %constant.900), dimensions={1}, to_apply=%AddComputation.902
+  %constant.40 = f32[] constant(1)
+  %broadcast.907 = f32[4,26]{1,0} broadcast(f32[] %constant.40), dimensions={}
+  %multiply.908 = f32[4,26]{1,0} multiply(f32[4,26]{1,0} %reduce.906, f32[4,26]{1,0} %broadcast.907)
+  %add.909 = f32[4,26]{1,0} add(f32[4,26]{1,0} %slice.895, f32[4,26]{1,0} %multiply.908)
+  %constant.915 = f32[] constant(0)
+  %pad.916 = f32[4,64]{1,0} pad(f32[4,26]{1,0} %add.909, f32[] %constant.915), padding=0_0x0_38
+  %slice.910 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.890), slice={[0:4], [26:27], [0:64]}
+  %reshape.911 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.910)
+  %select.918 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.917, f32[4,64]{1,0} %pad.916, f32[4,64]{1,0} %reshape.911)
+  %reshape.919 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.918)
+  %constant.920 = s64[] constant(0)
+  %constant.921 = s64[] constant(26)
+  %constant.922 = s64[] constant(0)
+  %dynamic-update-slice.923 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.890, f32[4,1,64]{2,1,0} %reshape.919, s64[] %constant.920, s64[] %constant.921, s64[] %constant.922)
+  %constant.945 = pred[] constant(true)
+  %broadcast.946 = pred[4,27]{1,0} broadcast(pred[] %constant.945), dimensions={}
+  %constant.947 = pred[] constant(false)
+  %pad.950 = pred[4,64]{1,0} pad(pred[4,27]{1,0} %broadcast.946, pred[] %constant.947), padding=0_0x0_37
+  %slice.926 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.923), slice={[0:4], [27:28], [0:64]}
+  %reshape.927 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.926)
+  %slice.928 = f32[4,27]{1,0} slice(f32[4,64]{1,0} %reshape.927), slice={[0:4], [0:27]}
+  %reshape.929 = f32[4,27,1]{2,1,0} reshape(f32[4,27]{1,0} %slice.928)
+  %reshape.930 = f32[4,27]{1,0} reshape(f32[4,27,1]{2,1,0} %reshape.929)
+  %broadcast.931 = f32[4,27,27]{2,1,0} broadcast(f32[4,27]{1,0} %reshape.930), dimensions={0,1}
+  %slice.924 = f32[4,27,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.923), slice={[0:4], [0:27], [0:64]}
+  %slice.925 = f32[4,27,27]{2,1,0} slice(f32[4,27,64]{2,1,0} %slice.924), slice={[0:4], [0:27], [0:27]}
+  %multiply.932 = f32[4,27,27]{2,1,0} multiply(f32[4,27,27]{2,1,0} %broadcast.931, f32[4,27,27]{2,1,0} %slice.925)
+  %constant.933 = f32[] constant(0)
+  %reduce.939 = f32[4,27]{1,0} reduce(f32[4,27,27]{2,1,0} %multiply.932, f32[] %constant.933), dimensions={1}, to_apply=%AddComputation.935
+  %constant.39 = f32[] constant(1)
+  %broadcast.940 = f32[4,27]{1,0} broadcast(f32[] %constant.39), dimensions={}
+  %multiply.941 = f32[4,27]{1,0} multiply(f32[4,27]{1,0} %reduce.939, f32[4,27]{1,0} %broadcast.940)
+  %add.942 = f32[4,27]{1,0} add(f32[4,27]{1,0} %slice.928, f32[4,27]{1,0} %multiply.941)
+  %constant.948 = f32[] constant(0)
+  %pad.949 = f32[4,64]{1,0} pad(f32[4,27]{1,0} %add.942, f32[] %constant.948), padding=0_0x0_37
+  %slice.943 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.923), slice={[0:4], [27:28], [0:64]}
+  %reshape.944 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.943)
+  %select.951 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.950, f32[4,64]{1,0} %pad.949, f32[4,64]{1,0} %reshape.944)
+  %reshape.952 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.951)
+  %constant.953 = s64[] constant(0)
+  %constant.954 = s64[] constant(27)
+  %constant.955 = s64[] constant(0)
+  %dynamic-update-slice.956 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.923, f32[4,1,64]{2,1,0} %reshape.952, s64[] %constant.953, s64[] %constant.954, s64[] %constant.955)
+  %constant.978 = pred[] constant(true)
+  %broadcast.979 = pred[4,28]{1,0} broadcast(pred[] %constant.978), dimensions={}
+  %constant.980 = pred[] constant(false)
+  %pad.983 = pred[4,64]{1,0} pad(pred[4,28]{1,0} %broadcast.979, pred[] %constant.980), padding=0_0x0_36
+  %slice.959 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.956), slice={[0:4], [28:29], [0:64]}
+  %reshape.960 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.959)
+  %slice.961 = f32[4,28]{1,0} slice(f32[4,64]{1,0} %reshape.960), slice={[0:4], [0:28]}
+  %reshape.962 = f32[4,28,1]{2,1,0} reshape(f32[4,28]{1,0} %slice.961)
+  %reshape.963 = f32[4,28]{1,0} reshape(f32[4,28,1]{2,1,0} %reshape.962)
+  %broadcast.964 = f32[4,28,28]{2,1,0} broadcast(f32[4,28]{1,0} %reshape.963), dimensions={0,1}
+  %slice.957 = f32[4,28,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.956), slice={[0:4], [0:28], [0:64]}
+  %slice.958 = f32[4,28,28]{2,1,0} slice(f32[4,28,64]{2,1,0} %slice.957), slice={[0:4], [0:28], [0:28]}
+  %multiply.965 = f32[4,28,28]{2,1,0} multiply(f32[4,28,28]{2,1,0} %broadcast.964, f32[4,28,28]{2,1,0} %slice.958)
+  %constant.966 = f32[] constant(0)
+  %reduce.972 = f32[4,28]{1,0} reduce(f32[4,28,28]{2,1,0} %multiply.965, f32[] %constant.966), dimensions={1}, to_apply=%AddComputation.968
+  %constant.38 = f32[] constant(1)
+  %broadcast.973 = f32[4,28]{1,0} broadcast(f32[] %constant.38), dimensions={}
+  %multiply.974 = f32[4,28]{1,0} multiply(f32[4,28]{1,0} %reduce.972, f32[4,28]{1,0} %broadcast.973)
+  %add.975 = f32[4,28]{1,0} add(f32[4,28]{1,0} %slice.961, f32[4,28]{1,0} %multiply.974)
+  %constant.981 = f32[] constant(0)
+  %pad.982 = f32[4,64]{1,0} pad(f32[4,28]{1,0} %add.975, f32[] %constant.981), padding=0_0x0_36
+  %slice.976 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.956), slice={[0:4], [28:29], [0:64]}
+  %reshape.977 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.976)
+  %select.984 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.983, f32[4,64]{1,0} %pad.982, f32[4,64]{1,0} %reshape.977)
+  %reshape.985 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.984)
+  %constant.986 = s64[] constant(0)
+  %constant.987 = s64[] constant(28)
+  %constant.988 = s64[] constant(0)
+  %dynamic-update-slice.989 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.956, f32[4,1,64]{2,1,0} %reshape.985, s64[] %constant.986, s64[] %constant.987, s64[] %constant.988)
+  %constant.1011 = pred[] constant(true)
+  %broadcast.1012 = pred[4,29]{1,0} broadcast(pred[] %constant.1011), dimensions={}
+  %constant.1013 = pred[] constant(false)
+  %pad.1016 = pred[4,64]{1,0} pad(pred[4,29]{1,0} %broadcast.1012, pred[] %constant.1013), padding=0_0x0_35
+  %slice.992 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.989), slice={[0:4], [29:30], [0:64]}
+  %reshape.993 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.992)
+  %slice.994 = f32[4,29]{1,0} slice(f32[4,64]{1,0} %reshape.993), slice={[0:4], [0:29]}
+  %reshape.995 = f32[4,29,1]{2,1,0} reshape(f32[4,29]{1,0} %slice.994)
+  %reshape.996 = f32[4,29]{1,0} reshape(f32[4,29,1]{2,1,0} %reshape.995)
+  %broadcast.997 = f32[4,29,29]{2,1,0} broadcast(f32[4,29]{1,0} %reshape.996), dimensions={0,1}
+  %slice.990 = f32[4,29,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.989), slice={[0:4], [0:29], [0:64]}
+  %slice.991 = f32[4,29,29]{2,1,0} slice(f32[4,29,64]{2,1,0} %slice.990), slice={[0:4], [0:29], [0:29]}
+  %multiply.998 = f32[4,29,29]{2,1,0} multiply(f32[4,29,29]{2,1,0} %broadcast.997, f32[4,29,29]{2,1,0} %slice.991)
+  %constant.999 = f32[] constant(0)
+  %reduce.1005 = f32[4,29]{1,0} reduce(f32[4,29,29]{2,1,0} %multiply.998, f32[] %constant.999), dimensions={1}, to_apply=%AddComputation.1001
+  %constant.37 = f32[] constant(1)
+  %broadcast.1006 = f32[4,29]{1,0} broadcast(f32[] %constant.37), dimensions={}
+  %multiply.1007 = f32[4,29]{1,0} multiply(f32[4,29]{1,0} %reduce.1005, f32[4,29]{1,0} %broadcast.1006)
+  %add.1008 = f32[4,29]{1,0} add(f32[4,29]{1,0} %slice.994, f32[4,29]{1,0} %multiply.1007)
+  %constant.1014 = f32[] constant(0)
+  %pad.1015 = f32[4,64]{1,0} pad(f32[4,29]{1,0} %add.1008, f32[] %constant.1014), padding=0_0x0_35
+  %slice.1009 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.989), slice={[0:4], [29:30], [0:64]}
+  %reshape.1010 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1009)
+  %select.1017 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.1016, f32[4,64]{1,0} %pad.1015, f32[4,64]{1,0} %reshape.1010)
+  %reshape.1018 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.1017)
+  %constant.1019 = s64[] constant(0)
+  %constant.1020 = s64[] constant(29)
+  %constant.1021 = s64[] constant(0)
+  %dynamic-update-slice.1022 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.989, f32[4,1,64]{2,1,0} %reshape.1018, s64[] %constant.1019, s64[] %constant.1020, s64[] %constant.1021)
+  %constant.1044 = pred[] constant(true)
+  %broadcast.1045 = pred[4,30]{1,0} broadcast(pred[] %constant.1044), dimensions={}
+  %constant.1046 = pred[] constant(false)
+  %pad.1049 = pred[4,64]{1,0} pad(pred[4,30]{1,0} %broadcast.1045, pred[] %constant.1046), padding=0_0x0_34
+  %slice.1025 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1022), slice={[0:4], [30:31], [0:64]}
+  %reshape.1026 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1025)
+  %slice.1027 = f32[4,30]{1,0} slice(f32[4,64]{1,0} %reshape.1026), slice={[0:4], [0:30]}
+  %reshape.1028 = f32[4,30,1]{2,1,0} reshape(f32[4,30]{1,0} %slice.1027)
+  %reshape.1029 = f32[4,30]{1,0} reshape(f32[4,30,1]{2,1,0} %reshape.1028)
+  %broadcast.1030 = f32[4,30,30]{2,1,0} broadcast(f32[4,30]{1,0} %reshape.1029), dimensions={0,1}
+  %slice.1023 = f32[4,30,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1022), slice={[0:4], [0:30], [0:64]}
+  %slice.1024 = f32[4,30,30]{2,1,0} slice(f32[4,30,64]{2,1,0} %slice.1023), slice={[0:4], [0:30], [0:30]}
+  %multiply.1031 = f32[4,30,30]{2,1,0} multiply(f32[4,30,30]{2,1,0} %broadcast.1030, f32[4,30,30]{2,1,0} %slice.1024)
+  %constant.1032 = f32[] constant(0)
+  %reduce.1038 = f32[4,30]{1,0} reduce(f32[4,30,30]{2,1,0} %multiply.1031, f32[] %constant.1032), dimensions={1}, to_apply=%AddComputation.1034
+  %constant.36 = f32[] constant(1)
+  %broadcast.1039 = f32[4,30]{1,0} broadcast(f32[] %constant.36), dimensions={}
+  %multiply.1040 = f32[4,30]{1,0} multiply(f32[4,30]{1,0} %reduce.1038, f32[4,30]{1,0} %broadcast.1039)
+  %add.1041 = f32[4,30]{1,0} add(f32[4,30]{1,0} %slice.1027, f32[4,30]{1,0} %multiply.1040)
+  %constant.1047 = f32[] constant(0)
+  %pad.1048 = f32[4,64]{1,0} pad(f32[4,30]{1,0} %add.1041, f32[] %constant.1047), padding=0_0x0_34
+  %slice.1042 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1022), slice={[0:4], [30:31], [0:64]}
+  %reshape.1043 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1042)
+  %select.1050 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.1049, f32[4,64]{1,0} %pad.1048, f32[4,64]{1,0} %reshape.1043)
+  %reshape.1051 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.1050)
+  %constant.1052 = s64[] constant(0)
+  %constant.1053 = s64[] constant(30)
+  %constant.1054 = s64[] constant(0)
+  %dynamic-update-slice.1055 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1022, f32[4,1,64]{2,1,0} %reshape.1051, s64[] %constant.1052, s64[] %constant.1053, s64[] %constant.1054)
+  %constant.1077 = pred[] constant(true)
+  %broadcast.1078 = pred[4,31]{1,0} broadcast(pred[] %constant.1077), dimensions={}
+  %constant.1079 = pred[] constant(false)
+  %pad.1082 = pred[4,64]{1,0} pad(pred[4,31]{1,0} %broadcast.1078, pred[] %constant.1079), padding=0_0x0_33
+  %slice.1058 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1055), slice={[0:4], [31:32], [0:64]}
+  %reshape.1059 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1058)
+  %slice.1060 = f32[4,31]{1,0} slice(f32[4,64]{1,0} %reshape.1059), slice={[0:4], [0:31]}
+  %reshape.1061 = f32[4,31,1]{2,1,0} reshape(f32[4,31]{1,0} %slice.1060)
+  %reshape.1062 = f32[4,31]{1,0} reshape(f32[4,31,1]{2,1,0} %reshape.1061)
+  %broadcast.1063 = f32[4,31,31]{2,1,0} broadcast(f32[4,31]{1,0} %reshape.1062), dimensions={0,1}
+  %slice.1056 = f32[4,31,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1055), slice={[0:4], [0:31], [0:64]}
+  %slice.1057 = f32[4,31,31]{2,1,0} slice(f32[4,31,64]{2,1,0} %slice.1056), slice={[0:4], [0:31], [0:31]}
+  %multiply.1064 = f32[4,31,31]{2,1,0} multiply(f32[4,31,31]{2,1,0} %broadcast.1063, f32[4,31,31]{2,1,0} %slice.1057)
+  %constant.1065 = f32[] constant(0)
+  %reduce.1071 = f32[4,31]{1,0} reduce(f32[4,31,31]{2,1,0} %multiply.1064, f32[] %constant.1065), dimensions={1}, to_apply=%AddComputation.1067
+  %constant.35 = f32[] constant(1)
+  %broadcast.1072 = f32[4,31]{1,0} broadcast(f32[] %constant.35), dimensions={}
+  %multiply.1073 = f32[4,31]{1,0} multiply(f32[4,31]{1,0} %reduce.1071, f32[4,31]{1,0} %broadcast.1072)
+  %add.1074 = f32[4,31]{1,0} add(f32[4,31]{1,0} %slice.1060, f32[4,31]{1,0} %multiply.1073)
+  %constant.1080 = f32[] constant(0)
+  %pad.1081 = f32[4,64]{1,0} pad(f32[4,31]{1,0} %add.1074, f32[] %constant.1080), padding=0_0x0_33
+  %slice.1075 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1055), slice={[0:4], [31:32], [0:64]}
+  %reshape.1076 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1075)
+  %select.1083 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.1082, f32[4,64]{1,0} %pad.1081, f32[4,64]{1,0} %reshape.1076)
+  %reshape.1084 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.1083)
+  %constant.1085 = s64[] constant(0)
+  %constant.1086 = s64[] constant(31)
+  %constant.1087 = s64[] constant(0)
+  %dynamic-update-slice.1088 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1055, f32[4,1,64]{2,1,0} %reshape.1084, s64[] %constant.1085, s64[] %constant.1086, s64[] %constant.1087)
+  %constant.1110 = pred[] constant(true)
+  %broadcast.1111 = pred[4,32]{1,0} broadcast(pred[] %constant.1110), dimensions={}
+  %constant.1112 = pred[] constant(false)
+  %pad.1115 = pred[4,64]{1,0} pad(pred[4,32]{1,0} %broadcast.1111, pred[] %constant.1112), padding=0_0x0_32
+  %slice.1091 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1088), slice={[0:4], [32:33], [0:64]}
+  %reshape.1092 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1091)
+  %slice.1093 = f32[4,32]{1,0} slice(f32[4,64]{1,0} %reshape.1092), slice={[0:4], [0:32]}
+  %reshape.1094 = f32[4,32,1]{2,1,0} reshape(f32[4,32]{1,0} %slice.1093)
+  %reshape.1095 = f32[4,32]{1,0} reshape(f32[4,32,1]{2,1,0} %reshape.1094)
+  %broadcast.1096 = f32[4,32,32]{2,1,0} broadcast(f32[4,32]{1,0} %reshape.1095), dimensions={0,1}
+  %slice.1089 = f32[4,32,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1088), slice={[0:4], [0:32], [0:64]}
+  %slice.1090 = f32[4,32,32]{2,1,0} slice(f32[4,32,64]{2,1,0} %slice.1089), slice={[0:4], [0:32], [0:32]}
+  %multiply.1097 = f32[4,32,32]{2,1,0} multiply(f32[4,32,32]{2,1,0} %broadcast.1096, f32[4,32,32]{2,1,0} %slice.1090)
+  %constant.1098 = f32[] constant(0)
+  %reduce.1104 = f32[4,32]{1,0} reduce(f32[4,32,32]{2,1,0} %multiply.1097, f32[] %constant.1098), dimensions={1}, to_apply=%AddComputation.1100
+  %constant.34 = f32[] constant(1)
+  %broadcast.1105 = f32[4,32]{1,0} broadcast(f32[] %constant.34), dimensions={}
+  %multiply.1106 = f32[4,32]{1,0} multiply(f32[4,32]{1,0} %reduce.1104, f32[4,32]{1,0} %broadcast.1105)
+  %add.1107 = f32[4,32]{1,0} add(f32[4,32]{1,0} %slice.1093, f32[4,32]{1,0} %multiply.1106)
+  %constant.1113 = f32[] constant(0)
+  %pad.1114 = f32[4,64]{1,0} pad(f32[4,32]{1,0} %add.1107, f32[] %constant.1113), padding=0_0x0_32
+  %slice.1108 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1088), slice={[0:4], [32:33], [0:64]}
+  %reshape.1109 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1108)
+  %select.1116 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.1115, f32[4,64]{1,0} %pad.1114, f32[4,64]{1,0} %reshape.1109)
+  %reshape.1117 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.1116)
+  %constant.1118 = s64[] constant(0)
+  %constant.1119 = s64[] constant(32)
+  %constant.1120 = s64[] constant(0)
+  %dynamic-update-slice.1121 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1088, f32[4,1,64]{2,1,0} %reshape.1117, s64[] %constant.1118, s64[] %constant.1119, s64[] %constant.1120)
+  %constant.1143 = pred[] constant(true)
+  %broadcast.1144 = pred[4,33]{1,0} broadcast(pred[] %constant.1143), dimensions={}
+  %constant.1145 = pred[] constant(false)
+  %pad.1148 = pred[4,64]{1,0} pad(pred[4,33]{1,0} %broadcast.1144, pred[] %constant.1145), padding=0_0x0_31
+  %slice.1124 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1121), slice={[0:4], [33:34], [0:64]}
+  %reshape.1125 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1124)
+  %slice.1126 = f32[4,33]{1,0} slice(f32[4,64]{1,0} %reshape.1125), slice={[0:4], [0:33]}
+  %reshape.1127 = f32[4,33,1]{2,1,0} reshape(f32[4,33]{1,0} %slice.1126)
+  %reshape.1128 = f32[4,33]{1,0} reshape(f32[4,33,1]{2,1,0} %reshape.1127)
+  %broadcast.1129 = f32[4,33,33]{2,1,0} broadcast(f32[4,33]{1,0} %reshape.1128), dimensions={0,1}
+  %slice.1122 = f32[4,33,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1121), slice={[0:4], [0:33], [0:64]}
+  %slice.1123 = f32[4,33,33]{2,1,0} slice(f32[4,33,64]{2,1,0} %slice.1122), slice={[0:4], [0:33], [0:33]}
+  %multiply.1130 = f32[4,33,33]{2,1,0} multiply(f32[4,33,33]{2,1,0} %broadcast.1129, f32[4,33,33]{2,1,0} %slice.1123)
+  %constant.1131 = f32[] constant(0)
+  %reduce.1137 = f32[4,33]{1,0} reduce(f32[4,33,33]{2,1,0} %multiply.1130, f32[] %constant.1131), dimensions={1}, to_apply=%AddComputation.1133
+  %constant.33 = f32[] constant(1)
+  %broadcast.1138 = f32[4,33]{1,0} broadcast(f32[] %constant.33), dimensions={}
+  %multiply.1139 = f32[4,33]{1,0} multiply(f32[4,33]{1,0} %reduce.1137, f32[4,33]{1,0} %broadcast.1138)
+  %add.1140 = f32[4,33]{1,0} add(f32[4,33]{1,0} %slice.1126, f32[4,33]{1,0} %multiply.1139)
+  %constant.1146 = f32[] constant(0)
+  %pad.1147 = f32[4,64]{1,0} pad(f32[4,33]{1,0} %add.1140, f32[] %constant.1146), padding=0_0x0_31
+  %slice.1141 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1121), slice={[0:4], [33:34], [0:64]}
+  %reshape.1142 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1141)
+  %select.1149 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.1148, f32[4,64]{1,0} %pad.1147, f32[4,64]{1,0} %reshape.1142)
+  %reshape.1150 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.1149)
+  %constant.1151 = s64[] constant(0)
+  %constant.1152 = s64[] constant(33)
+  %constant.1153 = s64[] constant(0)
+  %dynamic-update-slice.1154 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1121, f32[4,1,64]{2,1,0} %reshape.1150, s64[] %constant.1151, s64[] %constant.1152, s64[] %constant.1153)
+  %constant.1176 = pred[] constant(true)
+  %broadcast.1177 = pred[4,34]{1,0} broadcast(pred[] %constant.1176), dimensions={}
+  %constant.1178 = pred[] constant(false)
+  %pad.1181 = pred[4,64]{1,0} pad(pred[4,34]{1,0} %broadcast.1177, pred[] %constant.1178), padding=0_0x0_30
+  %slice.1157 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1154), slice={[0:4], [34:35], [0:64]}
+  %reshape.1158 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1157)
+  %slice.1159 = f32[4,34]{1,0} slice(f32[4,64]{1,0} %reshape.1158), slice={[0:4], [0:34]}
+  %reshape.1160 = f32[4,34,1]{2,1,0} reshape(f32[4,34]{1,0} %slice.1159)
+  %reshape.1161 = f32[4,34]{1,0} reshape(f32[4,34,1]{2,1,0} %reshape.1160)
+  %broadcast.1162 = f32[4,34,34]{2,1,0} broadcast(f32[4,34]{1,0} %reshape.1161), dimensions={0,1}
+  %slice.1155 = f32[4,34,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1154), slice={[0:4], [0:34], [0:64]}
+  %slice.1156 = f32[4,34,34]{2,1,0} slice(f32[4,34,64]{2,1,0} %slice.1155), slice={[0:4], [0:34], [0:34]}
+  %multiply.1163 = f32[4,34,34]{2,1,0} multiply(f32[4,34,34]{2,1,0} %broadcast.1162, f32[4,34,34]{2,1,0} %slice.1156)
+  %constant.1164 = f32[] constant(0)
+  %reduce.1170 = f32[4,34]{1,0} reduce(f32[4,34,34]{2,1,0} %multiply.1163, f32[] %constant.1164), dimensions={1}, to_apply=%AddComputation.1166
+  %constant.32 = f32[] constant(1)
+  %broadcast.1171 = f32[4,34]{1,0} broadcast(f32[] %constant.32), dimensions={}
+  %multiply.1172 = f32[4,34]{1,0} multiply(f32[4,34]{1,0} %reduce.1170, f32[4,34]{1,0} %broadcast.1171)
+  %add.1173 = f32[4,34]{1,0} add(f32[4,34]{1,0} %slice.1159, f32[4,34]{1,0} %multiply.1172)
+  %constant.1179 = f32[] constant(0)
+  %pad.1180 = f32[4,64]{1,0} pad(f32[4,34]{1,0} %add.1173, f32[] %constant.1179), padding=0_0x0_30
+  %slice.1174 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1154), slice={[0:4], [34:35], [0:64]}
+  %reshape.1175 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1174)
+  %select.1182 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.1181, f32[4,64]{1,0} %pad.1180, f32[4,64]{1,0} %reshape.1175)
+  %reshape.1183 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.1182)
+  %constant.1184 = s64[] constant(0)
+  %constant.1185 = s64[] constant(34)
+  %constant.1186 = s64[] constant(0)
+  %dynamic-update-slice.1187 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1154, f32[4,1,64]{2,1,0} %reshape.1183, s64[] %constant.1184, s64[] %constant.1185, s64[] %constant.1186)
+  %constant.1209 = pred[] constant(true)
+  %broadcast.1210 = pred[4,35]{1,0} broadcast(pred[] %constant.1209), dimensions={}
+  %constant.1211 = pred[] constant(false)
+  %pad.1214 = pred[4,64]{1,0} pad(pred[4,35]{1,0} %broadcast.1210, pred[] %constant.1211), padding=0_0x0_29
+  %slice.1190 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1187), slice={[0:4], [35:36], [0:64]}
+  %reshape.1191 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1190)
+  %slice.1192 = f32[4,35]{1,0} slice(f32[4,64]{1,0} %reshape.1191), slice={[0:4], [0:35]}
+  %reshape.1193 = f32[4,35,1]{2,1,0} reshape(f32[4,35]{1,0} %slice.1192)
+  %reshape.1194 = f32[4,35]{1,0} reshape(f32[4,35,1]{2,1,0} %reshape.1193)
+  %broadcast.1195 = f32[4,35,35]{2,1,0} broadcast(f32[4,35]{1,0} %reshape.1194), dimensions={0,1}
+  %slice.1188 = f32[4,35,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1187), slice={[0:4], [0:35], [0:64]}
+  %slice.1189 = f32[4,35,35]{2,1,0} slice(f32[4,35,64]{2,1,0} %slice.1188), slice={[0:4], [0:35], [0:35]}
+  %multiply.1196 = f32[4,35,35]{2,1,0} multiply(f32[4,35,35]{2,1,0} %broadcast.1195, f32[4,35,35]{2,1,0} %slice.1189)
+  %constant.1197 = f32[] constant(0)
+  %reduce.1203 = f32[4,35]{1,0} reduce(f32[4,35,35]{2,1,0} %multiply.1196, f32[] %constant.1197), dimensions={1}, to_apply=%AddComputation.1199
+  %constant.31 = f32[] constant(1)
+  %broadcast.1204 = f32[4,35]{1,0} broadcast(f32[] %constant.31), dimensions={}
+  %multiply.1205 = f32[4,35]{1,0} multiply(f32[4,35]{1,0} %reduce.1203, f32[4,35]{1,0} %broadcast.1204)
+  %add.1206 = f32[4,35]{1,0} add(f32[4,35]{1,0} %slice.1192, f32[4,35]{1,0} %multiply.1205)
+  %constant.1212 = f32[] constant(0)
+  %pad.1213 = f32[4,64]{1,0} pad(f32[4,35]{1,0} %add.1206, f32[] %constant.1212), padding=0_0x0_29
+  %slice.1207 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1187), slice={[0:4], [35:36], [0:64]}
+  %reshape.1208 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1207)
+  %select.1215 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.1214, f32[4,64]{1,0} %pad.1213, f32[4,64]{1,0} %reshape.1208)
+  %reshape.1216 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.1215)
+  %constant.1217 = s64[] constant(0)
+  %constant.1218 = s64[] constant(35)
+  %constant.1219 = s64[] constant(0)
+  %dynamic-update-slice.1220 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1187, f32[4,1,64]{2,1,0} %reshape.1216, s64[] %constant.1217, s64[] %constant.1218, s64[] %constant.1219)
+  %constant.1242 = pred[] constant(true)
+  %broadcast.1243 = pred[4,36]{1,0} broadcast(pred[] %constant.1242), dimensions={}
+  %constant.1244 = pred[] constant(false)
+  %pad.1247 = pred[4,64]{1,0} pad(pred[4,36]{1,0} %broadcast.1243, pred[] %constant.1244), padding=0_0x0_28
+  %slice.1223 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1220), slice={[0:4], [36:37], [0:64]}
+  %reshape.1224 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1223)
+  %slice.1225 = f32[4,36]{1,0} slice(f32[4,64]{1,0} %reshape.1224), slice={[0:4], [0:36]}
+  %reshape.1226 = f32[4,36,1]{2,1,0} reshape(f32[4,36]{1,0} %slice.1225)
+  %reshape.1227 = f32[4,36]{1,0} reshape(f32[4,36,1]{2,1,0} %reshape.1226)
+  %broadcast.1228 = f32[4,36,36]{2,1,0} broadcast(f32[4,36]{1,0} %reshape.1227), dimensions={0,1}
+  %slice.1221 = f32[4,36,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1220), slice={[0:4], [0:36], [0:64]}
+  %slice.1222 = f32[4,36,36]{2,1,0} slice(f32[4,36,64]{2,1,0} %slice.1221), slice={[0:4], [0:36], [0:36]}
+  %multiply.1229 = f32[4,36,36]{2,1,0} multiply(f32[4,36,36]{2,1,0} %broadcast.1228, f32[4,36,36]{2,1,0} %slice.1222)
+  %constant.1230 = f32[] constant(0)
+  %reduce.1236 = f32[4,36]{1,0} reduce(f32[4,36,36]{2,1,0} %multiply.1229, f32[] %constant.1230), dimensions={1}, to_apply=%AddComputation.1232
+  %constant.30 = f32[] constant(1)
+  %broadcast.1237 = f32[4,36]{1,0} broadcast(f32[] %constant.30), dimensions={}
+  %multiply.1238 = f32[4,36]{1,0} multiply(f32[4,36]{1,0} %reduce.1236, f32[4,36]{1,0} %broadcast.1237)
+  %add.1239 = f32[4,36]{1,0} add(f32[4,36]{1,0} %slice.1225, f32[4,36]{1,0} %multiply.1238)
+  %constant.1245 = f32[] constant(0)
+  %pad.1246 = f32[4,64]{1,0} pad(f32[4,36]{1,0} %add.1239, f32[] %constant.1245), padding=0_0x0_28
+  %slice.1240 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1220), slice={[0:4], [36:37], [0:64]}
+  %reshape.1241 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1240)
+  %select.1248 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.1247, f32[4,64]{1,0} %pad.1246, f32[4,64]{1,0} %reshape.1241)
+  %reshape.1249 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.1248)
+  %constant.1250 = s64[] constant(0)
+  %constant.1251 = s64[] constant(36)
+  %constant.1252 = s64[] constant(0)
+  %dynamic-update-slice.1253 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1220, f32[4,1,64]{2,1,0} %reshape.1249, s64[] %constant.1250, s64[] %constant.1251, s64[] %constant.1252)
+  %constant.1275 = pred[] constant(true)
+  %broadcast.1276 = pred[4,37]{1,0} broadcast(pred[] %constant.1275), dimensions={}
+  %constant.1277 = pred[] constant(false)
+  %pad.1280 = pred[4,64]{1,0} pad(pred[4,37]{1,0} %broadcast.1276, pred[] %constant.1277), padding=0_0x0_27
+  %slice.1256 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1253), slice={[0:4], [37:38], [0:64]}
+  %reshape.1257 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1256)
+  %slice.1258 = f32[4,37]{1,0} slice(f32[4,64]{1,0} %reshape.1257), slice={[0:4], [0:37]}
+  %reshape.1259 = f32[4,37,1]{2,1,0} reshape(f32[4,37]{1,0} %slice.1258)
+  %reshape.1260 = f32[4,37]{1,0} reshape(f32[4,37,1]{2,1,0} %reshape.1259)
+  %broadcast.1261 = f32[4,37,37]{2,1,0} broadcast(f32[4,37]{1,0} %reshape.1260), dimensions={0,1}
+  %slice.1254 = f32[4,37,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1253), slice={[0:4], [0:37], [0:64]}
+  %slice.1255 = f32[4,37,37]{2,1,0} slice(f32[4,37,64]{2,1,0} %slice.1254), slice={[0:4], [0:37], [0:37]}
+  %multiply.1262 = f32[4,37,37]{2,1,0} multiply(f32[4,37,37]{2,1,0} %broadcast.1261, f32[4,37,37]{2,1,0} %slice.1255)
+  %constant.1263 = f32[] constant(0)
+  %reduce.1269 = f32[4,37]{1,0} reduce(f32[4,37,37]{2,1,0} %multiply.1262, f32[] %constant.1263), dimensions={1}, to_apply=%AddComputation.1265
+  %constant.29 = f32[] constant(1)
+  %broadcast.1270 = f32[4,37]{1,0} broadcast(f32[] %constant.29), dimensions={}
+  %multiply.1271 = f32[4,37]{1,0} multiply(f32[4,37]{1,0} %reduce.1269, f32[4,37]{1,0} %broadcast.1270)
+  %add.1272 = f32[4,37]{1,0} add(f32[4,37]{1,0} %slice.1258, f32[4,37]{1,0} %multiply.1271)
+  %constant.1278 = f32[] constant(0)
+  %pad.1279 = f32[4,64]{1,0} pad(f32[4,37]{1,0} %add.1272, f32[] %constant.1278), padding=0_0x0_27
+  %slice.1273 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1253), slice={[0:4], [37:38], [0:64]}
+  %reshape.1274 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1273)
+  %select.1281 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.1280, f32[4,64]{1,0} %pad.1279, f32[4,64]{1,0} %reshape.1274)
+  %reshape.1282 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.1281)
+  %constant.1283 = s64[] constant(0)
+  %constant.1284 = s64[] constant(37)
+  %constant.1285 = s64[] constant(0)
+  %dynamic-update-slice.1286 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1253, f32[4,1,64]{2,1,0} %reshape.1282, s64[] %constant.1283, s64[] %constant.1284, s64[] %constant.1285)
+  %constant.1308 = pred[] constant(true)
+  %broadcast.1309 = pred[4,38]{1,0} broadcast(pred[] %constant.1308), dimensions={}
+  %constant.1310 = pred[] constant(false)
+  %pad.1313 = pred[4,64]{1,0} pad(pred[4,38]{1,0} %broadcast.1309, pred[] %constant.1310), padding=0_0x0_26
+  %slice.1289 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1286), slice={[0:4], [38:39], [0:64]}
+  %reshape.1290 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1289)
+  %slice.1291 = f32[4,38]{1,0} slice(f32[4,64]{1,0} %reshape.1290), slice={[0:4], [0:38]}
+  %reshape.1292 = f32[4,38,1]{2,1,0} reshape(f32[4,38]{1,0} %slice.1291)
+  %reshape.1293 = f32[4,38]{1,0} reshape(f32[4,38,1]{2,1,0} %reshape.1292)
+  %broadcast.1294 = f32[4,38,38]{2,1,0} broadcast(f32[4,38]{1,0} %reshape.1293), dimensions={0,1}
+  %slice.1287 = f32[4,38,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1286), slice={[0:4], [0:38], [0:64]}
+  %slice.1288 = f32[4,38,38]{2,1,0} slice(f32[4,38,64]{2,1,0} %slice.1287), slice={[0:4], [0:38], [0:38]}
+  %multiply.1295 = f32[4,38,38]{2,1,0} multiply(f32[4,38,38]{2,1,0} %broadcast.1294, f32[4,38,38]{2,1,0} %slice.1288)
+  %constant.1296 = f32[] constant(0)
+  %reduce.1302 = f32[4,38]{1,0} reduce(f32[4,38,38]{2,1,0} %multiply.1295, f32[] %constant.1296), dimensions={1}, to_apply=%AddComputation.1298
+  %constant.28 = f32[] constant(1)
+  %broadcast.1303 = f32[4,38]{1,0} broadcast(f32[] %constant.28), dimensions={}
+  %multiply.1304 = f32[4,38]{1,0} multiply(f32[4,38]{1,0} %reduce.1302, f32[4,38]{1,0} %broadcast.1303)
+  %add.1305 = f32[4,38]{1,0} add(f32[4,38]{1,0} %slice.1291, f32[4,38]{1,0} %multiply.1304)
+  %constant.1311 = f32[] constant(0)
+  %pad.1312 = f32[4,64]{1,0} pad(f32[4,38]{1,0} %add.1305, f32[] %constant.1311), padding=0_0x0_26
+  %slice.1306 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1286), slice={[0:4], [38:39], [0:64]}
+  %reshape.1307 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1306)
+  %select.1314 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.1313, f32[4,64]{1,0} %pad.1312, f32[4,64]{1,0} %reshape.1307)
+  %reshape.1315 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.1314)
+  %constant.1316 = s64[] constant(0)
+  %constant.1317 = s64[] constant(38)
+  %constant.1318 = s64[] constant(0)
+  %dynamic-update-slice.1319 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1286, f32[4,1,64]{2,1,0} %reshape.1315, s64[] %constant.1316, s64[] %constant.1317, s64[] %constant.1318)
+  %constant.1341 = pred[] constant(true)
+  %broadcast.1342 = pred[4,39]{1,0} broadcast(pred[] %constant.1341), dimensions={}
+  %constant.1343 = pred[] constant(false)
+  %pad.1346 = pred[4,64]{1,0} pad(pred[4,39]{1,0} %broadcast.1342, pred[] %constant.1343), padding=0_0x0_25
+  %slice.1322 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1319), slice={[0:4], [39:40], [0:64]}
+  %reshape.1323 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1322)
+  %slice.1324 = f32[4,39]{1,0} slice(f32[4,64]{1,0} %reshape.1323), slice={[0:4], [0:39]}
+  %reshape.1325 = f32[4,39,1]{2,1,0} reshape(f32[4,39]{1,0} %slice.1324)
+  %reshape.1326 = f32[4,39]{1,0} reshape(f32[4,39,1]{2,1,0} %reshape.1325)
+  %broadcast.1327 = f32[4,39,39]{2,1,0} broadcast(f32[4,39]{1,0} %reshape.1326), dimensions={0,1}
+  %slice.1320 = f32[4,39,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1319), slice={[0:4], [0:39], [0:64]}
+  %slice.1321 = f32[4,39,39]{2,1,0} slice(f32[4,39,64]{2,1,0} %slice.1320), slice={[0:4], [0:39], [0:39]}
+  %multiply.1328 = f32[4,39,39]{2,1,0} multiply(f32[4,39,39]{2,1,0} %broadcast.1327, f32[4,39,39]{2,1,0} %slice.1321)
+  %constant.1329 = f32[] constant(0)
+  %reduce.1335 = f32[4,39]{1,0} reduce(f32[4,39,39]{2,1,0} %multiply.1328, f32[] %constant.1329), dimensions={1}, to_apply=%AddComputation.1331
+  %constant.27 = f32[] constant(1)
+  %broadcast.1336 = f32[4,39]{1,0} broadcast(f32[] %constant.27), dimensions={}
+  %multiply.1337 = f32[4,39]{1,0} multiply(f32[4,39]{1,0} %reduce.1335, f32[4,39]{1,0} %broadcast.1336)
+  %add.1338 = f32[4,39]{1,0} add(f32[4,39]{1,0} %slice.1324, f32[4,39]{1,0} %multiply.1337)
+  %constant.1344 = f32[] constant(0)
+  %pad.1345 = f32[4,64]{1,0} pad(f32[4,39]{1,0} %add.1338, f32[] %constant.1344), padding=0_0x0_25
+  %slice.1339 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1319), slice={[0:4], [39:40], [0:64]}
+  %reshape.1340 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1339)
+  %select.1347 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.1346, f32[4,64]{1,0} %pad.1345, f32[4,64]{1,0} %reshape.1340)
+  %reshape.1348 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.1347)
+  %constant.1349 = s64[] constant(0)
+  %constant.1350 = s64[] constant(39)
+  %constant.1351 = s64[] constant(0)
+  %dynamic-update-slice.1352 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1319, f32[4,1,64]{2,1,0} %reshape.1348, s64[] %constant.1349, s64[] %constant.1350, s64[] %constant.1351)
+  %constant.1374 = pred[] constant(true)
+  %broadcast.1375 = pred[4,40]{1,0} broadcast(pred[] %constant.1374), dimensions={}
+  %constant.1376 = pred[] constant(false)
+  %pad.1379 = pred[4,64]{1,0} pad(pred[4,40]{1,0} %broadcast.1375, pred[] %constant.1376), padding=0_0x0_24
+  %slice.1355 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1352), slice={[0:4], [40:41], [0:64]}
+  %reshape.1356 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1355)
+  %slice.1357 = f32[4,40]{1,0} slice(f32[4,64]{1,0} %reshape.1356), slice={[0:4], [0:40]}
+  %reshape.1358 = f32[4,40,1]{2,1,0} reshape(f32[4,40]{1,0} %slice.1357)
+  %reshape.1359 = f32[4,40]{1,0} reshape(f32[4,40,1]{2,1,0} %reshape.1358)
+  %broadcast.1360 = f32[4,40,40]{2,1,0} broadcast(f32[4,40]{1,0} %reshape.1359), dimensions={0,1}
+  %slice.1353 = f32[4,40,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1352), slice={[0:4], [0:40], [0:64]}
+  %slice.1354 = f32[4,40,40]{2,1,0} slice(f32[4,40,64]{2,1,0} %slice.1353), slice={[0:4], [0:40], [0:40]}
+  %multiply.1361 = f32[4,40,40]{2,1,0} multiply(f32[4,40,40]{2,1,0} %broadcast.1360, f32[4,40,40]{2,1,0} %slice.1354)
+  %constant.1362 = f32[] constant(0)
+  %reduce.1368 = f32[4,40]{1,0} reduce(f32[4,40,40]{2,1,0} %multiply.1361, f32[] %constant.1362), dimensions={1}, to_apply=%AddComputation.1364
+  %constant.26 = f32[] constant(1)
+  %broadcast.1369 = f32[4,40]{1,0} broadcast(f32[] %constant.26), dimensions={}
+  %multiply.1370 = f32[4,40]{1,0} multiply(f32[4,40]{1,0} %reduce.1368, f32[4,40]{1,0} %broadcast.1369)
+  %add.1371 = f32[4,40]{1,0} add(f32[4,40]{1,0} %slice.1357, f32[4,40]{1,0} %multiply.1370)
+  %constant.1377 = f32[] constant(0)
+  %pad.1378 = f32[4,64]{1,0} pad(f32[4,40]{1,0} %add.1371, f32[] %constant.1377), padding=0_0x0_24
+  %slice.1372 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1352), slice={[0:4], [40:41], [0:64]}
+  %reshape.1373 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1372)
+  %select.1380 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.1379, f32[4,64]{1,0} %pad.1378, f32[4,64]{1,0} %reshape.1373)
+  %reshape.1381 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.1380)
+  %constant.1382 = s64[] constant(0)
+  %constant.1383 = s64[] constant(40)
+  %constant.1384 = s64[] constant(0)
+  %dynamic-update-slice.1385 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1352, f32[4,1,64]{2,1,0} %reshape.1381, s64[] %constant.1382, s64[] %constant.1383, s64[] %constant.1384)
+  %constant.1407 = pred[] constant(true)
+  %broadcast.1408 = pred[4,41]{1,0} broadcast(pred[] %constant.1407), dimensions={}
+  %constant.1409 = pred[] constant(false)
+  %pad.1412 = pred[4,64]{1,0} pad(pred[4,41]{1,0} %broadcast.1408, pred[] %constant.1409), padding=0_0x0_23
+  %slice.1388 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1385), slice={[0:4], [41:42], [0:64]}
+  %reshape.1389 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1388)
+  %slice.1390 = f32[4,41]{1,0} slice(f32[4,64]{1,0} %reshape.1389), slice={[0:4], [0:41]}
+  %reshape.1391 = f32[4,41,1]{2,1,0} reshape(f32[4,41]{1,0} %slice.1390)
+  %reshape.1392 = f32[4,41]{1,0} reshape(f32[4,41,1]{2,1,0} %reshape.1391)
+  %broadcast.1393 = f32[4,41,41]{2,1,0} broadcast(f32[4,41]{1,0} %reshape.1392), dimensions={0,1}
+  %slice.1386 = f32[4,41,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1385), slice={[0:4], [0:41], [0:64]}
+  %slice.1387 = f32[4,41,41]{2,1,0} slice(f32[4,41,64]{2,1,0} %slice.1386), slice={[0:4], [0:41], [0:41]}
+  %multiply.1394 = f32[4,41,41]{2,1,0} multiply(f32[4,41,41]{2,1,0} %broadcast.1393, f32[4,41,41]{2,1,0} %slice.1387)
+  %constant.1395 = f32[] constant(0)
+  %reduce.1401 = f32[4,41]{1,0} reduce(f32[4,41,41]{2,1,0} %multiply.1394, f32[] %constant.1395), dimensions={1}, to_apply=%AddComputation.1397
+  %constant.25 = f32[] constant(1)
+  %broadcast.1402 = f32[4,41]{1,0} broadcast(f32[] %constant.25), dimensions={}
+  %multiply.1403 = f32[4,41]{1,0} multiply(f32[4,41]{1,0} %reduce.1401, f32[4,41]{1,0} %broadcast.1402)
+  %add.1404 = f32[4,41]{1,0} add(f32[4,41]{1,0} %slice.1390, f32[4,41]{1,0} %multiply.1403)
+  %constant.1410 = f32[] constant(0)
+  %pad.1411 = f32[4,64]{1,0} pad(f32[4,41]{1,0} %add.1404, f32[] %constant.1410), padding=0_0x0_23
+  %slice.1405 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1385), slice={[0:4], [41:42], [0:64]}
+  %reshape.1406 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1405)
+  %select.1413 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.1412, f32[4,64]{1,0} %pad.1411, f32[4,64]{1,0} %reshape.1406)
+  %reshape.1414 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.1413)
+  %constant.1415 = s64[] constant(0)
+  %constant.1416 = s64[] constant(41)
+  %constant.1417 = s64[] constant(0)
+  %dynamic-update-slice.1418 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1385, f32[4,1,64]{2,1,0} %reshape.1414, s64[] %constant.1415, s64[] %constant.1416, s64[] %constant.1417)
+  %constant.1440 = pred[] constant(true)
+  %broadcast.1441 = pred[4,42]{1,0} broadcast(pred[] %constant.1440), dimensions={}
+  %constant.1442 = pred[] constant(false)
+  %pad.1445 = pred[4,64]{1,0} pad(pred[4,42]{1,0} %broadcast.1441, pred[] %constant.1442), padding=0_0x0_22
+  %slice.1421 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1418), slice={[0:4], [42:43], [0:64]}
+  %reshape.1422 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1421)
+  %slice.1423 = f32[4,42]{1,0} slice(f32[4,64]{1,0} %reshape.1422), slice={[0:4], [0:42]}
+  %reshape.1424 = f32[4,42,1]{2,1,0} reshape(f32[4,42]{1,0} %slice.1423)
+  %reshape.1425 = f32[4,42]{1,0} reshape(f32[4,42,1]{2,1,0} %reshape.1424)
+  %broadcast.1426 = f32[4,42,42]{2,1,0} broadcast(f32[4,42]{1,0} %reshape.1425), dimensions={0,1}
+  %slice.1419 = f32[4,42,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1418), slice={[0:4], [0:42], [0:64]}
+  %slice.1420 = f32[4,42,42]{2,1,0} slice(f32[4,42,64]{2,1,0} %slice.1419), slice={[0:4], [0:42], [0:42]}
+  %multiply.1427 = f32[4,42,42]{2,1,0} multiply(f32[4,42,42]{2,1,0} %broadcast.1426, f32[4,42,42]{2,1,0} %slice.1420)
+  %constant.1428 = f32[] constant(0)
+  %reduce.1434 = f32[4,42]{1,0} reduce(f32[4,42,42]{2,1,0} %multiply.1427, f32[] %constant.1428), dimensions={1}, to_apply=%AddComputation.1430
+  %constant.24 = f32[] constant(1)
+  %broadcast.1435 = f32[4,42]{1,0} broadcast(f32[] %constant.24), dimensions={}
+  %multiply.1436 = f32[4,42]{1,0} multiply(f32[4,42]{1,0} %reduce.1434, f32[4,42]{1,0} %broadcast.1435)
+  %add.1437 = f32[4,42]{1,0} add(f32[4,42]{1,0} %slice.1423, f32[4,42]{1,0} %multiply.1436)
+  %constant.1443 = f32[] constant(0)
+  %pad.1444 = f32[4,64]{1,0} pad(f32[4,42]{1,0} %add.1437, f32[] %constant.1443), padding=0_0x0_22
+  %slice.1438 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1418), slice={[0:4], [42:43], [0:64]}
+  %reshape.1439 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1438)
+  %select.1446 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.1445, f32[4,64]{1,0} %pad.1444, f32[4,64]{1,0} %reshape.1439)
+  %reshape.1447 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.1446)
+  %constant.1448 = s64[] constant(0)
+  %constant.1449 = s64[] constant(42)
+  %constant.1450 = s64[] constant(0)
+  %dynamic-update-slice.1451 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1418, f32[4,1,64]{2,1,0} %reshape.1447, s64[] %constant.1448, s64[] %constant.1449, s64[] %constant.1450)
+  %constant.1473 = pred[] constant(true)
+  %broadcast.1474 = pred[4,43]{1,0} broadcast(pred[] %constant.1473), dimensions={}
+  %constant.1475 = pred[] constant(false)
+  %pad.1478 = pred[4,64]{1,0} pad(pred[4,43]{1,0} %broadcast.1474, pred[] %constant.1475), padding=0_0x0_21
+  %slice.1454 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1451), slice={[0:4], [43:44], [0:64]}
+  %reshape.1455 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1454)
+  %slice.1456 = f32[4,43]{1,0} slice(f32[4,64]{1,0} %reshape.1455), slice={[0:4], [0:43]}
+  %reshape.1457 = f32[4,43,1]{2,1,0} reshape(f32[4,43]{1,0} %slice.1456)
+  %reshape.1458 = f32[4,43]{1,0} reshape(f32[4,43,1]{2,1,0} %reshape.1457)
+  %broadcast.1459 = f32[4,43,43]{2,1,0} broadcast(f32[4,43]{1,0} %reshape.1458), dimensions={0,1}
+  %slice.1452 = f32[4,43,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1451), slice={[0:4], [0:43], [0:64]}
+  %slice.1453 = f32[4,43,43]{2,1,0} slice(f32[4,43,64]{2,1,0} %slice.1452), slice={[0:4], [0:43], [0:43]}
+  %multiply.1460 = f32[4,43,43]{2,1,0} multiply(f32[4,43,43]{2,1,0} %broadcast.1459, f32[4,43,43]{2,1,0} %slice.1453)
+  %constant.1461 = f32[] constant(0)
+  %reduce.1467 = f32[4,43]{1,0} reduce(f32[4,43,43]{2,1,0} %multiply.1460, f32[] %constant.1461), dimensions={1}, to_apply=%AddComputation.1463
+  %constant.23 = f32[] constant(1)
+  %broadcast.1468 = f32[4,43]{1,0} broadcast(f32[] %constant.23), dimensions={}
+  %multiply.1469 = f32[4,43]{1,0} multiply(f32[4,43]{1,0} %reduce.1467, f32[4,43]{1,0} %broadcast.1468)
+  %add.1470 = f32[4,43]{1,0} add(f32[4,43]{1,0} %slice.1456, f32[4,43]{1,0} %multiply.1469)
+  %constant.1476 = f32[] constant(0)
+  %pad.1477 = f32[4,64]{1,0} pad(f32[4,43]{1,0} %add.1470, f32[] %constant.1476), padding=0_0x0_21
+  %slice.1471 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1451), slice={[0:4], [43:44], [0:64]}
+  %reshape.1472 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1471)
+  %select.1479 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.1478, f32[4,64]{1,0} %pad.1477, f32[4,64]{1,0} %reshape.1472)
+  %reshape.1480 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.1479)
+  %constant.1481 = s64[] constant(0)
+  %constant.1482 = s64[] constant(43)
+  %constant.1483 = s64[] constant(0)
+  %dynamic-update-slice.1484 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1451, f32[4,1,64]{2,1,0} %reshape.1480, s64[] %constant.1481, s64[] %constant.1482, s64[] %constant.1483)
+  %constant.1506 = pred[] constant(true)
+  %broadcast.1507 = pred[4,44]{1,0} broadcast(pred[] %constant.1506), dimensions={}
+  %constant.1508 = pred[] constant(false)
+  %pad.1511 = pred[4,64]{1,0} pad(pred[4,44]{1,0} %broadcast.1507, pred[] %constant.1508), padding=0_0x0_20
+  %slice.1487 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1484), slice={[0:4], [44:45], [0:64]}
+  %reshape.1488 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1487)
+  %slice.1489 = f32[4,44]{1,0} slice(f32[4,64]{1,0} %reshape.1488), slice={[0:4], [0:44]}
+  %reshape.1490 = f32[4,44,1]{2,1,0} reshape(f32[4,44]{1,0} %slice.1489)
+  %reshape.1491 = f32[4,44]{1,0} reshape(f32[4,44,1]{2,1,0} %reshape.1490)
+  %broadcast.1492 = f32[4,44,44]{2,1,0} broadcast(f32[4,44]{1,0} %reshape.1491), dimensions={0,1}
+  %slice.1485 = f32[4,44,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1484), slice={[0:4], [0:44], [0:64]}
+  %slice.1486 = f32[4,44,44]{2,1,0} slice(f32[4,44,64]{2,1,0} %slice.1485), slice={[0:4], [0:44], [0:44]}
+  %multiply.1493 = f32[4,44,44]{2,1,0} multiply(f32[4,44,44]{2,1,0} %broadcast.1492, f32[4,44,44]{2,1,0} %slice.1486)
+  %constant.1494 = f32[] constant(0)
+  %reduce.1500 = f32[4,44]{1,0} reduce(f32[4,44,44]{2,1,0} %multiply.1493, f32[] %constant.1494), dimensions={1}, to_apply=%AddComputation.1496
+  %constant.22 = f32[] constant(1)
+  %broadcast.1501 = f32[4,44]{1,0} broadcast(f32[] %constant.22), dimensions={}
+  %multiply.1502 = f32[4,44]{1,0} multiply(f32[4,44]{1,0} %reduce.1500, f32[4,44]{1,0} %broadcast.1501)
+  %add.1503 = f32[4,44]{1,0} add(f32[4,44]{1,0} %slice.1489, f32[4,44]{1,0} %multiply.1502)
+  %constant.1509 = f32[] constant(0)
+  %pad.1510 = f32[4,64]{1,0} pad(f32[4,44]{1,0} %add.1503, f32[] %constant.1509), padding=0_0x0_20
+  %slice.1504 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1484), slice={[0:4], [44:45], [0:64]}
+  %reshape.1505 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1504)
+  %select.1512 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.1511, f32[4,64]{1,0} %pad.1510, f32[4,64]{1,0} %reshape.1505)
+  %reshape.1513 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.1512)
+  %constant.1514 = s64[] constant(0)
+  %constant.1515 = s64[] constant(44)
+  %constant.1516 = s64[] constant(0)
+  %dynamic-update-slice.1517 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1484, f32[4,1,64]{2,1,0} %reshape.1513, s64[] %constant.1514, s64[] %constant.1515, s64[] %constant.1516)
+  %constant.1539 = pred[] constant(true)
+  %broadcast.1540 = pred[4,45]{1,0} broadcast(pred[] %constant.1539), dimensions={}
+  %constant.1541 = pred[] constant(false)
+  %pad.1544 = pred[4,64]{1,0} pad(pred[4,45]{1,0} %broadcast.1540, pred[] %constant.1541), padding=0_0x0_19
+  %slice.1520 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1517), slice={[0:4], [45:46], [0:64]}
+  %reshape.1521 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1520)
+  %slice.1522 = f32[4,45]{1,0} slice(f32[4,64]{1,0} %reshape.1521), slice={[0:4], [0:45]}
+  %reshape.1523 = f32[4,45,1]{2,1,0} reshape(f32[4,45]{1,0} %slice.1522)
+  %reshape.1524 = f32[4,45]{1,0} reshape(f32[4,45,1]{2,1,0} %reshape.1523)
+  %broadcast.1525 = f32[4,45,45]{2,1,0} broadcast(f32[4,45]{1,0} %reshape.1524), dimensions={0,1}
+  %slice.1518 = f32[4,45,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1517), slice={[0:4], [0:45], [0:64]}
+  %slice.1519 = f32[4,45,45]{2,1,0} slice(f32[4,45,64]{2,1,0} %slice.1518), slice={[0:4], [0:45], [0:45]}
+  %multiply.1526 = f32[4,45,45]{2,1,0} multiply(f32[4,45,45]{2,1,0} %broadcast.1525, f32[4,45,45]{2,1,0} %slice.1519)
+  %constant.1527 = f32[] constant(0)
+  %reduce.1533 = f32[4,45]{1,0} reduce(f32[4,45,45]{2,1,0} %multiply.1526, f32[] %constant.1527), dimensions={1}, to_apply=%AddComputation.1529
+  %constant.21 = f32[] constant(1)
+  %broadcast.1534 = f32[4,45]{1,0} broadcast(f32[] %constant.21), dimensions={}
+  %multiply.1535 = f32[4,45]{1,0} multiply(f32[4,45]{1,0} %reduce.1533, f32[4,45]{1,0} %broadcast.1534)
+  %add.1536 = f32[4,45]{1,0} add(f32[4,45]{1,0} %slice.1522, f32[4,45]{1,0} %multiply.1535)
+  %constant.1542 = f32[] constant(0)
+  %pad.1543 = f32[4,64]{1,0} pad(f32[4,45]{1,0} %add.1536, f32[] %constant.1542), padding=0_0x0_19
+  %slice.1537 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1517), slice={[0:4], [45:46], [0:64]}
+  %reshape.1538 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1537)
+  %select.1545 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.1544, f32[4,64]{1,0} %pad.1543, f32[4,64]{1,0} %reshape.1538)
+  %reshape.1546 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.1545)
+  %constant.1547 = s64[] constant(0)
+  %constant.1548 = s64[] constant(45)
+  %constant.1549 = s64[] constant(0)
+  %dynamic-update-slice.1550 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1517, f32[4,1,64]{2,1,0} %reshape.1546, s64[] %constant.1547, s64[] %constant.1548, s64[] %constant.1549)
+  %constant.1572 = pred[] constant(true)
+  %broadcast.1573 = pred[4,46]{1,0} broadcast(pred[] %constant.1572), dimensions={}
+  %constant.1574 = pred[] constant(false)
+  %pad.1577 = pred[4,64]{1,0} pad(pred[4,46]{1,0} %broadcast.1573, pred[] %constant.1574), padding=0_0x0_18
+  %slice.1553 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1550), slice={[0:4], [46:47], [0:64]}
+  %reshape.1554 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1553)
+  %slice.1555 = f32[4,46]{1,0} slice(f32[4,64]{1,0} %reshape.1554), slice={[0:4], [0:46]}
+  %reshape.1556 = f32[4,46,1]{2,1,0} reshape(f32[4,46]{1,0} %slice.1555)
+  %reshape.1557 = f32[4,46]{1,0} reshape(f32[4,46,1]{2,1,0} %reshape.1556)
+  %broadcast.1558 = f32[4,46,46]{2,1,0} broadcast(f32[4,46]{1,0} %reshape.1557), dimensions={0,1}
+  %slice.1551 = f32[4,46,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1550), slice={[0:4], [0:46], [0:64]}
+  %slice.1552 = f32[4,46,46]{2,1,0} slice(f32[4,46,64]{2,1,0} %slice.1551), slice={[0:4], [0:46], [0:46]}
+  %multiply.1559 = f32[4,46,46]{2,1,0} multiply(f32[4,46,46]{2,1,0} %broadcast.1558, f32[4,46,46]{2,1,0} %slice.1552)
+  %constant.1560 = f32[] constant(0)
+  %reduce.1566 = f32[4,46]{1,0} reduce(f32[4,46,46]{2,1,0} %multiply.1559, f32[] %constant.1560), dimensions={1}, to_apply=%AddComputation.1562
+  %constant.20 = f32[] constant(1)
+  %broadcast.1567 = f32[4,46]{1,0} broadcast(f32[] %constant.20), dimensions={}
+  %multiply.1568 = f32[4,46]{1,0} multiply(f32[4,46]{1,0} %reduce.1566, f32[4,46]{1,0} %broadcast.1567)
+  %add.1569 = f32[4,46]{1,0} add(f32[4,46]{1,0} %slice.1555, f32[4,46]{1,0} %multiply.1568)
+  %constant.1575 = f32[] constant(0)
+  %pad.1576 = f32[4,64]{1,0} pad(f32[4,46]{1,0} %add.1569, f32[] %constant.1575), padding=0_0x0_18
+  %slice.1570 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1550), slice={[0:4], [46:47], [0:64]}
+  %reshape.1571 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1570)
+  %select.1578 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.1577, f32[4,64]{1,0} %pad.1576, f32[4,64]{1,0} %reshape.1571)
+  %reshape.1579 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.1578)
+  %constant.1580 = s64[] constant(0)
+  %constant.1581 = s64[] constant(46)
+  %constant.1582 = s64[] constant(0)
+  %dynamic-update-slice.1583 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1550, f32[4,1,64]{2,1,0} %reshape.1579, s64[] %constant.1580, s64[] %constant.1581, s64[] %constant.1582)
+  %constant.1605 = pred[] constant(true)
+  %broadcast.1606 = pred[4,47]{1,0} broadcast(pred[] %constant.1605), dimensions={}
+  %constant.1607 = pred[] constant(false)
+  %pad.1610 = pred[4,64]{1,0} pad(pred[4,47]{1,0} %broadcast.1606, pred[] %constant.1607), padding=0_0x0_17
+  %slice.1586 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1583), slice={[0:4], [47:48], [0:64]}
+  %reshape.1587 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1586)
+  %slice.1588 = f32[4,47]{1,0} slice(f32[4,64]{1,0} %reshape.1587), slice={[0:4], [0:47]}
+  %reshape.1589 = f32[4,47,1]{2,1,0} reshape(f32[4,47]{1,0} %slice.1588)
+  %reshape.1590 = f32[4,47]{1,0} reshape(f32[4,47,1]{2,1,0} %reshape.1589)
+  %broadcast.1591 = f32[4,47,47]{2,1,0} broadcast(f32[4,47]{1,0} %reshape.1590), dimensions={0,1}
+  %slice.1584 = f32[4,47,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1583), slice={[0:4], [0:47], [0:64]}
+  %slice.1585 = f32[4,47,47]{2,1,0} slice(f32[4,47,64]{2,1,0} %slice.1584), slice={[0:4], [0:47], [0:47]}
+  %multiply.1592 = f32[4,47,47]{2,1,0} multiply(f32[4,47,47]{2,1,0} %broadcast.1591, f32[4,47,47]{2,1,0} %slice.1585)
+  %constant.1593 = f32[] constant(0)
+  %reduce.1599 = f32[4,47]{1,0} reduce(f32[4,47,47]{2,1,0} %multiply.1592, f32[] %constant.1593), dimensions={1}, to_apply=%AddComputation.1595
+  %constant.19 = f32[] constant(1)
+  %broadcast.1600 = f32[4,47]{1,0} broadcast(f32[] %constant.19), dimensions={}
+  %multiply.1601 = f32[4,47]{1,0} multiply(f32[4,47]{1,0} %reduce.1599, f32[4,47]{1,0} %broadcast.1600)
+  %add.1602 = f32[4,47]{1,0} add(f32[4,47]{1,0} %slice.1588, f32[4,47]{1,0} %multiply.1601)
+  %constant.1608 = f32[] constant(0)
+  %pad.1609 = f32[4,64]{1,0} pad(f32[4,47]{1,0} %add.1602, f32[] %constant.1608), padding=0_0x0_17
+  %slice.1603 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1583), slice={[0:4], [47:48], [0:64]}
+  %reshape.1604 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1603)
+  %select.1611 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.1610, f32[4,64]{1,0} %pad.1609, f32[4,64]{1,0} %reshape.1604)
+  %reshape.1612 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.1611)
+  %constant.1613 = s64[] constant(0)
+  %constant.1614 = s64[] constant(47)
+  %constant.1615 = s64[] constant(0)
+  %dynamic-update-slice.1616 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1583, f32[4,1,64]{2,1,0} %reshape.1612, s64[] %constant.1613, s64[] %constant.1614, s64[] %constant.1615)
+  %constant.1638 = pred[] constant(true)
+  %broadcast.1639 = pred[4,48]{1,0} broadcast(pred[] %constant.1638), dimensions={}
+  %constant.1640 = pred[] constant(false)
+  %pad.1643 = pred[4,64]{1,0} pad(pred[4,48]{1,0} %broadcast.1639, pred[] %constant.1640), padding=0_0x0_16
+  %slice.1619 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1616), slice={[0:4], [48:49], [0:64]}
+  %reshape.1620 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1619)
+  %slice.1621 = f32[4,48]{1,0} slice(f32[4,64]{1,0} %reshape.1620), slice={[0:4], [0:48]}
+  %reshape.1622 = f32[4,48,1]{2,1,0} reshape(f32[4,48]{1,0} %slice.1621)
+  %reshape.1623 = f32[4,48]{1,0} reshape(f32[4,48,1]{2,1,0} %reshape.1622)
+  %broadcast.1624 = f32[4,48,48]{2,1,0} broadcast(f32[4,48]{1,0} %reshape.1623), dimensions={0,1}
+  %slice.1617 = f32[4,48,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1616), slice={[0:4], [0:48], [0:64]}
+  %slice.1618 = f32[4,48,48]{2,1,0} slice(f32[4,48,64]{2,1,0} %slice.1617), slice={[0:4], [0:48], [0:48]}
+  %multiply.1625 = f32[4,48,48]{2,1,0} multiply(f32[4,48,48]{2,1,0} %broadcast.1624, f32[4,48,48]{2,1,0} %slice.1618)
+  %constant.1626 = f32[] constant(0)
+  %reduce.1632 = f32[4,48]{1,0} reduce(f32[4,48,48]{2,1,0} %multiply.1625, f32[] %constant.1626), dimensions={1}, to_apply=%AddComputation.1628
+  %constant.18 = f32[] constant(1)
+  %broadcast.1633 = f32[4,48]{1,0} broadcast(f32[] %constant.18), dimensions={}
+  %multiply.1634 = f32[4,48]{1,0} multiply(f32[4,48]{1,0} %reduce.1632, f32[4,48]{1,0} %broadcast.1633)
+  %add.1635 = f32[4,48]{1,0} add(f32[4,48]{1,0} %slice.1621, f32[4,48]{1,0} %multiply.1634)
+  %constant.1641 = f32[] constant(0)
+  %pad.1642 = f32[4,64]{1,0} pad(f32[4,48]{1,0} %add.1635, f32[] %constant.1641), padding=0_0x0_16
+  %slice.1636 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1616), slice={[0:4], [48:49], [0:64]}
+  %reshape.1637 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1636)
+  %select.1644 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.1643, f32[4,64]{1,0} %pad.1642, f32[4,64]{1,0} %reshape.1637)
+  %reshape.1645 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.1644)
+  %constant.1646 = s64[] constant(0)
+  %constant.1647 = s64[] constant(48)
+  %constant.1648 = s64[] constant(0)
+  %dynamic-update-slice.1649 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1616, f32[4,1,64]{2,1,0} %reshape.1645, s64[] %constant.1646, s64[] %constant.1647, s64[] %constant.1648)
+  %constant.1671 = pred[] constant(true)
+  %broadcast.1672 = pred[4,49]{1,0} broadcast(pred[] %constant.1671), dimensions={}
+  %constant.1673 = pred[] constant(false)
+  %pad.1676 = pred[4,64]{1,0} pad(pred[4,49]{1,0} %broadcast.1672, pred[] %constant.1673), padding=0_0x0_15
+  %slice.1652 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1649), slice={[0:4], [49:50], [0:64]}
+  %reshape.1653 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1652)
+  %slice.1654 = f32[4,49]{1,0} slice(f32[4,64]{1,0} %reshape.1653), slice={[0:4], [0:49]}
+  %reshape.1655 = f32[4,49,1]{2,1,0} reshape(f32[4,49]{1,0} %slice.1654)
+  %reshape.1656 = f32[4,49]{1,0} reshape(f32[4,49,1]{2,1,0} %reshape.1655)
+  %broadcast.1657 = f32[4,49,49]{2,1,0} broadcast(f32[4,49]{1,0} %reshape.1656), dimensions={0,1}
+  %slice.1650 = f32[4,49,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1649), slice={[0:4], [0:49], [0:64]}
+  %slice.1651 = f32[4,49,49]{2,1,0} slice(f32[4,49,64]{2,1,0} %slice.1650), slice={[0:4], [0:49], [0:49]}
+  %multiply.1658 = f32[4,49,49]{2,1,0} multiply(f32[4,49,49]{2,1,0} %broadcast.1657, f32[4,49,49]{2,1,0} %slice.1651)
+  %constant.1659 = f32[] constant(0)
+  %reduce.1665 = f32[4,49]{1,0} reduce(f32[4,49,49]{2,1,0} %multiply.1658, f32[] %constant.1659), dimensions={1}, to_apply=%AddComputation.1661
+  %constant.17 = f32[] constant(1)
+  %broadcast.1666 = f32[4,49]{1,0} broadcast(f32[] %constant.17), dimensions={}
+  %multiply.1667 = f32[4,49]{1,0} multiply(f32[4,49]{1,0} %reduce.1665, f32[4,49]{1,0} %broadcast.1666)
+  %add.1668 = f32[4,49]{1,0} add(f32[4,49]{1,0} %slice.1654, f32[4,49]{1,0} %multiply.1667)
+  %constant.1674 = f32[] constant(0)
+  %pad.1675 = f32[4,64]{1,0} pad(f32[4,49]{1,0} %add.1668, f32[] %constant.1674), padding=0_0x0_15
+  %slice.1669 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1649), slice={[0:4], [49:50], [0:64]}
+  %reshape.1670 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1669)
+  %select.1677 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.1676, f32[4,64]{1,0} %pad.1675, f32[4,64]{1,0} %reshape.1670)
+  %reshape.1678 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.1677)
+  %constant.1679 = s64[] constant(0)
+  %constant.1680 = s64[] constant(49)
+  %constant.1681 = s64[] constant(0)
+  %dynamic-update-slice.1682 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1649, f32[4,1,64]{2,1,0} %reshape.1678, s64[] %constant.1679, s64[] %constant.1680, s64[] %constant.1681)
+  %constant.1704 = pred[] constant(true)
+  %broadcast.1705 = pred[4,50]{1,0} broadcast(pred[] %constant.1704), dimensions={}
+  %constant.1706 = pred[] constant(false)
+  %pad.1709 = pred[4,64]{1,0} pad(pred[4,50]{1,0} %broadcast.1705, pred[] %constant.1706), padding=0_0x0_14
+  %slice.1685 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1682), slice={[0:4], [50:51], [0:64]}
+  %reshape.1686 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1685)
+  %slice.1687 = f32[4,50]{1,0} slice(f32[4,64]{1,0} %reshape.1686), slice={[0:4], [0:50]}
+  %reshape.1688 = f32[4,50,1]{2,1,0} reshape(f32[4,50]{1,0} %slice.1687)
+  %reshape.1689 = f32[4,50]{1,0} reshape(f32[4,50,1]{2,1,0} %reshape.1688)
+  %broadcast.1690 = f32[4,50,50]{2,1,0} broadcast(f32[4,50]{1,0} %reshape.1689), dimensions={0,1}
+  %slice.1683 = f32[4,50,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1682), slice={[0:4], [0:50], [0:64]}
+  %slice.1684 = f32[4,50,50]{2,1,0} slice(f32[4,50,64]{2,1,0} %slice.1683), slice={[0:4], [0:50], [0:50]}
+  %multiply.1691 = f32[4,50,50]{2,1,0} multiply(f32[4,50,50]{2,1,0} %broadcast.1690, f32[4,50,50]{2,1,0} %slice.1684)
+  %constant.1692 = f32[] constant(0)
+  %reduce.1698 = f32[4,50]{1,0} reduce(f32[4,50,50]{2,1,0} %multiply.1691, f32[] %constant.1692), dimensions={1}, to_apply=%AddComputation.1694
+  %constant.16 = f32[] constant(1)
+  %broadcast.1699 = f32[4,50]{1,0} broadcast(f32[] %constant.16), dimensions={}
+  %multiply.1700 = f32[4,50]{1,0} multiply(f32[4,50]{1,0} %reduce.1698, f32[4,50]{1,0} %broadcast.1699)
+  %add.1701 = f32[4,50]{1,0} add(f32[4,50]{1,0} %slice.1687, f32[4,50]{1,0} %multiply.1700)
+  %constant.1707 = f32[] constant(0)
+  %pad.1708 = f32[4,64]{1,0} pad(f32[4,50]{1,0} %add.1701, f32[] %constant.1707), padding=0_0x0_14
+  %slice.1702 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1682), slice={[0:4], [50:51], [0:64]}
+  %reshape.1703 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1702)
+  %select.1710 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.1709, f32[4,64]{1,0} %pad.1708, f32[4,64]{1,0} %reshape.1703)
+  %reshape.1711 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.1710)
+  %constant.1712 = s64[] constant(0)
+  %constant.1713 = s64[] constant(50)
+  %constant.1714 = s64[] constant(0)
+  %dynamic-update-slice.1715 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1682, f32[4,1,64]{2,1,0} %reshape.1711, s64[] %constant.1712, s64[] %constant.1713, s64[] %constant.1714)
+  %constant.1737 = pred[] constant(true)
+  %broadcast.1738 = pred[4,51]{1,0} broadcast(pred[] %constant.1737), dimensions={}
+  %constant.1739 = pred[] constant(false)
+  %pad.1742 = pred[4,64]{1,0} pad(pred[4,51]{1,0} %broadcast.1738, pred[] %constant.1739), padding=0_0x0_13
+  %slice.1718 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1715), slice={[0:4], [51:52], [0:64]}
+  %reshape.1719 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1718)
+  %slice.1720 = f32[4,51]{1,0} slice(f32[4,64]{1,0} %reshape.1719), slice={[0:4], [0:51]}
+  %reshape.1721 = f32[4,51,1]{2,1,0} reshape(f32[4,51]{1,0} %slice.1720)
+  %reshape.1722 = f32[4,51]{1,0} reshape(f32[4,51,1]{2,1,0} %reshape.1721)
+  %broadcast.1723 = f32[4,51,51]{2,1,0} broadcast(f32[4,51]{1,0} %reshape.1722), dimensions={0,1}
+  %slice.1716 = f32[4,51,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1715), slice={[0:4], [0:51], [0:64]}
+  %slice.1717 = f32[4,51,51]{2,1,0} slice(f32[4,51,64]{2,1,0} %slice.1716), slice={[0:4], [0:51], [0:51]}
+  %multiply.1724 = f32[4,51,51]{2,1,0} multiply(f32[4,51,51]{2,1,0} %broadcast.1723, f32[4,51,51]{2,1,0} %slice.1717)
+  %constant.1725 = f32[] constant(0)
+  %reduce.1731 = f32[4,51]{1,0} reduce(f32[4,51,51]{2,1,0} %multiply.1724, f32[] %constant.1725), dimensions={1}, to_apply=%AddComputation.1727
+  %constant.15 = f32[] constant(1)
+  %broadcast.1732 = f32[4,51]{1,0} broadcast(f32[] %constant.15), dimensions={}
+  %multiply.1733 = f32[4,51]{1,0} multiply(f32[4,51]{1,0} %reduce.1731, f32[4,51]{1,0} %broadcast.1732)
+  %add.1734 = f32[4,51]{1,0} add(f32[4,51]{1,0} %slice.1720, f32[4,51]{1,0} %multiply.1733)
+  %constant.1740 = f32[] constant(0)
+  %pad.1741 = f32[4,64]{1,0} pad(f32[4,51]{1,0} %add.1734, f32[] %constant.1740), padding=0_0x0_13
+  %slice.1735 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1715), slice={[0:4], [51:52], [0:64]}
+  %reshape.1736 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1735)
+  %select.1743 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.1742, f32[4,64]{1,0} %pad.1741, f32[4,64]{1,0} %reshape.1736)
+  %reshape.1744 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.1743)
+  %constant.1745 = s64[] constant(0)
+  %constant.1746 = s64[] constant(51)
+  %constant.1747 = s64[] constant(0)
+  %dynamic-update-slice.1748 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1715, f32[4,1,64]{2,1,0} %reshape.1744, s64[] %constant.1745, s64[] %constant.1746, s64[] %constant.1747)
+  %constant.1770 = pred[] constant(true)
+  %broadcast.1771 = pred[4,52]{1,0} broadcast(pred[] %constant.1770), dimensions={}
+  %constant.1772 = pred[] constant(false)
+  %pad.1775 = pred[4,64]{1,0} pad(pred[4,52]{1,0} %broadcast.1771, pred[] %constant.1772), padding=0_0x0_12
+  %slice.1751 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1748), slice={[0:4], [52:53], [0:64]}
+  %reshape.1752 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1751)
+  %slice.1753 = f32[4,52]{1,0} slice(f32[4,64]{1,0} %reshape.1752), slice={[0:4], [0:52]}
+  %reshape.1754 = f32[4,52,1]{2,1,0} reshape(f32[4,52]{1,0} %slice.1753)
+  %reshape.1755 = f32[4,52]{1,0} reshape(f32[4,52,1]{2,1,0} %reshape.1754)
+  %broadcast.1756 = f32[4,52,52]{2,1,0} broadcast(f32[4,52]{1,0} %reshape.1755), dimensions={0,1}
+  %slice.1749 = f32[4,52,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1748), slice={[0:4], [0:52], [0:64]}
+  %slice.1750 = f32[4,52,52]{2,1,0} slice(f32[4,52,64]{2,1,0} %slice.1749), slice={[0:4], [0:52], [0:52]}
+  %multiply.1757 = f32[4,52,52]{2,1,0} multiply(f32[4,52,52]{2,1,0} %broadcast.1756, f32[4,52,52]{2,1,0} %slice.1750)
+  %constant.1758 = f32[] constant(0)
+  %reduce.1764 = f32[4,52]{1,0} reduce(f32[4,52,52]{2,1,0} %multiply.1757, f32[] %constant.1758), dimensions={1}, to_apply=%AddComputation.1760
+  %constant.14 = f32[] constant(1)
+  %broadcast.1765 = f32[4,52]{1,0} broadcast(f32[] %constant.14), dimensions={}
+  %multiply.1766 = f32[4,52]{1,0} multiply(f32[4,52]{1,0} %reduce.1764, f32[4,52]{1,0} %broadcast.1765)
+  %add.1767 = f32[4,52]{1,0} add(f32[4,52]{1,0} %slice.1753, f32[4,52]{1,0} %multiply.1766)
+  %constant.1773 = f32[] constant(0)
+  %pad.1774 = f32[4,64]{1,0} pad(f32[4,52]{1,0} %add.1767, f32[] %constant.1773), padding=0_0x0_12
+  %slice.1768 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1748), slice={[0:4], [52:53], [0:64]}
+  %reshape.1769 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1768)
+  %select.1776 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.1775, f32[4,64]{1,0} %pad.1774, f32[4,64]{1,0} %reshape.1769)
+  %reshape.1777 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.1776)
+  %constant.1778 = s64[] constant(0)
+  %constant.1779 = s64[] constant(52)
+  %constant.1780 = s64[] constant(0)
+  %dynamic-update-slice.1781 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1748, f32[4,1,64]{2,1,0} %reshape.1777, s64[] %constant.1778, s64[] %constant.1779, s64[] %constant.1780)
+  %constant.1803 = pred[] constant(true)
+  %broadcast.1804 = pred[4,53]{1,0} broadcast(pred[] %constant.1803), dimensions={}
+  %constant.1805 = pred[] constant(false)
+  %pad.1808 = pred[4,64]{1,0} pad(pred[4,53]{1,0} %broadcast.1804, pred[] %constant.1805), padding=0_0x0_11
+  %slice.1784 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1781), slice={[0:4], [53:54], [0:64]}
+  %reshape.1785 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1784)
+  %slice.1786 = f32[4,53]{1,0} slice(f32[4,64]{1,0} %reshape.1785), slice={[0:4], [0:53]}
+  %reshape.1787 = f32[4,53,1]{2,1,0} reshape(f32[4,53]{1,0} %slice.1786)
+  %reshape.1788 = f32[4,53]{1,0} reshape(f32[4,53,1]{2,1,0} %reshape.1787)
+  %broadcast.1789 = f32[4,53,53]{2,1,0} broadcast(f32[4,53]{1,0} %reshape.1788), dimensions={0,1}
+  %slice.1782 = f32[4,53,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1781), slice={[0:4], [0:53], [0:64]}
+  %slice.1783 = f32[4,53,53]{2,1,0} slice(f32[4,53,64]{2,1,0} %slice.1782), slice={[0:4], [0:53], [0:53]}
+  %multiply.1790 = f32[4,53,53]{2,1,0} multiply(f32[4,53,53]{2,1,0} %broadcast.1789, f32[4,53,53]{2,1,0} %slice.1783)
+  %constant.1791 = f32[] constant(0)
+  %reduce.1797 = f32[4,53]{1,0} reduce(f32[4,53,53]{2,1,0} %multiply.1790, f32[] %constant.1791), dimensions={1}, to_apply=%AddComputation.1793
+  %constant.13 = f32[] constant(1)
+  %broadcast.1798 = f32[4,53]{1,0} broadcast(f32[] %constant.13), dimensions={}
+  %multiply.1799 = f32[4,53]{1,0} multiply(f32[4,53]{1,0} %reduce.1797, f32[4,53]{1,0} %broadcast.1798)
+  %add.1800 = f32[4,53]{1,0} add(f32[4,53]{1,0} %slice.1786, f32[4,53]{1,0} %multiply.1799)
+  %constant.1806 = f32[] constant(0)
+  %pad.1807 = f32[4,64]{1,0} pad(f32[4,53]{1,0} %add.1800, f32[] %constant.1806), padding=0_0x0_11
+  %slice.1801 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1781), slice={[0:4], [53:54], [0:64]}
+  %reshape.1802 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1801)
+  %select.1809 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.1808, f32[4,64]{1,0} %pad.1807, f32[4,64]{1,0} %reshape.1802)
+  %reshape.1810 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.1809)
+  %constant.1811 = s64[] constant(0)
+  %constant.1812 = s64[] constant(53)
+  %constant.1813 = s64[] constant(0)
+  %dynamic-update-slice.1814 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1781, f32[4,1,64]{2,1,0} %reshape.1810, s64[] %constant.1811, s64[] %constant.1812, s64[] %constant.1813)
+  %constant.1836 = pred[] constant(true)
+  %broadcast.1837 = pred[4,54]{1,0} broadcast(pred[] %constant.1836), dimensions={}
+  %constant.1838 = pred[] constant(false)
+  %pad.1841 = pred[4,64]{1,0} pad(pred[4,54]{1,0} %broadcast.1837, pred[] %constant.1838), padding=0_0x0_10
+  %slice.1817 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1814), slice={[0:4], [54:55], [0:64]}
+  %reshape.1818 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1817)
+  %slice.1819 = f32[4,54]{1,0} slice(f32[4,64]{1,0} %reshape.1818), slice={[0:4], [0:54]}
+  %reshape.1820 = f32[4,54,1]{2,1,0} reshape(f32[4,54]{1,0} %slice.1819)
+  %reshape.1821 = f32[4,54]{1,0} reshape(f32[4,54,1]{2,1,0} %reshape.1820)
+  %broadcast.1822 = f32[4,54,54]{2,1,0} broadcast(f32[4,54]{1,0} %reshape.1821), dimensions={0,1}
+  %slice.1815 = f32[4,54,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1814), slice={[0:4], [0:54], [0:64]}
+  %slice.1816 = f32[4,54,54]{2,1,0} slice(f32[4,54,64]{2,1,0} %slice.1815), slice={[0:4], [0:54], [0:54]}
+  %multiply.1823 = f32[4,54,54]{2,1,0} multiply(f32[4,54,54]{2,1,0} %broadcast.1822, f32[4,54,54]{2,1,0} %slice.1816)
+  %constant.1824 = f32[] constant(0)
+  %reduce.1830 = f32[4,54]{1,0} reduce(f32[4,54,54]{2,1,0} %multiply.1823, f32[] %constant.1824), dimensions={1}, to_apply=%AddComputation.1826
+  %constant.12 = f32[] constant(1)
+  %broadcast.1831 = f32[4,54]{1,0} broadcast(f32[] %constant.12), dimensions={}
+  %multiply.1832 = f32[4,54]{1,0} multiply(f32[4,54]{1,0} %reduce.1830, f32[4,54]{1,0} %broadcast.1831)
+  %add.1833 = f32[4,54]{1,0} add(f32[4,54]{1,0} %slice.1819, f32[4,54]{1,0} %multiply.1832)
+  %constant.1839 = f32[] constant(0)
+  %pad.1840 = f32[4,64]{1,0} pad(f32[4,54]{1,0} %add.1833, f32[] %constant.1839), padding=0_0x0_10
+  %slice.1834 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1814), slice={[0:4], [54:55], [0:64]}
+  %reshape.1835 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1834)
+  %select.1842 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.1841, f32[4,64]{1,0} %pad.1840, f32[4,64]{1,0} %reshape.1835)
+  %reshape.1843 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.1842)
+  %constant.1844 = s64[] constant(0)
+  %constant.1845 = s64[] constant(54)
+  %constant.1846 = s64[] constant(0)
+  %dynamic-update-slice.1847 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1814, f32[4,1,64]{2,1,0} %reshape.1843, s64[] %constant.1844, s64[] %constant.1845, s64[] %constant.1846)
+  %constant.1869 = pred[] constant(true)
+  %broadcast.1870 = pred[4,55]{1,0} broadcast(pred[] %constant.1869), dimensions={}
+  %constant.1871 = pred[] constant(false)
+  %pad.1874 = pred[4,64]{1,0} pad(pred[4,55]{1,0} %broadcast.1870, pred[] %constant.1871), padding=0_0x0_9
+  %slice.1850 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1847), slice={[0:4], [55:56], [0:64]}
+  %reshape.1851 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1850)
+  %slice.1852 = f32[4,55]{1,0} slice(f32[4,64]{1,0} %reshape.1851), slice={[0:4], [0:55]}
+  %reshape.1853 = f32[4,55,1]{2,1,0} reshape(f32[4,55]{1,0} %slice.1852)
+  %reshape.1854 = f32[4,55]{1,0} reshape(f32[4,55,1]{2,1,0} %reshape.1853)
+  %broadcast.1855 = f32[4,55,55]{2,1,0} broadcast(f32[4,55]{1,0} %reshape.1854), dimensions={0,1}
+  %slice.1848 = f32[4,55,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1847), slice={[0:4], [0:55], [0:64]}
+  %slice.1849 = f32[4,55,55]{2,1,0} slice(f32[4,55,64]{2,1,0} %slice.1848), slice={[0:4], [0:55], [0:55]}
+  %multiply.1856 = f32[4,55,55]{2,1,0} multiply(f32[4,55,55]{2,1,0} %broadcast.1855, f32[4,55,55]{2,1,0} %slice.1849)
+  %constant.1857 = f32[] constant(0)
+  %reduce.1863 = f32[4,55]{1,0} reduce(f32[4,55,55]{2,1,0} %multiply.1856, f32[] %constant.1857), dimensions={1}, to_apply=%AddComputation.1859
+  %constant.11 = f32[] constant(1)
+  %broadcast.1864 = f32[4,55]{1,0} broadcast(f32[] %constant.11), dimensions={}
+  %multiply.1865 = f32[4,55]{1,0} multiply(f32[4,55]{1,0} %reduce.1863, f32[4,55]{1,0} %broadcast.1864)
+  %add.1866 = f32[4,55]{1,0} add(f32[4,55]{1,0} %slice.1852, f32[4,55]{1,0} %multiply.1865)
+  %constant.1872 = f32[] constant(0)
+  %pad.1873 = f32[4,64]{1,0} pad(f32[4,55]{1,0} %add.1866, f32[] %constant.1872), padding=0_0x0_9
+  %slice.1867 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1847), slice={[0:4], [55:56], [0:64]}
+  %reshape.1868 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1867)
+  %select.1875 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.1874, f32[4,64]{1,0} %pad.1873, f32[4,64]{1,0} %reshape.1868)
+  %reshape.1876 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.1875)
+  %constant.1877 = s64[] constant(0)
+  %constant.1878 = s64[] constant(55)
+  %constant.1879 = s64[] constant(0)
+  %dynamic-update-slice.1880 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1847, f32[4,1,64]{2,1,0} %reshape.1876, s64[] %constant.1877, s64[] %constant.1878, s64[] %constant.1879)
+  %constant.1902 = pred[] constant(true)
+  %broadcast.1903 = pred[4,56]{1,0} broadcast(pred[] %constant.1902), dimensions={}
+  %constant.1904 = pred[] constant(false)
+  %pad.1907 = pred[4,64]{1,0} pad(pred[4,56]{1,0} %broadcast.1903, pred[] %constant.1904), padding=0_0x0_8
+  %slice.1883 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1880), slice={[0:4], [56:57], [0:64]}
+  %reshape.1884 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1883)
+  %slice.1885 = f32[4,56]{1,0} slice(f32[4,64]{1,0} %reshape.1884), slice={[0:4], [0:56]}
+  %reshape.1886 = f32[4,56,1]{2,1,0} reshape(f32[4,56]{1,0} %slice.1885)
+  %reshape.1887 = f32[4,56]{1,0} reshape(f32[4,56,1]{2,1,0} %reshape.1886)
+  %broadcast.1888 = f32[4,56,56]{2,1,0} broadcast(f32[4,56]{1,0} %reshape.1887), dimensions={0,1}
+  %slice.1881 = f32[4,56,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1880), slice={[0:4], [0:56], [0:64]}
+  %slice.1882 = f32[4,56,56]{2,1,0} slice(f32[4,56,64]{2,1,0} %slice.1881), slice={[0:4], [0:56], [0:56]}
+  %multiply.1889 = f32[4,56,56]{2,1,0} multiply(f32[4,56,56]{2,1,0} %broadcast.1888, f32[4,56,56]{2,1,0} %slice.1882)
+  %constant.1890 = f32[] constant(0)
+  %reduce.1896 = f32[4,56]{1,0} reduce(f32[4,56,56]{2,1,0} %multiply.1889, f32[] %constant.1890), dimensions={1}, to_apply=%AddComputation.1892
+  %constant.10 = f32[] constant(1)
+  %broadcast.1897 = f32[4,56]{1,0} broadcast(f32[] %constant.10), dimensions={}
+  %multiply.1898 = f32[4,56]{1,0} multiply(f32[4,56]{1,0} %reduce.1896, f32[4,56]{1,0} %broadcast.1897)
+  %add.1899 = f32[4,56]{1,0} add(f32[4,56]{1,0} %slice.1885, f32[4,56]{1,0} %multiply.1898)
+  %constant.1905 = f32[] constant(0)
+  %pad.1906 = f32[4,64]{1,0} pad(f32[4,56]{1,0} %add.1899, f32[] %constant.1905), padding=0_0x0_8
+  %slice.1900 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1880), slice={[0:4], [56:57], [0:64]}
+  %reshape.1901 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1900)
+  %select.1908 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.1907, f32[4,64]{1,0} %pad.1906, f32[4,64]{1,0} %reshape.1901)
+  %reshape.1909 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.1908)
+  %constant.1910 = s64[] constant(0)
+  %constant.1911 = s64[] constant(56)
+  %constant.1912 = s64[] constant(0)
+  %dynamic-update-slice.1913 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1880, f32[4,1,64]{2,1,0} %reshape.1909, s64[] %constant.1910, s64[] %constant.1911, s64[] %constant.1912)
+  %constant.1935 = pred[] constant(true)
+  %broadcast.1936 = pred[4,57]{1,0} broadcast(pred[] %constant.1935), dimensions={}
+  %constant.1937 = pred[] constant(false)
+  %pad.1940 = pred[4,64]{1,0} pad(pred[4,57]{1,0} %broadcast.1936, pred[] %constant.1937), padding=0_0x0_7
+  %slice.1916 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1913), slice={[0:4], [57:58], [0:64]}
+  %reshape.1917 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1916)
+  %slice.1918 = f32[4,57]{1,0} slice(f32[4,64]{1,0} %reshape.1917), slice={[0:4], [0:57]}
+  %reshape.1919 = f32[4,57,1]{2,1,0} reshape(f32[4,57]{1,0} %slice.1918)
+  %reshape.1920 = f32[4,57]{1,0} reshape(f32[4,57,1]{2,1,0} %reshape.1919)
+  %broadcast.1921 = f32[4,57,57]{2,1,0} broadcast(f32[4,57]{1,0} %reshape.1920), dimensions={0,1}
+  %slice.1914 = f32[4,57,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1913), slice={[0:4], [0:57], [0:64]}
+  %slice.1915 = f32[4,57,57]{2,1,0} slice(f32[4,57,64]{2,1,0} %slice.1914), slice={[0:4], [0:57], [0:57]}
+  %multiply.1922 = f32[4,57,57]{2,1,0} multiply(f32[4,57,57]{2,1,0} %broadcast.1921, f32[4,57,57]{2,1,0} %slice.1915)
+  %constant.1923 = f32[] constant(0)
+  %reduce.1929 = f32[4,57]{1,0} reduce(f32[4,57,57]{2,1,0} %multiply.1922, f32[] %constant.1923), dimensions={1}, to_apply=%AddComputation.1925
+  %constant.9 = f32[] constant(1)
+  %broadcast.1930 = f32[4,57]{1,0} broadcast(f32[] %constant.9), dimensions={}
+  %multiply.1931 = f32[4,57]{1,0} multiply(f32[4,57]{1,0} %reduce.1929, f32[4,57]{1,0} %broadcast.1930)
+  %add.1932 = f32[4,57]{1,0} add(f32[4,57]{1,0} %slice.1918, f32[4,57]{1,0} %multiply.1931)
+  %constant.1938 = f32[] constant(0)
+  %pad.1939 = f32[4,64]{1,0} pad(f32[4,57]{1,0} %add.1932, f32[] %constant.1938), padding=0_0x0_7
+  %slice.1933 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1913), slice={[0:4], [57:58], [0:64]}
+  %reshape.1934 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1933)
+  %select.1941 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.1940, f32[4,64]{1,0} %pad.1939, f32[4,64]{1,0} %reshape.1934)
+  %reshape.1942 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.1941)
+  %constant.1943 = s64[] constant(0)
+  %constant.1944 = s64[] constant(57)
+  %constant.1945 = s64[] constant(0)
+  %dynamic-update-slice.1946 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1913, f32[4,1,64]{2,1,0} %reshape.1942, s64[] %constant.1943, s64[] %constant.1944, s64[] %constant.1945)
+  %constant.1968 = pred[] constant(true)
+  %broadcast.1969 = pred[4,58]{1,0} broadcast(pred[] %constant.1968), dimensions={}
+  %constant.1970 = pred[] constant(false)
+  %pad.1973 = pred[4,64]{1,0} pad(pred[4,58]{1,0} %broadcast.1969, pred[] %constant.1970), padding=0_0x0_6
+  %slice.1949 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1946), slice={[0:4], [58:59], [0:64]}
+  %reshape.1950 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1949)
+  %slice.1951 = f32[4,58]{1,0} slice(f32[4,64]{1,0} %reshape.1950), slice={[0:4], [0:58]}
+  %reshape.1952 = f32[4,58,1]{2,1,0} reshape(f32[4,58]{1,0} %slice.1951)
+  %reshape.1953 = f32[4,58]{1,0} reshape(f32[4,58,1]{2,1,0} %reshape.1952)
+  %broadcast.1954 = f32[4,58,58]{2,1,0} broadcast(f32[4,58]{1,0} %reshape.1953), dimensions={0,1}
+  %slice.1947 = f32[4,58,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1946), slice={[0:4], [0:58], [0:64]}
+  %slice.1948 = f32[4,58,58]{2,1,0} slice(f32[4,58,64]{2,1,0} %slice.1947), slice={[0:4], [0:58], [0:58]}
+  %multiply.1955 = f32[4,58,58]{2,1,0} multiply(f32[4,58,58]{2,1,0} %broadcast.1954, f32[4,58,58]{2,1,0} %slice.1948)
+  %constant.1956 = f32[] constant(0)
+  %reduce.1962 = f32[4,58]{1,0} reduce(f32[4,58,58]{2,1,0} %multiply.1955, f32[] %constant.1956), dimensions={1}, to_apply=%AddComputation.1958
+  %constant.8 = f32[] constant(1)
+  %broadcast.1963 = f32[4,58]{1,0} broadcast(f32[] %constant.8), dimensions={}
+  %multiply.1964 = f32[4,58]{1,0} multiply(f32[4,58]{1,0} %reduce.1962, f32[4,58]{1,0} %broadcast.1963)
+  %add.1965 = f32[4,58]{1,0} add(f32[4,58]{1,0} %slice.1951, f32[4,58]{1,0} %multiply.1964)
+  %constant.1971 = f32[] constant(0)
+  %pad.1972 = f32[4,64]{1,0} pad(f32[4,58]{1,0} %add.1965, f32[] %constant.1971), padding=0_0x0_6
+  %slice.1966 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1946), slice={[0:4], [58:59], [0:64]}
+  %reshape.1967 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1966)
+  %select.1974 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.1973, f32[4,64]{1,0} %pad.1972, f32[4,64]{1,0} %reshape.1967)
+  %reshape.1975 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.1974)
+  %constant.1976 = s64[] constant(0)
+  %constant.1977 = s64[] constant(58)
+  %constant.1978 = s64[] constant(0)
+  %dynamic-update-slice.1979 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1946, f32[4,1,64]{2,1,0} %reshape.1975, s64[] %constant.1976, s64[] %constant.1977, s64[] %constant.1978)
+  %constant.2001 = pred[] constant(true)
+  %broadcast.2002 = pred[4,59]{1,0} broadcast(pred[] %constant.2001), dimensions={}
+  %constant.2003 = pred[] constant(false)
+  %pad.2006 = pred[4,64]{1,0} pad(pred[4,59]{1,0} %broadcast.2002, pred[] %constant.2003), padding=0_0x0_5
+  %slice.1982 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1979), slice={[0:4], [59:60], [0:64]}
+  %reshape.1983 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1982)
+  %slice.1984 = f32[4,59]{1,0} slice(f32[4,64]{1,0} %reshape.1983), slice={[0:4], [0:59]}
+  %reshape.1985 = f32[4,59,1]{2,1,0} reshape(f32[4,59]{1,0} %slice.1984)
+  %reshape.1986 = f32[4,59]{1,0} reshape(f32[4,59,1]{2,1,0} %reshape.1985)
+  %broadcast.1987 = f32[4,59,59]{2,1,0} broadcast(f32[4,59]{1,0} %reshape.1986), dimensions={0,1}
+  %slice.1980 = f32[4,59,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1979), slice={[0:4], [0:59], [0:64]}
+  %slice.1981 = f32[4,59,59]{2,1,0} slice(f32[4,59,64]{2,1,0} %slice.1980), slice={[0:4], [0:59], [0:59]}
+  %multiply.1988 = f32[4,59,59]{2,1,0} multiply(f32[4,59,59]{2,1,0} %broadcast.1987, f32[4,59,59]{2,1,0} %slice.1981)
+  %constant.1989 = f32[] constant(0)
+  %reduce.1995 = f32[4,59]{1,0} reduce(f32[4,59,59]{2,1,0} %multiply.1988, f32[] %constant.1989), dimensions={1}, to_apply=%AddComputation.1991
+  %constant.7 = f32[] constant(1)
+  %broadcast.1996 = f32[4,59]{1,0} broadcast(f32[] %constant.7), dimensions={}
+  %multiply.1997 = f32[4,59]{1,0} multiply(f32[4,59]{1,0} %reduce.1995, f32[4,59]{1,0} %broadcast.1996)
+  %add.1998 = f32[4,59]{1,0} add(f32[4,59]{1,0} %slice.1984, f32[4,59]{1,0} %multiply.1997)
+  %constant.2004 = f32[] constant(0)
+  %pad.2005 = f32[4,64]{1,0} pad(f32[4,59]{1,0} %add.1998, f32[] %constant.2004), padding=0_0x0_5
+  %slice.1999 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1979), slice={[0:4], [59:60], [0:64]}
+  %reshape.2000 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.1999)
+  %select.2007 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.2006, f32[4,64]{1,0} %pad.2005, f32[4,64]{1,0} %reshape.2000)
+  %reshape.2008 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.2007)
+  %constant.2009 = s64[] constant(0)
+  %constant.2010 = s64[] constant(59)
+  %constant.2011 = s64[] constant(0)
+  %dynamic-update-slice.2012 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.1979, f32[4,1,64]{2,1,0} %reshape.2008, s64[] %constant.2009, s64[] %constant.2010, s64[] %constant.2011)
+  %constant.2034 = pred[] constant(true)
+  %broadcast.2035 = pred[4,60]{1,0} broadcast(pred[] %constant.2034), dimensions={}
+  %constant.2036 = pred[] constant(false)
+  %pad.2039 = pred[4,64]{1,0} pad(pred[4,60]{1,0} %broadcast.2035, pred[] %constant.2036), padding=0_0x0_4
+  %slice.2015 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.2012), slice={[0:4], [60:61], [0:64]}
+  %reshape.2016 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.2015)
+  %slice.2017 = f32[4,60]{1,0} slice(f32[4,64]{1,0} %reshape.2016), slice={[0:4], [0:60]}
+  %reshape.2018 = f32[4,60,1]{2,1,0} reshape(f32[4,60]{1,0} %slice.2017)
+  %reshape.2019 = f32[4,60]{1,0} reshape(f32[4,60,1]{2,1,0} %reshape.2018)
+  %broadcast.2020 = f32[4,60,60]{2,1,0} broadcast(f32[4,60]{1,0} %reshape.2019), dimensions={0,1}
+  %slice.2013 = f32[4,60,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.2012), slice={[0:4], [0:60], [0:64]}
+  %slice.2014 = f32[4,60,60]{2,1,0} slice(f32[4,60,64]{2,1,0} %slice.2013), slice={[0:4], [0:60], [0:60]}
+  %multiply.2021 = f32[4,60,60]{2,1,0} multiply(f32[4,60,60]{2,1,0} %broadcast.2020, f32[4,60,60]{2,1,0} %slice.2014)
+  %constant.2022 = f32[] constant(0)
+  %reduce.2028 = f32[4,60]{1,0} reduce(f32[4,60,60]{2,1,0} %multiply.2021, f32[] %constant.2022), dimensions={1}, to_apply=%AddComputation.2024
+  %constant.6 = f32[] constant(1)
+  %broadcast.2029 = f32[4,60]{1,0} broadcast(f32[] %constant.6), dimensions={}
+  %multiply.2030 = f32[4,60]{1,0} multiply(f32[4,60]{1,0} %reduce.2028, f32[4,60]{1,0} %broadcast.2029)
+  %add.2031 = f32[4,60]{1,0} add(f32[4,60]{1,0} %slice.2017, f32[4,60]{1,0} %multiply.2030)
+  %constant.2037 = f32[] constant(0)
+  %pad.2038 = f32[4,64]{1,0} pad(f32[4,60]{1,0} %add.2031, f32[] %constant.2037), padding=0_0x0_4
+  %slice.2032 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.2012), slice={[0:4], [60:61], [0:64]}
+  %reshape.2033 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.2032)
+  %select.2040 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.2039, f32[4,64]{1,0} %pad.2038, f32[4,64]{1,0} %reshape.2033)
+  %reshape.2041 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.2040)
+  %constant.2042 = s64[] constant(0)
+  %constant.2043 = s64[] constant(60)
+  %constant.2044 = s64[] constant(0)
+  %dynamic-update-slice.2045 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.2012, f32[4,1,64]{2,1,0} %reshape.2041, s64[] %constant.2042, s64[] %constant.2043, s64[] %constant.2044)
+  %constant.2067 = pred[] constant(true)
+  %broadcast.2068 = pred[4,61]{1,0} broadcast(pred[] %constant.2067), dimensions={}
+  %constant.2069 = pred[] constant(false)
+  %pad.2072 = pred[4,64]{1,0} pad(pred[4,61]{1,0} %broadcast.2068, pred[] %constant.2069), padding=0_0x0_3
+  %slice.2048 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.2045), slice={[0:4], [61:62], [0:64]}
+  %reshape.2049 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.2048)
+  %slice.2050 = f32[4,61]{1,0} slice(f32[4,64]{1,0} %reshape.2049), slice={[0:4], [0:61]}
+  %reshape.2051 = f32[4,61,1]{2,1,0} reshape(f32[4,61]{1,0} %slice.2050)
+  %reshape.2052 = f32[4,61]{1,0} reshape(f32[4,61,1]{2,1,0} %reshape.2051)
+  %broadcast.2053 = f32[4,61,61]{2,1,0} broadcast(f32[4,61]{1,0} %reshape.2052), dimensions={0,1}
+  %slice.2046 = f32[4,61,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.2045), slice={[0:4], [0:61], [0:64]}
+  %slice.2047 = f32[4,61,61]{2,1,0} slice(f32[4,61,64]{2,1,0} %slice.2046), slice={[0:4], [0:61], [0:61]}
+  %multiply.2054 = f32[4,61,61]{2,1,0} multiply(f32[4,61,61]{2,1,0} %broadcast.2053, f32[4,61,61]{2,1,0} %slice.2047)
+  %constant.2055 = f32[] constant(0)
+  %reduce.2061 = f32[4,61]{1,0} reduce(f32[4,61,61]{2,1,0} %multiply.2054, f32[] %constant.2055), dimensions={1}, to_apply=%AddComputation.2057
+  %constant.5 = f32[] constant(1)
+  %broadcast.2062 = f32[4,61]{1,0} broadcast(f32[] %constant.5), dimensions={}
+  %multiply.2063 = f32[4,61]{1,0} multiply(f32[4,61]{1,0} %reduce.2061, f32[4,61]{1,0} %broadcast.2062)
+  %add.2064 = f32[4,61]{1,0} add(f32[4,61]{1,0} %slice.2050, f32[4,61]{1,0} %multiply.2063)
+  %constant.2070 = f32[] constant(0)
+  %pad.2071 = f32[4,64]{1,0} pad(f32[4,61]{1,0} %add.2064, f32[] %constant.2070), padding=0_0x0_3
+  %slice.2065 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.2045), slice={[0:4], [61:62], [0:64]}
+  %reshape.2066 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.2065)
+  %select.2073 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.2072, f32[4,64]{1,0} %pad.2071, f32[4,64]{1,0} %reshape.2066)
+  %reshape.2074 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.2073)
+  %constant.2075 = s64[] constant(0)
+  %constant.2076 = s64[] constant(61)
+  %constant.2077 = s64[] constant(0)
+  %dynamic-update-slice.2078 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.2045, f32[4,1,64]{2,1,0} %reshape.2074, s64[] %constant.2075, s64[] %constant.2076, s64[] %constant.2077)
+  %constant.2100 = pred[] constant(true)
+  %broadcast.2101 = pred[4,62]{1,0} broadcast(pred[] %constant.2100), dimensions={}
+  %constant.2102 = pred[] constant(false)
+  %pad.2105 = pred[4,64]{1,0} pad(pred[4,62]{1,0} %broadcast.2101, pred[] %constant.2102), padding=0_0x0_2
+  %slice.2081 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.2078), slice={[0:4], [62:63], [0:64]}
+  %reshape.2082 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.2081)
+  %slice.2083 = f32[4,62]{1,0} slice(f32[4,64]{1,0} %reshape.2082), slice={[0:4], [0:62]}
+  %reshape.2084 = f32[4,62,1]{2,1,0} reshape(f32[4,62]{1,0} %slice.2083)
+  %reshape.2085 = f32[4,62]{1,0} reshape(f32[4,62,1]{2,1,0} %reshape.2084)
+  %broadcast.2086 = f32[4,62,62]{2,1,0} broadcast(f32[4,62]{1,0} %reshape.2085), dimensions={0,1}
+  %slice.2079 = f32[4,62,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.2078), slice={[0:4], [0:62], [0:64]}
+  %slice.2080 = f32[4,62,62]{2,1,0} slice(f32[4,62,64]{2,1,0} %slice.2079), slice={[0:4], [0:62], [0:62]}
+  %multiply.2087 = f32[4,62,62]{2,1,0} multiply(f32[4,62,62]{2,1,0} %broadcast.2086, f32[4,62,62]{2,1,0} %slice.2080)
+  %constant.2088 = f32[] constant(0)
+  %reduce.2094 = f32[4,62]{1,0} reduce(f32[4,62,62]{2,1,0} %multiply.2087, f32[] %constant.2088), dimensions={1}, to_apply=%AddComputation.2090
+  %constant.4 = f32[] constant(1)
+  %broadcast.2095 = f32[4,62]{1,0} broadcast(f32[] %constant.4), dimensions={}
+  %multiply.2096 = f32[4,62]{1,0} multiply(f32[4,62]{1,0} %reduce.2094, f32[4,62]{1,0} %broadcast.2095)
+  %add.2097 = f32[4,62]{1,0} add(f32[4,62]{1,0} %slice.2083, f32[4,62]{1,0} %multiply.2096)
+  %constant.2103 = f32[] constant(0)
+  %pad.2104 = f32[4,64]{1,0} pad(f32[4,62]{1,0} %add.2097, f32[] %constant.2103), padding=0_0x0_2
+  %slice.2098 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.2078), slice={[0:4], [62:63], [0:64]}
+  %reshape.2099 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.2098)
+  %select.2106 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.2105, f32[4,64]{1,0} %pad.2104, f32[4,64]{1,0} %reshape.2099)
+  %reshape.2107 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.2106)
+  %constant.2108 = s64[] constant(0)
+  %constant.2109 = s64[] constant(62)
+  %constant.2110 = s64[] constant(0)
+  %dynamic-update-slice.2111 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.2078, f32[4,1,64]{2,1,0} %reshape.2107, s64[] %constant.2108, s64[] %constant.2109, s64[] %constant.2110)
+  %constant.2133 = pred[] constant(true)
+  %broadcast.2134 = pred[4,63]{1,0} broadcast(pred[] %constant.2133), dimensions={}
+  %constant.2135 = pred[] constant(false)
+  %pad.2138 = pred[4,64]{1,0} pad(pred[4,63]{1,0} %broadcast.2134, pred[] %constant.2135), padding=0_0x0_1
+  %slice.2114 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.2111), slice={[0:4], [63:64], [0:64]}
+  %reshape.2115 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.2114)
+  %slice.2116 = f32[4,63]{1,0} slice(f32[4,64]{1,0} %reshape.2115), slice={[0:4], [0:63]}
+  %reshape.2117 = f32[4,63,1]{2,1,0} reshape(f32[4,63]{1,0} %slice.2116)
+  %reshape.2118 = f32[4,63]{1,0} reshape(f32[4,63,1]{2,1,0} %reshape.2117)
+  %broadcast.2119 = f32[4,63,63]{2,1,0} broadcast(f32[4,63]{1,0} %reshape.2118), dimensions={0,1}
+  %slice.2112 = f32[4,63,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.2111), slice={[0:4], [0:63], [0:64]}
+  %slice.2113 = f32[4,63,63]{2,1,0} slice(f32[4,63,64]{2,1,0} %slice.2112), slice={[0:4], [0:63], [0:63]}
+  %multiply.2120 = f32[4,63,63]{2,1,0} multiply(f32[4,63,63]{2,1,0} %broadcast.2119, f32[4,63,63]{2,1,0} %slice.2113)
+  %constant.2121 = f32[] constant(0)
+  %reduce.2127 = f32[4,63]{1,0} reduce(f32[4,63,63]{2,1,0} %multiply.2120, f32[] %constant.2121), dimensions={1}, to_apply=%AddComputation.2123
+  %constant.3 = f32[] constant(1)
+  %broadcast.2128 = f32[4,63]{1,0} broadcast(f32[] %constant.3), dimensions={}
+  %multiply.2129 = f32[4,63]{1,0} multiply(f32[4,63]{1,0} %reduce.2127, f32[4,63]{1,0} %broadcast.2128)
+  %add.2130 = f32[4,63]{1,0} add(f32[4,63]{1,0} %slice.2116, f32[4,63]{1,0} %multiply.2129)
+  %constant.2136 = f32[] constant(0)
+  %pad.2137 = f32[4,64]{1,0} pad(f32[4,63]{1,0} %add.2130, f32[] %constant.2136), padding=0_0x0_1
+  %slice.2131 = f32[4,1,64]{2,1,0} slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.2111), slice={[0:4], [63:64], [0:64]}
+  %reshape.2132 = f32[4,64]{1,0} reshape(f32[4,1,64]{2,1,0} %slice.2131)
+  %select.2139 = f32[4,64]{1,0} select(pred[4,64]{1,0} %pad.2138, f32[4,64]{1,0} %pad.2137, f32[4,64]{1,0} %reshape.2132)
+  %reshape.2140 = f32[4,1,64]{2,1,0} reshape(f32[4,64]{1,0} %select.2139)
+  %constant.2141 = s64[] constant(0)
+  %constant.2142 = s64[] constant(63)
+  %constant.2143 = s64[] constant(0)
+  %dynamic-update-slice.2144 = f32[4,64,64]{2,1,0} dynamic-update-slice(f32[4,64,64]{2,1,0} %dynamic-update-slice.2111, f32[4,1,64]{2,1,0} %reshape.2140, s64[] %constant.2141, s64[] %constant.2142, s64[] %constant.2143)
+  %p0.2 = f32[64,64]{1,0} parameter(0)
+  %constant.1 = f32[] constant(1)
+  %broadcast.2145 = f32[64,64]{1,0} broadcast(f32[] %constant.1), dimensions={}
+  %multiply.2146 = f32[64,64]{1,0} multiply(f32[64,64]{1,0} %p0.2, f32[64,64]{1,0} %broadcast.2145)
+  %broadcast.2147 = f32[4,64,64]{2,1,0} broadcast(f32[64,64]{1,0} %multiply.2146), dimensions={1,2}
+  %add.2148 = f32[4,64,64]{2,1,0} add(f32[4,64,64]{2,1,0} %dynamic-update-slice.2144, f32[4,64,64]{2,1,0} %broadcast.2147)
+  ROOT %tuple.2149 = (f32[4,64,64]{2,1,0}) tuple(f32[4,64,64]{2,1,0} %add.2148)
+}
+

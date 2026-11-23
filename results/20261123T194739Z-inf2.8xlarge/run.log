@@ -1,0 +1,253 @@
++ S3=s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T194739Z-inf2.8xlarge
++ export AWS_DEFAULT_REGION=us-east-1
++ AWS_DEFAULT_REGION=us-east-1
++ trap finish EXIT
++ fallocate -l 32G /swapfile
++ chmod 600 /swapfile
++ mkswap /swapfile
+Setting up swapspace version 1, size = 32 GiB (34359734272 bytes)
+no label, UUID=3cf34a70-abd6-4526-8641-f6735e5659be
++ swapon /swapfile
++ mkdir -p /home/ubuntu/work /home/ubuntu/out
++ cd /home/ubuntu/work
++ aws s3 cp --quiet s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T194739Z-inf2.8xlarge/code.tgz .
++ tar xzf code.tgz
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
++ export PATH=/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/bin:/opt/aws/neuron/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/snap/bin
++ PATH=/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/bin:/opt/aws/neuron/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/snap/bin
++ python -c 'from huggingface_hub import snapshot_download as d; d('\''Qwen/Qwen3.5-0.8B'\'', local_dir='\''ckpt'\'', allow_patterns=['\''*.json'\'','\''*.safetensors'\'','\''*.txt'\''])'
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files:  11%|█         | 1/9 [00:01<00:09,  1.18s/it]Fetching 9 files:  33%|███▎      | 3/9 [00:08<00:18,  3.06s/it]Fetching 9 files: 100%|██████████| 9/9 [00:08<00:00,  1.05it/s]
++ timeout 52m python -u neuron/solve_vs_doubling.py ckpt /home/ubuntu/out --bucket 256
++ sleep 120
++ sync_out
++ aws s3 sync /home/ubuntu/out s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T194739Z-inf2.8xlarge/ --exclude '*.neff' --exclude '*.pt' --exclude 'neuronx-cc/*' --quiet
++ aws s3 cp --quiet /var/log/run.log s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T194739Z-inf2.8xlarge/run.log
++ sleep 120
+/home/ubuntu/work/neuron/solve_vs_doubling.py:91: DeprecationWarning: Use torch_xla.device instead
+  dev = xm.xla_device()
+2026-Nov-23 19:52:37.0883 2837:2943 [0] int nccl_net_ofi_create_plugin(nccl_net_ofi_plugin_t**):213 CCOM WARN NET/OFI Failed to initialize sendrecv protocol
+2026-Nov-23 19:52:37.0885 2837:2943 [0] int nccl_net_ofi_create_plugin(nccl_net_ofi_plugin_t**):354 CCOM WARN NET/OFI aws-ofi-nccl initialization failed
+2026-Nov-23 19:52:37.0887 2837:2943 [0] ncclResult_t nccl_net_ofi_init_no_atexit_fini_v6(ncclDebugLogger_t):183 CCOM WARN NET/OFI Initializing plugin failed
+2026-Nov-23 19:52:37.0889 2837:2943 [0] net_plugin.cc:97 CCOM WARN OFI plugin initNet() failed is EFA enabled?
+.+ sync_out
++ aws s3 sync /home/ubuntu/out s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T194739Z-inf2.8xlarge/ --exclude '*.neff' --exclude '*.pt' --exclude 'neuronx-cc/*' --quiet
++ aws s3 cp --quiet /var/log/run.log s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T194739Z-inf2.8xlarge/run.log
++ sleep 120
+..
+Compiler status PASS
+2026-11-23 19:53:31.000163:  2837  [INFO]: Compilation Successfully Completed for model.MODULE_12321611986684679555+e30acd3a.hlo_module.pb
+{
+ "solve_triangular": {
+  "ops": [
+   "",
+   "parameter"
+  ],
+  "has_triangular_solve": false,
+  "lines": 7
+ },
+ "doubling": {
+  "ops": [
+   "",
+   "broadcast",
+   "compare",
+   "constant",
+   "convert",
+   "dot",
+   "iota",
+   "multiply",
+   "parameter",
+   "reshape",
+   "slice",
+   "subtract"
+  ],
+  "has_triangular_solve": false,
+  "lines": 102
+ },
+ "rowloop": {
+  "ops": [
+   "",
+   "add",
+   "broadcast",
+   "constant",
+   "dynamic-update-slice",
+   "multiply",
+   "negate",
+   "pad",
+   "parameter",
+   "reduce",
+   "reshape",
+   "select",
+   "slice"
+  ],
+  "has_triangular_solve": false,
+  "lines": 2280
+ }
+}
+
+B. doubling
+.
+Compiler status PASS
+{
+ "compiled": true,
+ "compile_s": 5.2702956199646,
+ "warm_ms_per_call": 1.4078140258789062,
+ "rel_err_max": 2.2791211373718312e-07,
+ "rel_err_median": 5.203120784225135e-08,
+ "unseen_inputs_rel_err_max": 1.6262739765959822e-07,
+ "unseen_inputs_rel_err_median": 3.532730324939948e-08,
+ "neff_bytes": 246784
+}
+
+B. solve_triangular
+.
+Compiler status PASS
+2026-11-23 19:53:46.000241:  2837  [INFO]: Compilation Successfully Completed for model.MODULE_4786455070943035626+e30acd3a.hlo_module.pb
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/torch_neuronx/xla_impl/hlo_conversion.py:470: UserWarning: Received an input tensor that was unused or used in a non-static way when traced so the tensor will be ignored. (index=0, shape=torch.Size([256, 64, 64]), dtype=torch.float32). The non-static usage could happen when the traced function expects the input tensor's shape to change (i.e., using the shape to do index slicing), which is not allowed by inference trace expecting static input shapes.
+  warnings.warn(
+.
+Compiler status PASS
+{
+ "compiled": true,
+ "compile_s": 4.29196834564209,
+ "warm_ms_per_call": 0.5300641059875488,
+ "rel_err_max": 5.5228714390676e-07,
+ "rel_err_median": 5.679373568656665e-08,
+ "unseen_inputs_rel_err_max": 1.4403963685035706,
+ "unseen_inputs_rel_err_median": 0.56228450499475,
+ "neff_bytes": 1793024
+}
+
+B. rowloop
+..
+Compiler status PASS
+{
+ "compiled": true,
+ "compile_s": 26.88292622566223,
+ "warm_ms_per_call": 4.053020477294922,
+ "rel_err_max": 4.140762771553952e-07,
+ "rel_err_median": 7.999735587849166e-08,
+ "unseen_inputs_rel_err_max": 1.576663838376291e-07,
+ "unseen_inputs_rel_err_median": 3.178890961574865e-08,
+ "neff_bytes": 1680384
+}
+
+C. whole-model prefill with doubling
+...+ sync_out
++ aws s3 sync /home/ubuntu/out s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T194739Z-inf2.8xlarge/ --exclude '*.neff' --exclude '*.pt' --exclude 'neuronx-cc/*' --quiet
++ aws s3 cp --quiet /var/log/run.log s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T194739Z-inf2.8xlarge/run.log
++ sleep 120
+......+ sync_out
++ aws s3 sync /home/ubuntu/out s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T194739Z-inf2.8xlarge/ --exclude '*.neff' --exclude '*.pt' --exclude 'neuronx-cc/*' --quiet
++ aws s3 cp --quiet /var/log/run.log s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T194739Z-inf2.8xlarge/run.log
++ sleep 120
+.....Inserted NKI kernel for conv:   bfloat16 (2, 6144, 1, 256) %'convolution.1' = NativeNkiKernel-12366_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 6144, 1, 259) %'reshape.4', const bfloat16 (6144, 1, 1, 4) %'constant.349') {
+  } # dl = tensor_op_name: _convolution.874 | hlo_id: 874 | , id = 12366
+Inserted NKI kernel for conv:   bfloat16 (2, 6144, 1, 256) %'convolution.2' = NativeNkiKernel-12367_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 6144, 1, 259) %'reshape.80', const bfloat16 (6144, 1, 1, 4) %'constant.329') {
+  } # dl = tensor_op_name: _convolution.1596 | hlo_id: 1596 | , id = 12367
+Inserted NKI kernel for conv:   bfloat16 (2, 6144, 1, 256) %'convolution.3' = NativeNkiKernel-12368_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 6144, 1, 259) %'reshape.156', const bfloat16 (6144, 1, 1, 4) %'constant.315') {
+  } # dl = tensor_op_name: _convolution.2317 | hlo_id: 2317 | , id = 12368
+Inserted NKI kernel for conv:   bfloat16 (2, 6144, 1, 256) %'convolution.4' = NativeNkiKernel-12369_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 6144, 1, 259) %'reshape.250', const bfloat16 (6144, 1, 1, 4) %'constant.289') {
+  } # dl = tensor_op_name: _convolution.3389 | hlo_id: 3389 | , id = 12369
+Inserted NKI kernel for conv:   bfloat16 (2, 6144, 1, 256) %'convolution.5' = NativeNkiKernel-12370_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 6144, 1, 259) %'reshape.326', const bfloat16 (6144, 1, 1, 4) %'constant.275') {
+  } # dl = tensor_op_name: _convolution.4110 | hlo_id: 4110 | , id = 12370
+Inserted NKI kernel for conv:   bfloat16 (2, 6144, 1, 256) %'convolution.6' = NativeNkiKernel-12371_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 6144, 1, 259) %'reshape.402', const bfloat16 (6144, 1, 1, 4) %'constant.261') {
+  } # dl = tensor_op_name: _convolution.4831 | hlo_id: 4831 | , id = 12371
+Inserted NKI kernel for conv:   bfloat16 (2, 6144, 1, 256) %'convolution.7' = NativeNkiKernel-12372_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 6144, 1, 259) %'reshape.496', const bfloat16 (6144, 1, 1, 4) %'constant.236') {
+  } # dl = tensor_op_name: _convolution.5860 | hlo_id: 5860 | , id = 12372
+Inserted NKI kernel for conv:   bfloat16 (2, 6144, 1, 256) %'convolution.8' = NativeNkiKernel-12373_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 6144, 1, 259) %'reshape.572', const bfloat16 (6144, 1, 1, 4) %'constant.222') {
+  } # dl = tensor_op_name: _convolution.6581 | hlo_id: 6581 | , id = 12373
+Inserted NKI kernel for conv:   bfloat16 (2, 6144, 1, 256) %'convolution.9' = NativeNkiKernel-12374_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 6144, 1, 259) %'reshape.648', const bfloat16 (6144, 1, 1, 4) %'constant.208') {
+  } # dl = tensor_op_name: _convolution.7302 | hlo_id: 7302 | , id = 12374
+Inserted NKI kernel for conv:   bfloat16 (2, 6144, 1, 256) %'convolution.10' = NativeNkiKernel-12375_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 6144, 1, 259) %'reshape.742', const bfloat16 (6144, 1, 1, 4) %'constant.183') {
+  } # dl = tensor_op_name: _convolution.8331 | hlo_id: 8331 | , id = 12375
+Inserted NKI kernel for conv:   bfloat16 (2, 6144, 1, 256) %'convolution.11' = NativeNkiKernel-12376_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 6144, 1, 259) %'reshape.818', const bfloat16 (6144, 1, 1, 4) %'constant.169') {
+  } # dl = tensor_op_name: _convolution.9052 | hlo_id: 9052 | , id = 12376
+Inserted NKI kernel for conv:   bfloat16 (2, 6144, 1, 256) %'convolution.12' = NativeNkiKernel-12377_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 6144, 1, 259) %'reshape.894', const bfloat16 (6144, 1, 1, 4) %'constant.155') {
+  } # dl = tensor_op_name: _convolution.9773 | hlo_id: 9773 | , id = 12377
+Inserted NKI kernel for conv:   bfloat16 (2, 6144, 1, 256) %'convolution.13' = NativeNkiKernel-12378_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 6144, 1, 259) %'reshape.988', const bfloat16 (6144, 1, 1, 4) %'constant.130') {
+  } # dl = tensor_op_name: _convolution.10802 | hlo_id: 10802 | , id = 12378
+Inserted NKI kernel for conv:   bfloat16 (2, 6144, 1, 256) %'convolution.14' = NativeNkiKernel-12379_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 6144, 1, 259) %'reshape.1064', const bfloat16 (6144, 1, 1, 4) %'constant.116') {
+  } # dl = tensor_op_name: _convolution.11523 | hlo_id: 11523 | , id = 12379
+Inserted NKI kernel for conv:   bfloat16 (2, 6144, 1, 256) %'convolution.15' = NativeNkiKernel-12380_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 6144, 1, 259) %'reshape.1140', const bfloat16 (6144, 1, 1, 4) %'constant.102') {
+  } # dl = tensor_op_name: _convolution.12244 | hlo_id: 12244 | , id = 12380
+Inserted NKI kernel for conv:   bfloat16 (2, 6144, 1, 256) %'convolution.16' = NativeNkiKernel-12381_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 6144, 1, 259) %'reshape.1234', const bfloat16 (6144, 1, 1, 4) %'constant.77') {
+  } # dl = tensor_op_name: _convolution.13273 | hlo_id: 13273 | , id = 12381
+Inserted NKI kernel for conv:   bfloat16 (2, 6144, 1, 256) %'convolution.17' = NativeNkiKernel-12382_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 6144, 1, 259) %'reshape.1310', const bfloat16 (6144, 1, 1, 4) %'constant.63') {
+  } # dl = tensor_op_name: _convolution.13994 | hlo_id: 13994 | , id = 12382
+Inserted NKI kernel for conv:   bfloat16 (2, 6144, 1, 256) %'convolution.18' = NativeNkiKernel-12383_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 6144, 1, 259) %'reshape.1386', const bfloat16 (6144, 1, 1, 4) %'constant.49') {
+  } # dl = tensor_op_name: _convolution.14715 | hlo_id: 14715 | , id = 12383
+Neuron NKI - Kernel call: conv1d_depthwise_bf01_oi01_bf01(img_ref = Tensor(shape: (2, 6144, 1, 259), dtype: bfloat16), filter_ref = Tensor(shape: (6144, 1, 1, 4), dtype: bfloat16), out_ref = Tensor(shape: (2, 6144, 1, 256), dtype: bfloat16), stride = [1, 1], padding = [[0, 0], [0, 0]], rhs_dilation = [1, 1], lhs_dilation = [1, 1], in_perm = [0, 1, 2, 3], kern_perm = [0, 1, 2, 3], out_perm = [0, 1, 2, 3], srcs_shapes = [[2, 6144, 1, 259], [6144, 1, 1, 4]], dsts_shapes = [[2, 6144, 1, 256]], batch_group_count = 1, feature_group_count = 6144)
+
+Compiler status PASS
++ sync_out
++ aws s3 sync /home/ubuntu/out s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T194739Z-inf2.8xlarge/ --exclude '*.neff' --exclude '*.pt' --exclude 'neuronx-cc/*' --quiet
++ aws s3 cp --quiet /var/log/run.log s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T194739Z-inf2.8xlarge/run.log
++ sleep 120
+{
+ "compiled": true,
+ "compile_s": 279.0325303077698,
+ "warm_ms": 41.106295585632324,
+ "kl": [
+  0.0007342742756009102,
+  0.00048516562674194574
+ ],
+ "argmax_eq": [
+  true,
+  true
+ ],
+ "unseen_batch_kl": [
+  0.0005789753049612045,
+  0.00023937970399856567
+ ],
+ "unseen_batch_argmax_eq": [
+  true,
+  true
+ ]
+}
+
+C. whole-model prefill with solve_triangular
+.Inserted NKI kernel for conv:   bfloat16 (2, 6144, 1, 256) %'convolution.1' = NativeNkiKernel-310_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 6144, 1, 259) %'reshape.4', bfloat16 (6144, 1, 1, 4) %'reshape.5') {
+  } # dl = tensor_op_name: _convolution.186 | hlo_id: 186 | , id = 310
+Neuron NKI - Kernel call: conv1d_depthwise_bf01_oi01_bf01(img_ref = Tensor(shape: (2, 6144, 1, 259), dtype: bfloat16), filter_ref = Tensor(shape: (6144, 1, 1, 4), dtype: bfloat16), out_ref = Tensor(shape: (2, 6144, 1, 256), dtype: bfloat16), stride = [1, 1], padding = [[0, 0], [0, 0]], rhs_dilation = [1, 1], lhs_dilation = [1, 1], in_perm = [0, 1, 2, 3], kern_perm = [0, 1, 2, 3], out_perm = [0, 1, 2, 3], srcs_shapes = [[2, 6144, 1, 259], [6144, 1, 1, 4]], dsts_shapes = [[2, 6144, 1, 256]], batch_group_count = 1, feature_group_count = 6144)
+
+Compiler status PASS
+2026-11-23 19:59:14.000998:  2837  [INFO]: Compilation Successfully Completed for model.MODULE_9939752139344188338+e30acd3a.hlo_module.pb
++ sync_out
++ aws s3 sync /home/ubuntu/out s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T194739Z-inf2.8xlarge/ --exclude '*.neff' --exclude '*.pt' --exclude 'neuronx-cc/*' --quiet
++ aws s3 cp --quiet /var/log/run.log s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T194739Z-inf2.8xlarge/run.log
++ sleep 120
++ sync_out
++ aws s3 sync /home/ubuntu/out s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T194739Z-inf2.8xlarge/ --exclude '*.neff' --exclude '*.pt' --exclude 'neuronx-cc/*' --quiet
++ aws s3 cp --quiet /var/log/run.log s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T194739Z-inf2.8xlarge/run.log
++ sleep 120
++ sync_out
++ aws s3 sync /home/ubuntu/out s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T194739Z-inf2.8xlarge/ --exclude '*.neff' --exclude '*.pt' --exclude 'neuronx-cc/*' --quiet
++ aws s3 cp --quiet /var/log/run.log s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T194739Z-inf2.8xlarge/run.log
++ sleep 120
++ sync_out
++ aws s3 sync /home/ubuntu/out s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T194739Z-inf2.8xlarge/ --exclude '*.neff' --exclude '*.pt' --exclude 'neuronx-cc/*' --quiet
++ aws s3 cp --quiet /var/log/run.log s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T194739Z-inf2.8xlarge/run.log
++ sleep 120
++ sync_out
++ aws s3 sync /home/ubuntu/out s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T194739Z-inf2.8xlarge/ --exclude '*.neff' --exclude '*.pt' --exclude 'neuronx-cc/*' --quiet
++ aws s3 cp --quiet /var/log/run.log s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T194739Z-inf2.8xlarge/run.log
++ sleep 120
+timeout: the monitored command dumped core
+/var/lib/cloud/instance/scripts/part-001: line 17:  2835 Segmentation fault      timeout 52m python -u neuron/solve_vs_doubling.py ckpt /home/ubuntu/out --bucket 256
++ echo exit=139
++ finish
++ sync_out
++ aws s3 sync /home/ubuntu/out s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T194739Z-inf2.8xlarge/ --exclude '*.neff' --exclude '*.pt' --exclude 'neuronx-cc/*' --quiet
++ aws s3 cp --quiet /var/log/run.log s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261123T194739Z-inf2.8xlarge/run.log

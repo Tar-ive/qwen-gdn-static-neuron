@@ -1,0 +1,119 @@
+{
+ "args": {
+  "ckpt": "ckpt",
+  "out": "/home/ubuntu/out",
+  "bucket": 256,
+  "cc": "--auto-cast=none --model-type=transformer",
+  "skip": ""
+ },
+ "started": "2026-11-23T19:50:31Z",
+ "torch_neuronx": "2.9.0.2.12.22436+0f1dac25",
+ "hlo": {
+  "solve_triangular": {
+   "ops": [
+    "",
+    "parameter"
+   ],
+   "has_triangular_solve": false,
+   "lines": 7
+  },
+  "doubling": {
+   "ops": [
+    "",
+    "broadcast",
+    "compare",
+    "constant",
+    "convert",
+    "dot",
+    "iota",
+    "multiply",
+    "parameter",
+    "reshape",
+    "slice",
+    "subtract"
+   ],
+   "has_triangular_solve": false,
+   "lines": 102
+  },
+  "rowloop": {
+   "ops": [
+    "",
+    "add",
+    "broadcast",
+    "constant",
+    "dynamic-update-slice",
+    "multiply",
+    "negate",
+    "pad",
+    "parameter",
+    "reduce",
+    "reshape",
+    "select",
+    "slice"
+   ],
+   "has_triangular_solve": false,
+   "lines": 2280
+  }
+ },
+ "kernel": {
+  "systems": 256,
+  "L_fro_max": 41.64276885986328,
+  "doubling": {
+   "compiled": true,
+   "compile_s": 5.2702956199646,
+   "warm_ms_per_call": 1.4078140258789062,
+   "rel_err_max": 2.2791211373718312e-07,
+   "rel_err_median": 5.203120784225135e-08,
+   "unseen_inputs_rel_err_max": 1.6262739765959822e-07,
+   "unseen_inputs_rel_err_median": 3.532730324939948e-08,
+   "neff_bytes": 246784
+  },
+  "solve_triangular": {
+   "compiled": true,
+   "compile_s": 4.29196834564209,
+   "warm_ms_per_call": 0.5300641059875488,
+   "rel_err_max": 5.5228714390676e-07,
+   "rel_err_median": 5.679373568656665e-08,
+   "unseen_inputs_rel_err_max": 1.4403963685035706,
+   "unseen_inputs_rel_err_median": 0.56228450499475,
+   "neff_bytes": 1793024
+  },
+  "rowloop": {
+   "compiled": true,
+   "compile_s": 26.88292622566223,
+   "warm_ms_per_call": 4.053020477294922,
+   "rel_err_max": 4.140762771553952e-07,
+   "rel_err_median": 7.999735587849166e-08,
+   "unseen_inputs_rel_err_max": 1.576663838376291e-07,
+   "unseen_inputs_rel_err_median": 3.178890961574865e-08,
+   "neff_bytes": 1680384
+  }
+ },
+ "prompts2_lengths": [
+  10,
+  90
+ ],
+ "prefill": {
+  "doubling": {
+   "compiled": true,
+   "compile_s": 279.0325303077698,
+   "warm_ms": 41.106295585632324,
+   "kl": [
+    0.0007342742756009102,
+    0.00048516562674194574
+   ],
+   "argmax_eq": [
+    true,
+    true
+   ],
+   "unseen_batch_kl": [
+    0.0005789753049612045,
+    0.00023937970399856567
+   ],
+   "unseen_batch_argmax_eq": [
+    true,
+    true
+   ]
+  }
+ }
+}
