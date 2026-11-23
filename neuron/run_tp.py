@@ -111,6 +111,7 @@ with NxDParallelState(world_size=TP, tensor_model_parallel_size=TP):
         stb = m.pack(m.empty_state(bb, dtype=torch.bfloat16))
         extra[bb] = (nxd_trace(tq.Decode(m), args=(torch.zeros(bb, dtype=torch.long), torch.full((bb,), 100), *stb)), stb)
     R["trace_s"] = time.time() - t0
+    buffers = {"m." + k: v.clone() for k, v in m.named_buffers()}   # constant buffers are weights to NxDModel too
 del m
 R["packed_state_shapes"] = [list(t.shape) for t in st0]
 save()
@@ -142,6 +143,8 @@ log("load per-rank weights")
 t0 = time.time()
 with cf.ThreadPoolExecutor(TP) as ex:
     weights = list(ex.map(lambda r: tq.load_rank_weights(args.ckpt, full_cfg, TP, r, prefix="m."), range(TP)))
+for w in weights:
+    w.update({k: v.clone() for k, v in buffers.items()})
 R["weights_s"] = time.time() - t0
 R["weights_bytes_per_rank"] = sum(v.numel() * v.element_size() for v in weights[0].values())
 save()
