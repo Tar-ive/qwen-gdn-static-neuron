@@ -33,6 +33,7 @@ ap.add_argument("--bucket", type=int, default=256)
 ap.add_argument("--steps", type=int, default=32)
 ap.add_argument("--cc", default="--auto-cast=none --model-type=transformer -O1")
 ap.add_argument("--skip-ref", action="store_true")
+ap.add_argument("--decode-batches", default="", help="extra decode batch sizes to compile and time, e.g. 8,32")
 args = ap.parse_args()
 os.makedirs(args.out, exist_ok=True)
 TP = args.tp
@@ -105,6 +106,10 @@ with NxDParallelState(world_size=TP, tensor_model_parallel_size=TP):
     t0 = time.time()
     tr_pre = nxd_trace(tq.Prefill(m), args=(batch, lengths))
     tr_dec = nxd_trace(tq.Decode(m), args=(lengths.clone(), lengths.clone(), *st0))
+    extra = {}
+    for bb in [int(x) for x in args.decode_batches.split(",") if x]:
+        stb = m.pack(m.empty_state(bb, dtype=torch.bfloat16))
+        extra[bb] = (nxd_trace(tq.Decode(m), args=(torch.zeros(bb, dtype=torch.long), torch.full((bb,), 100), *stb)), stb)
     R["trace_s"] = time.time() - t0
 del m
 R["packed_state_shapes"] = [list(t.shape) for t in st0]
@@ -119,8 +124,9 @@ def comp(name, tr):
 
 
 R["compile"] = {}
-with cf.ThreadPoolExecutor(2) as ex:
+with cf.ThreadPoolExecutor(2 + len(extra)) as ex:
     futs = [ex.submit(comp, "prefill", tr_pre), ex.submit(comp, "decode", tr_dec)]
+    futs += [ex.submit(comp, f"decode_b{bb}", tr) for bb, (tr, _) in extra.items()]
     comps = {}
     for f in cf.as_completed(futs):
         name, c, s = f.result()
@@ -142,6 +148,8 @@ save()
 nxd = NxDModel(world_size=TP)
 nxd.add("prefill", tr_pre, comps["prefill"])
 nxd.add("decode", tr_dec, comps["decode"])
+for bb, (tr, _) in extra.items():
+    nxd.add(f"decode_b{bb}", tr, comps[f"decode_b{bb}"])
 t0 = time.time()
 nxd.set_weights(weights)
 nxd.to_neuron()
@@ -211,6 +219,26 @@ R["latency"] = {"prefill_ms": pre_ms, "batch": B, "bucket": T, "prefill_tokens":
 R["device_text"] = [tk.decode(dtoks[i].tolist()) for i in range(B)]
 save()
 log(json.dumps(R["latency"]))
+# batch sweep: decode step time at larger batch from a zero state (static graph: time does not depend on values)
+R["batch_sweep"] = {str(B): {"step_ms_median": ss[len(ss) // 2], "tok_per_s": B * 1e3 / ss[len(ss) // 2]}}
+for bb, (_, stb) in extra.items():
+    try:
+        stl = [[t.clone() for _ in range(TP)] for t in stb]
+        tokb, posb = torch.zeros(bb, dtype=torch.long), torch.full((bb,), 100)
+        times = []
+        for s in range(12):
+            t0 = time.time()
+            outs = ranked(rep(tokb), rep(posb), *stl)
+            _ = to_cpu(outs[0][0])
+            times.append((time.time() - t0) * 1e3)
+            stl = [outs[1], outs[2], outs[3]] if mode == "device-resident" else [[to_cpu(t) for t in o] for o in outs[1:4]]
+            posb = posb + 1
+        tt = sorted(times[2:])
+        R["batch_sweep"][str(bb)] = {"step_ms_median": tt[len(tt) // 2], "tok_per_s": bb * 1e3 / tt[len(tt) // 2]}
+    except Exception:  # noqa: BLE001
+        R["batch_sweep"][str(bb)] = {"error": traceback.format_exc()[-1500:]}
+    log(f"batch {bb}: {R['batch_sweep'][str(bb)]}")
+    save()
 torch.save({"dtoks": dtoks, "dlogs": dlogs, "d2_logits": d2_logits}, os.path.join(args.out, "device_outputs.pt"))
 del nxd
 

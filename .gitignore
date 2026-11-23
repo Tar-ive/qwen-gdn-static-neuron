@@ -7,3 +7,4 @@ results/*/neuronx-cc/
 *.neff
 *.pt
 results/*/code.tgz
+ckpt
