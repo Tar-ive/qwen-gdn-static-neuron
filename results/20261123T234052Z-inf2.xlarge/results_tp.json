@@ -1,0 +1,169 @@
+{
+ "args": {
+  "ckpt": "ckpt",
+  "out": "/home/ubuntu/out",
+  "tp": 2,
+  "bucket": 256,
+  "steps": 32,
+  "cc": "--auto-cast=none --model-type=transformer -O1",
+  "skip_ref": false,
+  "decode_batches": "8"
+ },
+ "host": "ip-10-42-1-29",
+ "started": "2026-11-23T23:43:17Z",
+ "env": {
+  "torch": "2.9.0+cu128",
+  "torch_neuronx": "2.9.0.2.12.22436+0f1dac25",
+  "neuronx_distributed": "?",
+  "neuronx_cc": "NeuronX Compiler version 2.23.6484.0+3b612583",
+  "neuron_ls": "instance-type: inf2.xlarge\ninstance-id: i-0ec3263fdb67825ca\n+--------+--------+----------+--------+--------------+----------+------+\n| NEURON | NEURON |  NEURON  | NEURON |     PCI      |   CPU    | NUMA |\n| DEVICE | CORES  | CORE IDS | MEMORY |     BDF      | AFFINITY | NODE |\n+--------+--------+----------+--------+--------------+----------+------+\n| 0      | 2      | 0-1      | 32 GB  | 0000:00:1f.0 | 0-3      | -1   |\n+--------+--------+----------+--------+--------------+----------+------+",
+  "cpus": 4,
+  "mem": "total        used        free      shared  buff/cache   available\nMem:              15           1          11           0           3          13"
+ },
+ "elapsed_s": 355.4473075866699,
+ "prompts": {
+  "lengths": [
+   5,
+   167
+  ],
+  "lengths_unseen": [
+   10,
+   90
+  ],
+  "bucket": 256,
+  "max_len": 320
+ },
+ "model": {
+  "layers": 24,
+  "hidden": 1024,
+  "gdn_layers": 18
+ },
+ "trace_s": 3.3142096996307373,
+ "states": {
+  "prefill": {
+   "kv_b2": [
+    24,
+    320,
+    256
+   ],
+   "conv_b2": [
+    36,
+    3072,
+    3
+   ],
+   "rec_b2": [
+    288,
+    128,
+    128
+   ]
+  },
+  "decode": {
+   "kv_b2": [
+    24,
+    320,
+    256
+   ],
+   "conv_b2": [
+    36,
+    3072,
+    3
+   ],
+   "rec_b2": [
+    288,
+    128,
+    128
+   ]
+  },
+  "decode_b8": {
+   "kv_b8": [
+    96,
+    320,
+    256
+   ],
+   "conv_b8": [
+    144,
+    3072,
+    3
+   ],
+   "rec_b8": [
+    1152,
+    128,
+    128
+   ]
+  }
+ },
+ "compile": {
+  "prefill_s": 119.14723706245422,
+  "decode_s": 140.36271047592163,
+  "decode_b8_s": 154.12049198150635
+ },
+ "neff_bytes": "2847744 /home/ubuntu/out/neuronx-cc/decode/2026-11-23T23-46-03.102138/graph.neff\n3738624 /home/ubuntu/out/neuronx-cc/prefill/2026-11-23T23-46-03.100285/graph.neff\n3513344 /home/ubuntu/out/neuronx-cc/decode_b8/2026-11-23T23-46-03.125725/graph.neff",
+ "weights_s": 0.13287568092346191,
+ "weights_bytes_per_rank": 1261218048,
+ "to_neuron_s": 9.08726167678833,
+ "latency": {
+  "prefill_ms": 27.00486183166504,
+  "batch": 2,
+  "bucket": 256,
+  "prefill_tokens": 172,
+  "decode_step_ms_median": 6.273746490478516,
+  "decode_step_ms_p90": 6.3419342041015625,
+  "decode_tok_per_s_batch": 318.7887816371513,
+  "decode_state": "device-resident (aliased)"
+ },
+ "device_text": [
+  " Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is",
+  "1. Explain, step by step, why the sky looks blue during the day but red at sunset. Use the physics of Rayleigh scattering and mention the wavelength"
+ ],
+ "batch_sweep": {
+  "2": {
+   "step_ms_median": 6.273746490478516,
+   "tok_per_s": 318.7887816371513
+  },
+  "8": {
+   "step_ms_median": 8.643388748168945,
+   "tok_per_s": 925.5629051388851
+  }
+ },
+ "ref_load_s": 0.4990367889404297,
+ "ref_prefill_s": 7.54109787940979,
+ "accuracy": [
+  {
+   "prompt_len": 5,
+   "prefill_kl": 0.000596487894654274,
+   "max_step_kl": 0.0007544858381152153,
+   "mean_step_kl": 0.0001376057043671608,
+   "teacher_forced_argmax_agree": 1.0,
+   "greedy_identical_prefix": 32,
+   "steps": 32,
+   "device_text": " Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is",
+   "cpu_fp32_text": " Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is"
+  },
+  {
+   "prompt_len": 167,
+   "prefill_kl": 0.0005132724763825536,
+   "max_step_kl": 0.0005132724763825536,
+   "mean_step_kl": 6.959287566132843e-05,
+   "teacher_forced_argmax_agree": 1.0,
+   "greedy_identical_prefix": 32,
+   "steps": 32,
+   "device_text": "1. Explain, step by step, why the sky looks blue during the day but red at sunset. Use the physics of Rayleigh scattering and mention the wavelength",
+   "cpu_fp32_text": "1. Explain, step by step, why the sky looks blue during the day but red at sunset. Use the physics of Rayleigh scattering and mention the wavelength"
+  }
+ ],
+ "unseen_batch": {
+  "lengths": [
+   10,
+   90
+  ],
+  "prefill_kl": [
+   0.0005873022601008415,
+   0.00021621305495500565
+  ],
+  "argmax_eq": [
+   true,
+   true
+  ]
+ },
+ "finished": "2026-11-23T23:49:12Z"
+}
