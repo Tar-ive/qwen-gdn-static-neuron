@@ -1,0 +1,8 @@
+.venv/
+ckpt/
+__pycache__/
+infra/.state/
+infra/.env
+results/*/neuronx-cc/
+*.neff
+*.pt

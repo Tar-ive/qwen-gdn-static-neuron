@@ -1,0 +1,187 @@
+{
+ "ckpt": "/Users/saksham/amazon/neuron/neuron-llm-profiling-qwen38/qwen38/ckpt/Qwen3.5-0.8B",
+ "inverse": [
+  {
+   "layer": 0,
+   "L_fro_max": 6.591775417327881,
+   "L_fro_median": 0.0,
+   "inv_max": 1.0,
+   "err_ours": 1.6770341337846162e-07,
+   "err_neumann": 1.5665587486193584e-05
+  },
+  {
+   "layer": 1,
+   "L_fro_max": 4.072105407714844,
+   "L_fro_median": 0.0,
+   "inv_max": 1.0,
+   "err_ours": 7.277316618758967e-08,
+   "err_neumann": 8.62332566719734e-07
+  },
+  {
+   "layer": 2,
+   "L_fro_max": 4.4720258712768555,
+   "L_fro_median": 0.0,
+   "inv_max": 1.0,
+   "err_ours": 7.289500345009081e-08,
+   "err_neumann": 4.758931296888129e-06
+  },
+  {
+   "layer": 4,
+   "L_fro_max": 8.18104362487793,
+   "L_fro_median": 0.0,
+   "inv_max": 1.0,
+   "err_ours": 9.461512182756815e-08,
+   "err_neumann": 0.0005525827811070205
+  },
+  {
+   "layer": 5,
+   "L_fro_max": 29.592493057250977,
+   "L_fro_median": 0.0,
+   "inv_max": 1.0,
+   "err_ours": 1.4355131320903554e-07,
+   "err_neumann": 163839.9884458799
+  },
+  {
+   "layer": 6,
+   "L_fro_max": 8.930773735046387,
+   "L_fro_median": 0.0,
+   "inv_max": 1.0,
+   "err_ours": 9.054505542560598e-08,
+   "err_neumann": 0.00020675652467554758
+  },
+  {
+   "layer": 8,
+   "L_fro_max": 41.642765045166016,
+   "L_fro_median": 0.0,
+   "inv_max": 1.0,
+   "err_ours": 1.9047545469556251e-07,
+   "err_neumann": 8589934592.000124
+  },
+  {
+   "layer": 9,
+   "L_fro_max": 5.972857475280762,
+   "L_fro_median": 0.0,
+   "inv_max": 1.0,
+   "err_ours": 5.5755559613679395e-08,
+   "err_neumann": 7.071415669291753e-05
+  },
+  {
+   "layer": 10,
+   "L_fro_max": 7.839226722717285,
+   "L_fro_median": 0.0,
+   "inv_max": 1.0,
+   "err_ours": 8.020305306000175e-08,
+   "err_neumann": 0.07805909798333072
+  },
+  {
+   "layer": 12,
+   "L_fro_max": 4.737501621246338,
+   "L_fro_median": 0.0,
+   "inv_max": 1.0,
+   "err_ours": 4.916827539558355e-08,
+   "err_neumann": 7.943586048851322e-06
+  },
+  {
+   "layer": 13,
+   "L_fro_max": 6.101823806762695,
+   "L_fro_median": 0.0,
+   "inv_max": 1.0,
+   "err_ours": 5.156632938794342e-08,
+   "err_neumann": 0.00013030634138007428
+  },
+  {
+   "layer": 14,
+   "L_fro_max": 8.51259994506836,
+   "L_fro_median": 0.0,
+   "inv_max": 1.0,
+   "err_ours": 6.060287405240672e-08,
+   "err_neumann": 0.03181455444724189
+  },
+  {
+   "layer": 16,
+   "L_fro_max": 16.1555233001709,
+   "L_fro_median": 0.0,
+   "inv_max": 1.0,
+   "err_ours": 7.22084417814628e-08,
+   "err_neumann": 1.742838095701872
+  },
+  {
+   "layer": 17,
+   "L_fro_max": 18.680416107177734,
+   "L_fro_median": 0.0,
+   "inv_max": 1.0,
+   "err_ours": 8.346507651690871e-08,
+   "err_neumann": 1048576.0000558393
+  },
+  {
+   "layer": 18,
+   "L_fro_max": 35.178531646728516,
+   "L_fro_median": 0.0,
+   "inv_max": 1.0,
+   "err_ours": 2.6128432804167767e-07,
+   "err_neumann": 402653183.99777055
+  },
+  {
+   "layer": 20,
+   "L_fro_max": 31.451095581054688,
+   "L_fro_median": 0.0,
+   "inv_max": 1.0,
+   "err_ours": 1.8969242914640416e-07,
+   "err_neumann": 134217727.99455468
+  },
+  {
+   "layer": 21,
+   "L_fro_max": 26.671005249023438,
+   "L_fro_median": 0.0,
+   "inv_max": 1.0,
+   "err_ours": 1.3465494235961883e-07,
+   "err_neumann": 8388608.000034884
+  },
+  {
+   "layer": 22,
+   "L_fro_max": 31.43514633178711,
+   "L_fro_median": 0.0,
+   "inv_max": 1.0,
+   "err_ours": 2.452406949200042e-07,
+   "err_neumann": 4294967296.0001
+  }
+ ],
+ "prefill": [
+  {
+   "max_abs": 3.0517578125e-05,
+   "kl": 8.424464681411337e-08,
+   "argmax_eq": true
+  },
+  {
+   "max_abs": 3.1948089599609375e-05,
+   "kl": 1.3612724103495566e-07,
+   "argmax_eq": true
+  }
+ ],
+ "decode": [
+  {
+   "tokens": 24,
+   "identical_prefix": 24,
+   "max_step_kl": 3.0373863069144136e-07
+  },
+  {
+   "tokens": 24,
+   "identical_prefix": 24,
+   "max_step_kl": 3.6637788980442565e-07
+  }
+ ],
+ "export": {
+  "prefill": {
+   "nodes": 6148,
+   "distinct_ops": 43,
+   "offending": [],
+   "max_rank": 4
+  },
+  "decode": {
+   "nodes": 3877,
+   "distinct_ops": 33,
+   "offending": [],
+   "max_rank": 4
+  }
+ }
+}
