@@ -5,6 +5,7 @@
 \usepackage{microtype}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{booktabs}
+\usepackage{graphicx}
 \usepackage{xcolor}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
@@ -219,18 +220,18 @@ and 167 tokens, right-padded to a 256-token bucket.
 \toprule
 GDN layer & $\max\lVert L\rVert_F$ & $\max|T^{-1}|$ & doubling (ours) & Neumann product \\
 \midrule
-0  & 6.6  & 1 & $1.7\times10^{-7}$ & $2.0\times10^{-5}$ \\
-5  & 29.6 & 1 & $1.2\times10^{-7}$ & $9.8\times10^{4}$ \\
-8  & 41.6 & 1 & $1.9\times10^{-7}$ & $1.3\times10^{10}$ \\
-18 & 35.2 & 1 & $1.8\times10^{-7}$ & $6.7\times10^{8}$ \\
-22 & 31.4 & 1 & $1.6\times10^{-7}$ & $8.6\times10^{9}$ \\
+0  & 6.6  & 1 & $1.7\times10^{-7}$ & $1.6\times10^{-5}$ \\
+5  & 29.6 & 1 & $1.4\times10^{-7}$ & $1.6\times10^{5}$ \\
+8  & 41.6 & 1 & $1.9\times10^{-7}$ & $8.6\times10^{9}$ \\
+18 & 35.2 & 1 & $2.6\times10^{-7}$ & $4.0\times10^{8}$ \\
+22 & 31.4 & 1 & $2.5\times10^{-7}$ & $4.3\times10^{9}$ \\
 \midrule
-all 18 layers & $\le 41.6$ & 1 & $\le 2.6\times10^{-7}$ & up to $1.3\times10^{10}$ \\
+all 18 layers & $\le 41.6$ & 1 & $\le 2.6\times10^{-7}$ & up to $8.6\times10^{9}$ \\
 \bottomrule
 \end{tabular}
 \caption{Inverse of every real UT system in the prefill, CPU fp32: maximum entry error relative to an fp64
 \texttt{solve\_triangular}, worst chunk and head. The measured $\max|T^{-1}|=1$ agrees with the unit bound
-of~\cite{sobczyk2026tri}. The Neumann product fails wherever $\lVert L\rVert_F\gtrsim15$.}
+of~\cite{sobczyk2026tri}. The Neumann error exceeds 1 wherever $\lVert L\rVert_F\gtrsim15$ (Figure~\ref{fig:inverse}a).}
 \label{tab:inverse}
 \end{table}
 
@@ -252,8 +253,9 @@ path.}
 \label{tab:e2e}
 \end{table}
 
-Tables~\ref{tab:inverse} and~\ref{tab:e2e} show that the inverse is accurate to fp32 rounding on every real system and that
-the full model agrees with the reference. On the random-weight model $\lVert L\rVert_F\le2$, and the Neumann product is also
+Tables~\ref{tab:inverse} and~\ref{tab:e2e} and Figure~\ref{fig:inverse}a show that the inverse is accurate to fp32 rounding
+on every real system, independent of $\lVert L\rVert_F$, while the Neumann error grows by fifteen orders of magnitude across
+the layers, and that the full model agrees with the reference. On the random-weight model $\lVert L\rVert_F\le2$, and the Neumann product is also
 accurate there. A test suite restricted to random weights would therefore have accepted an inverse that fails on the real
 checkpoint~\cite{jburtoft}.
 
@@ -283,7 +285,18 @@ evaluated with the graph traced on the first 256. The warm time of the solve is 
 \label{tab:kernel}
 \end{table}
 
-\paragraph{Inverse.} Among the formulations that compute on the device (Table~\ref{tab:kernel}), the doubling inverse is both
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figs/fig_inverse.pdf}
+\caption{Accuracy of the triangular inverse. (a) CPU fp32, worst chunk and head of every GDN layer of Qwen3.5-0.8B against
+the largest $\lVert L\rVert_F$ of that layer: block doubling stays at fp32 rounding while the Neumann product diverges.
+(b) Inferentia2: maximum error on the 256 systems used for tracing and on 256 unseen systems. \texttt{solve\_triangular}
+returns the frozen tracing-input result. Data: \texttt{results/results\_0p8b.json} and
+\texttt{results/20261123T194739Z-inf2.8xlarge/solve\_vs\_doubling.json}.}
+\label{fig:inverse}
+\end{figure}
+
+\paragraph{Inverse.} Among the formulations that compute on the device (Table~\ref{tab:kernel}, Figure~\ref{fig:inverse}b), the doubling inverse is both
 the most accurate and the fastest: $2.9\times$ faster per call and $5.1\times$ faster to compile than the row loop, with a NEFF
 $6.8\times$ smaller (247\,KB vs.\ 1.7\,MB).
 
@@ -363,7 +376,16 @@ decode, batch 64 & 128.0\,ms/step, 500 tok/s \\
 \end{tabular}
 \end{table}
 
-\paragraph{Results.} Table~\ref{tab:27b} summarises the run. The device reproduces the fp32 host reference token for token on
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figs/fig_27b.pdf}
+\caption{Qwen3.8-27B on \texttt{trn1.32xlarge}. (a) Decode throughput of one TP=8 copy versus batch size, annotated with the
+median step time. (b) Cost per million output tokens with four copies per instance, at Spot and on-demand prices, against
+hosted-API prices (November 2026). Data: \texttt{results/20261126T191354Z-trn1.32xlarge}.}
+\label{fig:27b}
+\end{figure}
+
+\paragraph{Results.} Table~\ref{tab:27b} and Figure~\ref{fig:27b}a summarise the run. The device reproduces the fp32 host reference token for token on
 both prompts, including a 167-token prompt whose continuation is a reasoning trace, and a prefill batch with lengths it was
 not compiled with yields the same next token. Decode step time grows sublinearly with batch size: a step at batch 64 costs
 $3.4\times$ a step at batch 2 while producing $32\times$ the tokens, consistent with a step bound by weight bandwidth.
@@ -387,7 +409,7 @@ typical hosted API & \multicolumn{3}{r}{\$1.30--3.00} \\
 \end{tabular}
 \end{table}
 
-\paragraph{Cost.} Table~\ref{tab:cost} converts throughput to cost as
+\paragraph{Cost.} Table~\ref{tab:cost} and Figure~\ref{fig:27b}b convert throughput to cost as
 \begin{equation}
 \text{\$ per M tokens} = \frac{P_{\text{hour}}}{n_{\text{copies}} \cdot 3600 \cdot r / 10^{6}},
 \end{equation}
@@ -443,7 +465,7 @@ Python 3.12.
 \section{Conclusion}
 On Inferentia2, \texttt{solve\_triangular} in Gated DeltaNet fails silently: it compiles, but its output is fixed at trace
 time. Six masked doubling steps of dense products replace it exactly, execute on the device, remain accurate to fp32 rounding
-on real checkpoints where the Neumann product errs by ten orders of magnitude, and run $2.9\times$ faster than row-wise
+on real checkpoints where the Neumann product reaches errors of $10^{10}$, and run $2.9\times$ faster than row-wise
 substitution. Combined with state-neutral padding, explicit fixed-shape state and rank-4 tensors, the full hybrid model
 compiles to one static graph per phase. On Inferentia2 it reproduces the fp32 reference token for token, and with tensor
 parallelism and device-resident state so does Qwen3.8-27B on Trainium1, at 500 tokens/s per copy and \$0.30 per million
