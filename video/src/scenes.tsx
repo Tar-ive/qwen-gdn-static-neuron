@@ -72,105 +72,133 @@ const Intro: React.FC<SceneProps> = ({ cue }) => {
   );
 };
 
-/* ---------------------------------------------------------- 2. hybrid model */
+/* ---------------------------------------------------------- 2. hybrid: growing memory vs fixed memory */
+const Title: React.FC<{ children: React.ReactNode; size?: number; style?: React.CSSProperties }> = ({ children, size = 52, style }) => (
+  <div style={{ fontFamily: SANS, fontSize: size, fontWeight: 500, letterSpacing: "-0.02em", color: C.ink, ...style }}>{children}</div>
+);
 const Hybrid: React.FC<SceneProps> = ({ cue }) => {
   const f = useCurrentFrame();
-  const up = enter(f, cue(0) + 10, 24);
-  const tokens = Math.round(interpolate(f, [cue(0) + 40, cue(1) + 30], [1, 4096], clamp));
+  const words = Math.round(interpolate(f, [12, cue(2) + 20], [1, 2000], clamp));
+  const blocks = Math.min(120, Math.floor(words / 16) + 1);
+  const pulse = 1 + 0.04 * Math.sin(f / 7);
   return (
-    <Stage>
-      <Globe opacity={1 - up * 0.6} />
-      <div style={{ position: "absolute", left: 960, top: 540 - up * 300, transform: "translate(-50%, -50%)", ...reveal(f, 0) }}>
-        <Glass style={{ borderRadius: 999, padding: "18px 22px 18px 30px", display: "flex", alignItems: "center", gap: 20 }}>
-          <span style={{ fontFamily: MONO, fontSize: 30 }}>serve</span>
-          <div style={{ display: "flex", alignItems: "center", gap: 14, padding: "10px 22px 10px 10px", borderRadius: 999, background: "rgba(255,255,255,0.07)", border: `1.5px solid ${C.edge}` }}>
-            <div style={{ width: 40, height: 40, borderRadius: 999, background: `conic-gradient(${C.gdn} 0 75%, ${C.attn} 0)` }} />
-            <span style={{ fontSize: 30 }}>Qwen3.8-27B</span>
-          </div>
-          <Icon size={44}>↵</Icon>
-        </Glass>
+    <Stage behind={<Globe />}>
+      <div style={{ position: "absolute", left: 120, top: 110, ...reveal(f, 0) }}>
+        <Kicker>inside qwen3.8 · 48 of its 64 layers</Kicker>
       </div>
-      <div style={{ position: "absolute", left: 160, right: 160, top: 400, opacity: up }}>
-        <Kicker>64 layers · 3 of 4 are recurrent</Kicker>
-        <div style={{ display: "flex", gap: 8, marginTop: 26 }}>
-          {Array.from({ length: 64 }).map((_, i) => {
-            const k = enter(f, cue(0) + 14 + i * 0.7, 10);
-            return <div key={i} style={{ flex: 1, height: 64, borderRadius: 6, background: i % 4 === 3 ? C.attn : C.gdn, opacity: 0.15 + 0.75 * k }} />;
-          })}
+      <div style={{ position: "absolute", left: 120, right: 120, top: 190, display: "flex", gap: 48 }}>
+        <Glass style={{ flex: 1, padding: "40px 46px", height: 560, ...reveal(f, 4) }}>
+          <Kicker color={C.attn}>normal attention</Kicker>
+          <Title style={{ marginTop: 14 }}>Memory grows<br />with every word</Title>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 34, width: 700 }}>
+            {Array.from({ length: blocks }).map((_, i) => <div key={i} style={{ width: 22, height: 22, borderRadius: 5, background: C.attn, opacity: 0.85 }} />)}
+          </div>
+        </Glass>
+        <div style={{ flex: 1, position: "relative" }}>
+        <div style={{ position: "absolute", inset: 0, borderRadius: 30, border: `1.5px dashed ${C.faint}`, opacity: 1 - enter(f, cue(1), 12) }} />
+        <Glass glow={f > cue(1)} style={{ padding: "40px 46px", height: 560, ...reveal(f, cue(1)) }}>
+          <Kicker color={C.gdn}>gated deltanet</Kicker>
+          <Title style={{ marginTop: 14 }}>Small memory<br />that never grows</Title>
+          <div style={{ display: "flex", alignItems: "center", gap: 36, marginTop: 50 }}>
+            <div style={{ width: 150, height: 150, borderRadius: 22, background: C.gdn, transform: `scale(${pulse})` }} />
+            <div style={{ fontFamily: MONO, fontSize: 28, color: C.dim }}>same size<br />after {words.toLocaleString()} words</div>
+          </div>
+        </Glass>
         </div>
-        <div style={{ display: "flex", gap: 40, marginTop: 50 }}>
-          <Glass style={{ flex: 1, padding: 32 }}>
-            <Kicker color={C.gdn}>48 × Gated DeltaNet</Kicker>
-            <div style={{ display: "flex", alignItems: "center", gap: 28, marginTop: 24 }}>
-              <div style={{ width: 96, height: 96, borderRadius: 14, background: C.gdn, opacity: 0.9 }} />
-              <div style={{ fontFamily: MONO, fontSize: 28, color: C.dim }}>128 × 128 state<br />same at {tokens.toLocaleString()} tokens</div>
-            </div>
-          </Glass>
-          <Glass style={{ flex: 1, padding: 32 }}>
-            <Kicker color={C.attn}>16 × full attention</Kicker>
-            <div style={{ height: 36, borderRadius: 10, background: "rgba(255,255,255,0.06)", marginTop: 36 }}>
-              <div style={{ height: "100%", width: `${(tokens / 4096) * 100}%`, borderRadius: 10, background: C.attn }} />
-            </div>
-            <div style={{ fontFamily: MONO, fontSize: 28, color: C.dim, marginTop: 16 }}>kv cache · {tokens.toLocaleString()} tokens</div>
-          </Glass>
-        </div>
-        <div style={{ ...reveal(f, cue(1)), marginTop: 46, display: "flex", justifyContent: "center" }}>
-          <Pill>cheap to serve · if the chip can run it</Pill>
-        </div>
+      </div>
+      <div style={{ position: "absolute", left: 0, right: 0, top: 810, display: "flex", justifyContent: "center", ...reveal(f, cue(2)) }}>
+        <Pill solid>→ should be cheap to run</Pill>
       </div>
     </Stage>
   );
 };
 
-/* ---------------------------------------------------------- 3. the silent bug ("which one is real?") */
-const wave = (x0: number, y0: number, x1: number, y1: number) => {
-  const n = 7, pts: string[] = [];
-  for (let i = 0; i <= 140; i++) {
-    const t = i / 140, amp = 46 * Math.sin(Math.PI * t) * (1 - t * 0.4);
-    pts.push(`${x0 + (x1 - x0) * t},${y0 + (y1 - y0) * t + amp * Math.sin(t * n * 2 * Math.PI)}`);
-  }
-  return "M" + pts.join(" L");
+/* ---------------------------------------------------------- 3. blocker: the chips couldn't run it -> you rent an API */
+const Blocker: React.FC<SceneProps> = ({ cue }) => {
+  const f = useCurrentFrame();
+  const out = enter(f, cue(1), 16);
+  return (
+    <Stage behind={<Wall />}>
+      <AbsoluteFill style={{ alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 34, opacity: 1 - out, filter: `blur(${out * 10}px)` }}>
+        <Glass style={{ padding: "44px 64px", textAlign: "center", ...reveal(f, 0) }}>
+          <Kicker>aws ai chips</Kicker>
+          <Hero size={120} style={{ marginTop: 16 }}>Inferentia · Trainium</Hero>
+        </Glass>
+        <div style={reveal(f, 18)}><Pill dashed style={{ color: C.bad, fontSize: 30 }}>✕ can't run these layers</Pill></div>
+      </AbsoluteFill>
+      <AbsoluteFill style={{ alignItems: "center", justifyContent: "center", flexDirection: "column", opacity: out, filter: `blur(${(1 - out) * 10}px)` }}>
+        <Kicker>so today you rent it from an api</Kicker>
+        <Hero size={300} style={{ marginTop: 20 }}>$1.05</Hero>
+        <Kicker style={{ marginTop: 20 }}>per million tokens · cheapest provider</Kicker>
+      </AbsoluteFill>
+    </Stage>
+  );
 };
+
+/* ---------------------------------------------------------- 4. the silent bug, as a frozen answer */
+const QA: React.FC<{ q: string; a: string; ok: boolean; f: number; at: number; strike?: number }> = ({ q, a, ok, f, at, strike = 0 }) => (
+  <Glass glow={ok} style={{ padding: "30px 40px", width: 1000, ...reveal(f, at, 18) }}>
+    <div style={{ display: "flex", alignItems: "baseline", gap: 30 }}>
+      <span style={{ fontSize: 40, color: C.dim }}>{q}</span>
+      <span style={{ fontFamily: PIXEL, fontSize: 90, position: "relative", color: ok ? C.ink : C.dim }}>
+        {a}
+        <span style={{ position: "absolute", left: -8, right: -8, top: "50%", height: 6, background: C.bad, transform: `scaleX(${strike})`, transformOrigin: "left" }} />
+      </span>
+    </div>
+    <div style={{ marginTop: 16 }}>
+      {ok ? <Pill solid>✓ right</Pill> : <Pill dashed style={{ color: C.bad }}>✕ wrong · same frozen answer</Pill>}
+    </div>
+  </Glass>
+);
 const Bug: React.FC<SceneProps> = ({ cue }) => {
   const f = useCurrentFrame();
-  const dead = enter(f, cue(3), 14);
-  const good = enter(f, cue(4), 20);
-  const ring = 1 + 0.06 * Math.sin(f / 6);
-  const RX = 1500, RY = 470;
+  const RX = 1560, RY = 520;
+  const ring = 1 + 0.05 * Math.sin(f / 6);
+  return (
+    <Stage behind={<Globe />}>
+      <div style={{ position: "absolute", left: 120, top: 100 }}>
+        <Kicker style={reveal(f, 0)}>the obvious port · compiles with no errors</Kicker>
+        <Kicker style={{ marginTop: 10, fontSize: 16, ...reveal(f, 6) }}>illustration</Kicker>
+      </div>
+      <div style={{ position: "absolute", left: 120, top: 220 }}><QA q="Capital of France?" a="Paris" ok f={f} at={cue(0) + 10} /></div>
+      <div style={{ position: "absolute", left: 120, top: 560 }}><QA q="Capital of Japan?" a="Paris" ok={false} f={f} at={cue(3)} strike={enter(f, cue(3) + 22, 12)} /></div>
+      <svg width={1920} height={1080} style={{ position: "absolute", inset: 0 }}>
+        <Curve d={`M ${RX - 90} ${RY} C ${RX - 260} ${RY}, ${RX - 300} 330, 1120 330`} k={enter(f, cue(2), 24)} />
+        <Curve d={`M ${RX - 90} ${RY} C ${RX - 260} ${RY}, ${RX - 300} 670, 1120 670`} k={enter(f, cue(3), 24)} />
+        {[160, 125].map((r, i) => <circle key={r} cx={RX} cy={RY} r={r * (i === 0 ? ring : 1)} fill="none" stroke="white" strokeOpacity={0.14 + i * 0.1} strokeWidth={2} style={{ opacity: enter(f, cue(1), 16) }} />)}
+        <circle cx={RX} cy={RY} r={88} fill="#111" stroke="white" strokeOpacity={0.85} strokeWidth={2.5} style={{ opacity: enter(f, cue(1), 16) }} />
+      </svg>
+      <div style={{ position: "absolute", left: RX - 40, top: RY - 52, fontSize: 80, ...reveal(f, cue(1)) }}>❄</div>
+      <div style={{ position: "absolute", left: RX - 200, width: 400, top: RY + 190, textAlign: "center", ...reveal(f, cue(1) + 10) }}>
+        <Kicker color={C.ink}>one step frozen in</Kicker>
+        <Kicker style={{ marginTop: 8, fontSize: 18 }}>computed once, ahead of time</Kicker>
+      </div>
+    </Stage>
+  );
+};
+
+/* ---------------------------------------------------------- 5. the fix */
+const Fix: React.FC<SceneProps> = ({ cue }) => {
+  const f = useCurrentFrame();
+  const chips = ["fixed shapes", "one graph per phase", "memory stays on chip"];
   return (
     <Stage behind={<Globe />}>
       <div style={{ position: "absolute", left: 120, top: 150 }}>
-        <Kicker style={reveal(f, 0)}>2 inverses compiled · which one is real?</Kicker>
-        <Glass glow={dead < 0.5} style={{ marginTop: 26, padding: "34px 44px", width: 900, opacity: 1 - dead * 0.45, ...reveal(f, 4) }}>
-          <div style={{ fontFamily: PIXEL, fontSize: 92, position: "relative", display: "inline-block" }}>
-            solve_triangular
-            <div style={{ position: "absolute", left: -6, right: -6, top: "52%", height: 6, background: C.ink, transform: `scaleX(${dead})`, transformOrigin: "left" }} />
-          </div>
-          <div style={{ marginTop: 22, display: "flex", gap: 16 }}>
-            {dead < 0.5
-              ? <Pill solid>✓ compiles · no errors</Pill>
-              : <Pill dashed style={{ color: C.bad }}>✕ frozen constant · err 0.56 – 1.44</Pill>}
-            <Pill style={{ ...reveal(f, cue(2)) }}>trace input · exact</Pill>
-          </div>
-        </Glass>
-        <Glass glow={good > 0.5} style={{ marginTop: 40, padding: "34px 44px", width: 900, ...reveal(f, cue(4), 22) }}>
-          <div style={{ fontFamily: PIXEL, fontSize: 92 }}>6 × matmul</div>
-          <div style={{ marginTop: 22, display: "flex", gap: 16 }}>
-            <Pill solid>✓ exact · err 1.6e-7 on unseen inputs</Pill>
-          </div>
-        </Glass>
+        <Kicker style={reveal(f, 0)}>the fix · what this chip does best</Kicker>
+        <Hero size={170} style={{ marginTop: 24, ...reveal(f, 4, 20) }}>6 × matmul</Hero>
+        <div style={{ marginTop: 30, ...reveal(f, cue(1)) }}><Pill solid style={{ fontSize: 28 }}>✓ exact on every input</Pill></div>
       </div>
-      <svg width={1920} height={1080} style={{ position: "absolute", inset: 0 }}>
-        <Curve d={wave(1010, 330, RX - 70, RY)} k={enter(f, cue(1), 30) * (1 - good)} opacity={0.9 - dead * 0.6} width={3} />
-        <Curve d={wave(1010, 680, RX - 70, RY)} k={good} opacity={0.95} width={3} />
-        <Curve d={`M ${RX - 40} ${RY + 60} Q ${RX - 200} ${RY + 260} ${RX - 120} ${RY + 330}`} k={enter(f, cue(1) + 20, 20)} dashed />
-        {[150, 115, 80].map((r, i) => <circle key={r} cx={RX} cy={RY} r={r * (i === 0 ? ring : 1)} fill="none" stroke="white" strokeOpacity={0.12 + i * 0.12} strokeWidth={2} />)}
-        <circle cx={RX} cy={RY} r={56} fill="#111" stroke="white" strokeOpacity={0.8} strokeWidth={2.5} />
-      </svg>
-      <div style={{ position: "absolute", left: RX - 24, top: RY - 30, fontFamily: PIXEL, fontSize: 52 }}>N</div>
-      <div style={{ position: "absolute", left: RX - 140, top: RY + 175 }}><Kicker color={C.ink}>neuroncore-v2</Kicker></div>
-      <div style={{ position: "absolute", left: RX - 260, top: RY + 340, ...reveal(f, cue(1) + 30) }}>
-        <Pill dashed>cpu · runs once · baked into neff</Pill>
+      <div style={{ position: "absolute", left: 120, top: 640 }}>
+        <QA q="Capital of Japan?" a="Tokyo" ok f={f} at={cue(1) + 6} />
+      </div>
+      <div style={{ position: "absolute", left: 1220, top: 190, display: "flex", flexDirection: "column", gap: 22 }}>
+        {chips.map((c, i) => (
+          <Glass key={c} style={{ padding: "24px 32px", width: 560, display: "flex", alignItems: "center", gap: 20, ...reveal(f, cue(2) + i * 8) }}>
+            <div style={{ width: 30, height: 30, borderRadius: 8, background: C.gdn }} />
+            <span style={{ fontSize: 34 }}>{c}</span>
+          </Glass>
+        ))}
+        <div style={{ marginTop: 6, ...reveal(f, cue(2) + 30) }}><Kicker>→ the whole model compiles once</Kicker></div>
       </div>
     </Stage>
   );
@@ -183,33 +211,6 @@ const Row: React.FC<{ icon: string; text: string; f: number; at: number; hi?: bo
     <span style={{ fontSize: 30, color: hi ? C.gdn : C.ink }}>{text}</span>
   </div>
 );
-const Static: React.FC<SceneProps> = ({ cue }) => {
-  const f = useCurrentFrame();
-  return (
-    <Stage behind={<Globe />}>
-      <div style={{ position: "absolute", left: 120, top: 250 }}>
-        <Hero size={210} style={reveal(f, 0, 20)}>1 graph</Hero>
-        <Kicker style={{ marginTop: 30, ...reveal(f, 8) }}>per phase · prefill + decode · no data-dependent shapes</Kicker>
-      </div>
-      <svg width={1920} height={1080} style={{ position: "absolute", inset: 0 }}>
-        <Curve d="M 820 330 C 1000 330, 980 470, 1140 470" k={enter(f, 10, 24)} />
-      </svg>
-      <Glass style={{ position: "absolute", left: 1140, top: 140, width: 660, padding: "34px 40px", ...reveal(f, 6) }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 22, paddingBottom: 22, borderBottom: `1.5px solid ${C.faint}` }}>
-          <div style={{ width: 76, height: 76, borderRadius: 999, background: `conic-gradient(${C.gdn} 0 75%, ${C.attn} 0)` }} />
-          <div><div style={{ fontSize: 40 }}>static_qwen.py</div><div style={{ color: C.dim, fontSize: 26 }}>prefill · decode</div></div>
-        </div>
-        <Row f={f} at={cue(0)} icon="▭" text="ids [B, 256] · lengths [B]" />
-        <Row f={f} at={cue(0) + 6} icon="△" text="prefix sums → triu matmul" />
-        <Row f={f} at={cue(0) + 12} icon="⌗" text="tensor rank ≤ 4" />
-        <Row f={f} at={cue(1)} icon="β" text="padding: β = 0, g = 0 → no-op" hi />
-        <Row f={f} at={cue(2)} icon="▣" text="state resident on chip · aliased" hi />
-        <Row f={f} at={cue(2) + 8} icon="×" text="6-step exact inverse" />
-      </Glass>
-    </Stage>
-  );
-};
-
 /* ---------------------------------------------------------- 5. tensor parallel */
 const TP: React.FC<SceneProps> = ({ cue }) => {
   const f = useCurrentFrame();
@@ -343,5 +344,5 @@ const Outro: React.FC<SceneProps> = ({ props }) => {
   );
 };
 
-export const SCENES: Record<string, React.FC<SceneProps>> = { intro: Intro, hybrid: Hybrid, bug: Bug, static: Static, tp: TP, result: Result, cost: Cost, outro: Outro };
+export const SCENES: Record<string, React.FC<SceneProps>> = { intro: Intro, hybrid: Hybrid, blocker: Blocker, bug: Bug, fix: Fix, tp: TP, result: Result, cost: Cost, outro: Outro };
 export const LIGHT = new Set(["outro"]);

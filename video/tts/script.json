@@ -8,15 +8,19 @@
   },
   {
    "id": "hybrid",
-   "vo": "Three of every four layers are Gated DeltaNet: a fixed-size memory, instead of a cache that keeps growing. Cheap to serve, if the chip can run it."
+   "vo": "Most of its layers don't keep a memory that grows with every word. They keep a small one that never grows. That should make it cheap to run."
+  },
+  {
+   "id": "blocker",
+   "vo": "But AWS's own AI chips, Inferentia and Trainium, couldn't run these layers. So today you rent it from an API, at about a dollar per million tokens."
   },
   {
    "id": "bug",
-   "vo": "The obvious port compiles, and lies. The chip has no triangular solve, so the compiler freezes one CPU answer into the graph. Right on the test input. Wrong on everything else. So I replaced it with six matrix multiplies that build the exact inverse."
+   "vo": "And the obvious port is worse than broken, because it looks like it works. One math step the chip can't do gets computed once, ahead of time, and frozen in. Same question: right answer. New question: the same old answer."
   },
   {
-   "id": "static",
-   "vo": "Every shape is fixed. Padding is provably harmless. And the recurrent state never leaves the chip."
+   "id": "fix",
+   "vo": "So I rewrote that step as six plain matrix multiplies, the thing this chip does best. Now it's exact on every input. And with every shape fixed, the whole model compiles once."
   },
   {
    "id": "tp",
