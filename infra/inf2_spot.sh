@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Run neuron/run_inf2.py on a one-time Spot Inferentia2 instance that uploads its results to S3 and terminates itself.
+# Run a script on a one-time Spot (or MARKET=ondemand) Inferentia2 / Trainium1 instance that uploads its results to S3 and terminates itself.
 #
 #   cp infra/env.example infra/.env && $EDITOR infra/.env     # subnet, security group, instance profile, bucket
 #   ./infra/inf2_spot.sh                                        # launch; prints how to follow progress
@@ -20,6 +20,8 @@ SCRIPT=${SCRIPT:-neuron/run_inf2.py}
 RUN_ARGS=${RUN_ARGS:-"--bucket 256 --steps 32"}
 PREFIX=${PREFIX:-qwen-gdn-static}
 VOLUME_GB=${VOLUME_GB:-150}
+BUCKET_REGION=${BUCKET_REGION:-us-east-1}   # S3 downloads (HeadObject) do not follow cross-region redirects
+MARKET=${MARKET:-spot}            # spot | ondemand (e.g. trn1.32xlarge where only on-demand quota exists)
 AMI_NAME=${AMI_NAME:-"Deep Learning AMI Neuron PyTorch Inference vLLM 0.13 (Ubuntu 24.04) 20260227"}
 VENV=${VENV:-/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13}
 TAG_REPO=${TAG_REPO:-qwen-gdn-static-neuron}
@@ -43,8 +45,8 @@ echo "AMI $AMI  ($AMI_NAME)"
 
 # ship the working tree (not .git, checkpoints or results)
 tar -C "$ROOT" --exclude .git --exclude results --exclude 'infra/.state' --exclude 'infra/.env' --exclude ckpt \
-    --exclude .venv --exclude __pycache__ --exclude paper -czf "$STATE/code.tgz" .
-[ "${DRY_RUN:-0}" = 1 ] || $AWS s3 cp --quiet "$STATE/code.tgz" "s3://$BUCKET/$PREFIX/$RUN/code.tgz"
+    --exclude .venv --exclude __pycache__ --exclude paper --exclude video -czf "$STATE/code.tgz" .
+[ "${DRY_RUN:-0}" = 1 ] || aws --region $BUCKET_REGION s3 cp --quiet "$STATE/code.tgz" "s3://$BUCKET/$PREFIX/$RUN/code.tgz"
 
 cat > "$STATE/user-data.sh" <<EOF
 #!/bin/bash
@@ -52,14 +54,14 @@ shutdown -P +$((MINUTES + 2)) "budget reached"          # backstop: poweroff == 
 exec > >(tee -a /var/log/run.log) 2>&1
 set -x
 S3=s3://$BUCKET/$PREFIX/$RUN
-export AWS_DEFAULT_REGION=$REGION
+export AWS_DEFAULT_REGION=$BUCKET_REGION   # every aws call on the box is S3
 sync_out() { aws s3 sync /home/ubuntu/out "\$S3/" --exclude "*.neff" --exclude "*.pt" --exclude "neuronx-cc/*" --quiet; aws s3 cp --quiet /var/log/run.log "\$S3/run.log"; }
 finish() { sync_out; cd /home/ubuntu/out && find neuronx-cc -type f \\( -name "*.txt" -o -name "*.json" -o -name "log*" -o \\( -name "*.neff" -size -50M \\) \\) -exec aws s3 cp --quiet {} "\$S3/{}" \\; || true; systemctl poweroff; }
 trap finish EXIT
 # swap so neuronx-cc does not OOM on a 16 GiB box
 fallocate -l 32G /swapfile && chmod 600 /swapfile && mkswap /swapfile && swapon /swapfile
 mkdir -p /home/ubuntu/work /home/ubuntu/out && cd /home/ubuntu/work
-aws s3 cp --quiet "\$S3/code.tgz" . && tar xzf code.tgz
+aws s3 cp "\$S3/code.tgz" . && tar xzf code.tgz || { echo "code download failed"; exit 1; }
 export PATH=$VENV/bin:/opt/aws/neuron/bin:\$PATH
 python -c "from huggingface_hub import snapshot_download as d; d('$MODEL', local_dir='ckpt', allow_patterns=['*.json','*.safetensors','*.txt'])"
 ( while sleep 120; do sync_out; done ) &
@@ -68,10 +70,12 @@ echo "exit=\$?" > /home/ubuntu/out/exit_code
 EOF
 
 EXPIRES=$(date -u -v+"${MINUTES}"M +%FT%TZ 2>/dev/null || date -u -d "+$MINUTES min" +%FT%TZ)
+MARKET_OPTS=()
+[ "$MARKET" = spot ] && MARKET_OPTS=(--instance-market-options 'MarketType=spot,SpotOptions={SpotInstanceType=one-time,InstanceInterruptionBehavior=terminate}')
 launch() {  # $1 = subnet; extra args passed through
   local subnet=$1; shift
   $AWS ec2 run-instances "$@" --image-id "$AMI" --instance-type "$ITYPE" --subnet-id "$subnet" --security-group-ids "$SG" \
-    --instance-market-options 'MarketType=spot,SpotOptions={SpotInstanceType=one-time,InstanceInterruptionBehavior=terminate}' \
+    ${MARKET_OPTS[@]+"${MARKET_OPTS[@]}"} \
     --instance-initiated-shutdown-behavior terminate --iam-instance-profile Name="$INSTANCE_PROFILE" \
     --metadata-options HttpTokens=required,HttpEndpoint=enabled \
     --block-device-mappings '[{"DeviceName":"/dev/sda1","Ebs":{"VolumeSize":'"$VOLUME_GB"',"VolumeType":"gp3","DeleteOnTermination":true}}]' \
@@ -87,8 +91,8 @@ for SUBNET in $SUBNETS; do
   if IID=$(launch "$SUBNET" 2>"$STATE/err.txt"); then break; fi
   echo "  $SUBNET: $(tail -1 "$STATE/err.txt")"; IID=""
 done
-[ -n "$IID" ] || { echo "no Spot capacity for $ITYPE in $REGION right now"; exit 1; }
+[ -n "$IID" ] || { echo "no $MARKET capacity for $ITYPE in $REGION right now"; exit 1; }
 printf 'IID=%s\nRUN=%s\nREGION=%s\nBUCKET=%s\nPREFIX=%s\n' "$IID" "$RUN" "$REGION" "$BUCKET" "$PREFIX" > "$STATE/last-run.env"
-echo "launched $IID ($ITYPE spot, terminates by $EXPIRES)"
+echo "launched $IID ($ITYPE $MARKET, terminates by $EXPIRES)"
 echo "  progress: aws --region $REGION s3 cp s3://$BUCKET/$PREFIX/$RUN/run.log - | tail"
 echo "  results:  ./infra/inf2_spot.sh fetch"

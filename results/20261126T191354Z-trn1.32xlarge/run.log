@@ -1,0 +1,1174 @@
++ S3=s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261126T191354Z-trn1.32xlarge
++ export AWS_DEFAULT_REGION=us-east-1
++ AWS_DEFAULT_REGION=us-east-1
++ trap finish EXIT
++ fallocate -l 32G /swapfile
++ chmod 600 /swapfile
++ mkswap /swapfile
+Setting up swapspace version 1, size = 32 GiB (34359734272 bytes)
+no label, UUID=bbbbc6ca-b249-4600-ad8b-176cf253f244
++ swapon /swapfile
++ mkdir -p /home/ubuntu/work /home/ubuntu/out
++ cd /home/ubuntu/work
++ aws s3 cp s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261126T191354Z-trn1.32xlarge/code.tgz .
+Completed 32.4 KiB/32.4 KiB (174.0 KiB/s) with 1 file(s) remainingdownload: s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261126T191354Z-trn1.32xlarge/code.tgz to ./code.tgz
++ tar xzf code.tgz
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
++ export PATH=/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/bin:/opt/aws/neuron/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/snap/bin
++ PATH=/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/bin:/opt/aws/neuron/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/snap/bin
++ python -c 'from huggingface_hub import snapshot_download as d; d('\''Qwen/Qwen3.8-27B'\'', local_dir='\''ckpt'\'', allow_patterns=['\''*.json'\'','\''*.safetensors'\'','\''*.txt'\''])'
+Fetching 28 files:   0%|          | 0/28 [00:00<?, ?it/s]Fetching 28 files:   4%|▎         | 1/28 [00:01<00:31,  1.17s/it]Fetching 28 files:  18%|█▊        | 5/28 [00:15<01:12,  3.16s/it]Fetching 28 files:  46%|████▋     | 13/28 [01:04<01:19,  5.27s/it]Fetching 28 files:  50%|█████     | 14/28 [01:07<01:09,  4.99s/it]Fetching 28 files:  64%|██████▍   | 18/28 [01:07<00:30,  3.05s/it]Fetching 28 files:  64%|██████▍   | 18/28 [01:20<00:30,  3.05s/it]Fetching 28 files:  75%|███████▌  | 21/28 [01:50<00:44,  6.38s/it]Fetching 28 files:  79%|███████▊  | 22/28 [01:53<00:36,  6.05s/it]Fetching 28 files:  89%|████████▉ | 25/28 [01:54<00:12,  4.05s/it]Fetching 28 files: 100%|██████████| 28/28 [01:54<00:00,  4.09s/it]
++ timeout 142m python -u neuron/run_tp.py ckpt /home/ubuntu/out --tp 8 --bucket 256 --steps 32 --decode-batches 8,32,64
++ sleep 120
++ sync_out
++ aws s3 sync /home/ubuntu/out s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261126T191354Z-trn1.32xlarge/ --exclude '*.neff' --exclude '*.pt' --exclude 'neuronx-cc/*' --quiet
++ aws s3 cp --quiet /var/log/run.log s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261126T191354Z-trn1.32xlarge/run.log
++ sleep 120
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/parallel_layers/layers.py:16: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  from .mappings import (
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/parallel_layers/layers.py:16: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  from .mappings import (
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/parallel_layers/layers.py:16: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  from .mappings import (
++ sync_out
++ aws s3 sync /home/ubuntu/out s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261126T191354Z-trn1.32xlarge/ --exclude '*.neff' --exclude '*.pt' --exclude 'neuronx-cc/*' --quiet
++ aws s3 cp --quiet /var/log/run.log s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261126T191354Z-trn1.32xlarge/run.log
++ sleep 120
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/modules/moe/blockwise.py:74: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  component, error = import_nki(config)
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/modules/moe/blockwise.py:74: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  component, error = import_nki(config)
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/modules/moe/blockwise.py:74: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  component, error = import_nki(config)
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/modules/moe/blockwise.py:74: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  component, error = import_nki(config)
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/modules/moe/blockwise.py:74: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  component, error = import_nki(config)
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/modules/moe/blockwise.py:74: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  component, error = import_nki(config)
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/modules/moe/blockwise.py:76: UserWarning: Warning: Failed to import blockwise_mm_baseline_shard_n_k1_while_2loops: No module named 'neuronxcc.nki._private.blockwise_matmul_while'
+  warnings.warn(f"Warning: {error}")
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/modules/moe/moe_fused_tkg.py:49: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  component, error = import_nki(config)
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/modules/moe/moe_fused_tkg.py:49: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  component, error = import_nki(config)
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/neuronx_distributed/modules/moe/moe_fused_tkg.py:49: DeprecationWarning: torch_neuronx.nki_jit is deprecated, use nki.jit instead.
+  component, error = import_nki(config)
+[    194s] trace
+[2026-11-26 19:23:05.699: I neuronx_distributed/parallel_layers/parallel_state.py:638] > initializing tensor model parallel with size 8
+[2026-11-26 19:23:05.700: I neuronx_distributed/parallel_layers/parallel_state.py:639] > initializing pipeline model parallel with size 1
+[2026-11-26 19:23:05.700: I neuronx_distributed/parallel_layers/parallel_state.py:640] > initializing context model parallel with size 1
+[2026-11-26 19:23:05.700: I neuronx_distributed/parallel_layers/parallel_state.py:641] > initializing data parallel with size 1
+[2026-11-26 19:23:05.700: I neuronx_distributed/parallel_layers/parallel_state.py:642] > initializing world size to 8
+[2026-11-26 19:23:05.701: I neuronx_distributed/parallel_layers/parallel_state.py:387] [rank_0_pp-1_tp-1_dp-1_cp-1] Chosen Logic for replica groups ret_logic=<PG_Group_Logic.LOGIC1: (<function ascending_ring_PG_group at 0x74d8b41fe700>, 'Ascending Ring PG Group')>
+[2026-11-26 19:23:05.701: I neuronx_distributed/parallel_layers/parallel_state.py:666] [rank_0_pp-1_tp-1_dp-1_cp-1] tp_groups: replica_groups.tp_groups=[[0, 1, 2, 3, 4, 5, 6, 7]]
+[2026-11-26 19:23:05.701: I neuronx_distributed/parallel_layers/parallel_state.py:667] [rank_0_pp-1_tp-1_dp-1_cp-1] dp_groups: replica_groups.dp_groups=[[0], [1], [2], [3], [4], [5], [6], [7]]
+[2026-11-26 19:23:05.701: I neuronx_distributed/parallel_layers/parallel_state.py:668] [rank_0_pp-1_tp-1_dp-1_cp-1] pp_groups: replica_groups.pp_groups=[[0], [1], [2], [3], [4], [5], [6], [7]]
+[2026-11-26 19:23:05.701: I neuronx_distributed/parallel_layers/parallel_state.py:669] [rank_0_pp-1_tp-1_dp-1_cp-1] cp_groups: replica_groups.cp_groups=[[0], [1], [2], [3], [4], [5], [6], [7]]
+[2026-11-26 19:23:05.701: I neuronx_distributed/parallel_layers/parallel_state.py:670] [rank_0_pp-1_tp-1_dp-1_cp-1] ep_model_groups: replica_groups.ep_model_groups=[[0], [1], [2], [3], [4], [5], [6], [7]]
+[2026-11-26 19:23:05.701: I neuronx_distributed/parallel_layers/parallel_state.py:671] [rank_0_pp-1_tp-1_dp-1_cp-1] ep_data_groups: replica_groups.ep_data_groups=[[0], [1], [2], [3], [4], [5], [6], [7]]
+[    205s] device-resident state tensors: ['conv_b2', 'conv_b32', 'conv_b64', 'conv_b8', 'kv_b2', 'kv_b32', 'kv_b64', 'kv_b8', 'rec_b2', 'rec_b32', 'rec_b64', 'rec_b8']
+[    205s] compile
+Neuron: Started compilation for prefill
+Neuron: Compiler workdir for prefill is: /home/ubuntu/out/neuronx-cc/prefill/2026-11-26T19-23-17.148016
+Neuron: Neuron compiler flags: --auto-cast=none --model-type=transformer -O1 --verbose=35 --logfile=/home/ubuntu/out/neuronx-cc/prefill/2026-11-26T19-23-17.148016/log-neuron-cc.txt
+Neuron: Started compilation for decode
+Neuron: Started compilation for decode_b8
+Neuron: Started compilation for decode_b32
+Neuron: Started compilation for decode_b64
+Neuron: Compiler workdir for decode is: /home/ubuntu/out/neuronx-cc/decode/2026-11-26T19-23-17.172789
+Neuron: Neuron compiler flags: --auto-cast=none --model-type=transformer -O1 --verbose=35 --logfile=/home/ubuntu/out/neuronx-cc/decode/2026-11-26T19-23-17.172789/log-neuron-cc.txt
+Neuron: Compiler workdir for decode_b8 is: /home/ubuntu/out/neuronx-cc/decode_b8/2026-11-26T19-23-17.173066
+Neuron: Neuron compiler flags: --auto-cast=none --model-type=transformer -O1 --verbose=35 --logfile=/home/ubuntu/out/neuronx-cc/decode_b8/2026-11-26T19-23-17.173066/log-neuron-cc.txt
+Neuron: Compiler workdir for decode_b64 is: /home/ubuntu/out/neuronx-cc/decode_b64/2026-11-26T19-23-17.173648
+Neuron: Neuron compiler flags: --auto-cast=none --model-type=transformer -O1 --verbose=35 --logfile=/home/ubuntu/out/neuronx-cc/decode_b64/2026-11-26T19-23-17.173648/log-neuron-cc.txt
+Neuron: Compiler workdir for decode_b32 is: /home/ubuntu/out/neuronx-cc/decode_b32/2026-11-26T19-23-17.173315
+Neuron: Neuron compiler flags: --auto-cast=none --model-type=transformer -O1 --verbose=35 --logfile=/home/ubuntu/out/neuronx-cc/decode_b32/2026-11-26T19-23-17.173315/log-neuron-cc.txt
+/opt/aws_neuronx_venv_pytorch_inference_vllm_0_13/lib/python3.12/site-packages/libneuronxla/neuron_cc_wrapper.py:246: SyntaxWarning: str format compiler_flags is discouraged as its handling involves repeated joining and splitting, which can easily make mistakes if something is quoted or escaped. Use list[str] instead. Refer to documentation of the Python subprocess module for details.
+  warnings.warn(SyntaxWarning(
+...............Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 67]:
+  dve_j_optimized   : Fix prefix (0,) and permute (1,) with (2,) / latency=45,489; shape=(1940, 128, 8); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (1940, 128, 8), dtype: bfloat16), in_shape = [1940, 128, 8], permutation = [0, 2, 1])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3, 4) and permute (5,) with (6,) / latency=32,478; shape=(24, 2, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (24, 2, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [24, 2, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 4, 6, 5])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3, 4) and permute (5,) with (6,) / latency=32,478; shape=(16, 3, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (16, 3, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [16, 3, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 4, 6, 5])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3, 4) and permute (5,) with (6,) / latency=32,478; shape=(12, 4, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (12, 4, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [12, 4, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 4, 6, 5])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 72]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=32,478; shape=(48, 8, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 8, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 8, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 65]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=259,827; shape=(48, 64, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(64, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 64, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 64, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (64, 5, 2, 4, 128), dtype: bfloat16), in_shape = [64, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 66]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=129,914; shape=(48, 32, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 48]:
+  dve_j_optimized   : Fix prefix (0, 1, 2) and permute (3,) with (4,) / latency=11,372; shape=(32, 5, 2, 4, 128); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 32, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 32, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (32, 5, 2, 4, 128), dtype: bfloat16), in_shape = [32, 5, 2, 4, 128], permutation = [0, 1, 2, 4, 3])
+Inserted NKI kernel for conv:   bfloat16 (2, 1280, 1, 256) %'convolution.7' = NativeNkiKernel-756_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 1280, 1, 259) %'reshape.537', bfloat16 (1280, 1, 1, 4) %'reshape.538') {
+  } # dl = tensor_op_name: _convolution.41055 | hlo_id: 111 | , id = 756
+Neuron NKI - Kernel call: conv1d_depthwise_bf01_oi01_bf01(img_ref = Tensor(shape: (2, 1280, 1, 259), dtype: bfloat16), filter_ref = Tensor(shape: (1280, 1, 1, 4), dtype: bfloat16), out_ref = Tensor(shape: (2, 1280, 1, 256), dtype: bfloat16), stride = [1, 1], padding = [[0, 0], [0, 0]], rhs_dilation = [1, 1], lhs_dilation = [1, 1], in_perm = [0, 1, 2, 3], kern_perm = [0, 1, 2, 3], out_perm = [0, 1, 2, 3], srcs_shapes = [[2, 1280, 1, 259], [1280, 1, 1, 4]], dsts_shapes = [[2, 1280, 1, 256]], batch_group_count = 1, feature_group_count = 1280)
+Inserted NKI kernel for conv:   bfloat16 (2, 1280, 1, 256) %'convolution.4' = NativeNkiKernel-2342_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 1280, 1, 259) %'reshape.272', bfloat16 (1280, 1, 1, 4) %'reshape.273') {
+  } # dl = tensor_op_name: _convolution.2961 | hlo_id: 171 | , id = 2342
+Inserted NKI kernel for conv:   bfloat16 (2, 1280, 1, 256) %'convolution.5' = NativeNkiKernel-2343_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 1280, 1, 259) %'reshape.357', bfloat16 (1280, 1, 1, 4) %'reshape.358') {
+  } # dl = tensor_op_name: _convolution.3748 | hlo_id: 625 | , id = 2343
+Inserted NKI kernel for conv:   bfloat16 (2, 1280, 1, 256) %'convolution.6' = NativeNkiKernel-2344_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 1280, 1, 259) %'reshape.436', bfloat16 (1280, 1, 1, 4) %'reshape.437') {
+  } # dl = tensor_op_name: _convolution.4535 | hlo_id: 1078 | , id = 2344
+Neuron NKI - Kernel call: conv1d_depthwise_bf01_oi01_bf01(img_ref = Tensor(shape: (2, 1280, 1, 259), dtype: bfloat16), filter_ref = Tensor(shape: (1280, 1, 1, 4), dtype: bfloat16), out_ref = Tensor(shape: (2, 1280, 1, 256), dtype: bfloat16), stride = [1, 1], padding = [[0, 0], [0, 0]], rhs_dilation = [1, 1], lhs_dilation = [1, 1], in_perm = [0, 1, 2, 3], kern_perm = [0, 1, 2, 3], out_perm = [0, 1, 2, 3], srcs_shapes = [[2, 1280, 1, 259], [1280, 1, 1, 4]], dsts_shapes = [[2, 1280, 1, 256]], batch_group_count = 1, feature_group_count = 1280)
+Inserted NKI kernel for conv:   bfloat16 (2, 1280, 1, 256) %'convolution.8' = NativeNkiKernel-2743_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 1280, 1, 259) %'reshape.619', bfloat16 (1280, 1, 1, 4) %'reshape.620') {
+  } # dl = tensor_op_name: _convolution.42629 | hlo_id: 140 | , id = 2743
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 84]:
+  dve_j_optimized   : Fix prefix (0,) and permute (1,) with (2,) / latency=11,372; shape=(1940, 128, 2); dtype_size=2
+
+Neuron NKI - Kernel call: conv1d_depthwise_bf01_oi01_bf01(img_ref = Tensor(shape: (2, 1280, 1, 259), dtype: bfloat16), filter_ref = Tensor(shape: (1280, 1, 1, 4), dtype: bfloat16), out_ref = Tensor(shape: (2, 1280, 1, 256), dtype: bfloat16), stride = [1, 1], padding = [[0, 0], [0, 0]], rhs_dilation = [1, 1], lhs_dilation = [1, 1], in_perm = [0, 1, 2, 3], kern_perm = [0, 1, 2, 3], out_perm = [0, 1, 2, 3], srcs_shapes = [[2, 1280, 1, 259], [1280, 1, 1, 4]], dsts_shapes = [[2, 1280, 1, 256]], batch_group_count = 1, feature_group_count = 1280)
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (1940, 128, 2), dtype: bfloat16), in_shape = [1940, 128, 2], permutation = [0, 2, 1])
+Inserted NKI kernel for conv:   bfloat16 (2, 1280, 1, 256) %'convolution.1' = NativeNkiKernel-2334_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 1280, 1, 259) %'reshape.7', bfloat16 (1280, 1, 1, 4) %'reshape.8') {
+  } # dl = tensor_op_name: _convolution.196 | hlo_id: 129 | , id = 2334
+Inserted NKI kernel for conv:   bfloat16 (2, 1280, 1, 256) %'convolution.2' = NativeNkiKernel-2335_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 1280, 1, 259) %'reshape.92', bfloat16 (1280, 1, 1, 4) %'reshape.93') {
+  } # dl = tensor_op_name: _convolution.984 | hlo_id: 583 | , id = 2335
+Inserted NKI kernel for conv:   bfloat16 (2, 1280, 1, 256) %'convolution.3' = NativeNkiKernel-2336_Conv1d_depthwise_bf01_oi01_bf01(bfloat16 (2, 1280, 1, 259) %'reshape.171', bfloat16 (1280, 1, 1, 4) %'reshape.172') {
+  } # dl = tensor_op_name: _convolution.1771 | hlo_id: 1036 | , id = 2336
+Neuron NKI - Kernel call: conv1d_depthwise_bf01_oi01_bf01(img_ref = Tensor(shape: (2, 1280, 1, 259), dtype: bfloat16), filter_ref = Tensor(shape: (1280, 1, 1, 4), dtype: bfloat16), out_ref = Tensor(shape: (2, 1280, 1, 256), dtype: bfloat16), stride = [1, 1], padding = [[0, 0], [0, 0]], rhs_dilation = [1, 1], lhs_dilation = [1, 1], in_perm = [0, 1, 2, 3], kern_perm = [0, 1, 2, 3], out_perm = [0, 1, 2, 3], srcs_shapes = [[2, 1280, 1, 259], [1280, 1, 1, 4]], dsts_shapes = [[2, 1280, 1, 256]], batch_group_count = 1, feature_group_count = 1280)
++ sync_out
++ aws s3 sync /home/ubuntu/out s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261126T191354Z-trn1.32xlarge/ --exclude '*.neff' --exclude '*.pt' --exclude 'neuronx-cc/*' --quiet
++ aws s3 cp --quiet /var/log/run.log s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261126T191354Z-trn1.32xlarge/run.log
++ sleep 120
+..........
+Compiler status PASS
+
+Compiler status PASS
+Neuron: Finished compilation for decode_b8 in 91.46530866622925 seconds
+[    297s] decode_b8 compiled in 91s
+Neuron: Finished compilation for prefill in 91.53154563903809 seconds
+[    297s] prefill compiled in 92s
+
+Compiler status PASS
+Neuron: Finished compilation for decode_b32 in 93.7005684375763 seconds
+[    299s] decode_b32 compiled in 94s
+..
+Compiler status PASS
+Neuron: Finished compilation for decode_b64 in 109.72543978691101 seconds
+[    315s] decode_b64 compiled in 110s
+...+ sync_out
++ aws s3 sync /home/ubuntu/out s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261126T191354Z-trn1.32xlarge/ --exclude '*.neff' --exclude '*.pt' --exclude 'neuronx-cc/*' --quiet
+.+ aws s3 cp --quiet /var/log/run.log s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261126T191354Z-trn1.32xlarge/run.log
++ sleep 120
+......+ sync_out
++ aws s3 sync /home/ubuntu/out s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261126T191354Z-trn1.32xlarge/ --exclude '*.neff' --exclude '*.pt' --exclude 'neuronx-cc/*' --quiet
++ aws s3 cp --quiet /var/log/run.log s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261126T191354Z-trn1.32xlarge/run.log
++ sleep 120
+...Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 74]:
+  dve_j_optimized   : Fix prefix (0, 1, 2, 3) and permute (4,) with (5,) / latency=10,826; shape=(48, 2, 5, 2, 128, 3); dtype_size=2
+
+Roundtrip constructed a transpose sequence [rounds: 1; efficiency: 84]:
+  dve_j_optimized   : Fix prefix (0,) and permute (1,) with (2,) / latency=11,372; shape=(1940, 128, 2); dtype_size=2
+
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (48, 2, 5, 2, 128, 3), dtype: bfloat16), in_shape = [48, 2, 5, 2, 128, 3], permutation = [0, 1, 2, 3, 5, 4])
+Neuron NKI - Kernel call: tiled_dve_transpose_10(in_tensor = Tensor(shape: (1940, 128, 2), dtype: bfloat16), in_shape = [1940, 128, 2], permutation = [0, 2, 1])
+
+Compiler status PASS
+Neuron: Finished compilation for decode in 375.7981469631195 seconds
+[    581s] decode compiled in 376s
+[    581s] load per-rank weights
+[    612s] loaded on neuron
+2026-Nov-26 19:30:04.0121 3989:9187 [6] int nccl_net_ofi_create_plugin(nccl_net_ofi_plugin_t**):213 CCOM WARN NET/OFI Failed to initialize sendrecv protocol
+2026-Nov-26 19:30:04.0126 3989:9187 [6] int nccl_net_ofi_create_plugin(nccl_net_ofi_plugin_t**):354 CCOM WARN NET/OFI aws-ofi-nccl initialization failed
+2026-Nov-26 19:30:04.0126 3989:9187 [6] ncclResult_t nccl_net_ofi_init_no_atexit_fini_v6(ncclDebugLogger_t):183 CCOM WARN NET/OFI Initializing plugin failed
+2026-Nov-26 19:30:04.0126 3989:9187 [6] net_plugin.cc:97 CCOM WARN OFI plugin initNet() failed is EFA enabled?
+[    614s] prefill 116.8 ms
+[    615s] {"prefill_ms": 116.79816246032715, "batch": 2, "bucket": 256, "prefill_tokens": 172, "decode_step_ms_median": 38.185834884643555, "decode_step_ms_p90": 38.77449035644531, "decode_tok_per_s_batch": 52.37544251793486, "decode_state": "device-resident (aliased)"}
+[    616s] batch 8: {'step_ms_median': 52.149295806884766, 'tok_per_s': 153.40571480821103}
+[    618s] batch 32: {'step_ms_median': 78.06849479675293, 'tok_per_s': 409.8964644228156}
+[    620s] batch 64: {'step_ms_median': 127.97999382019043, 'tok_per_s': 500.07816135636665}
+[    620s] fp32 host reference
++ sync_out
++ aws s3 sync /home/ubuntu/out s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261126T191354Z-trn1.32xlarge/ --exclude '*.neff' --exclude '*.pt' --exclude 'neuronx-cc/*' --quiet
++ aws s3 cp --quiet /var/log/run.log s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261126T191354Z-trn1.32xlarge/run.log
++ sleep 120
+[    735s] [
+ {
+  "prompt_len": 5,
+  "prefill_kl": 0.00034253858029842377,
+  "max_step_kl": 0.0004925538087263703,
+  "mean_step_kl": 9.279728692490608e-05,
+  "teacher_forced_argmax_agree": 1.0,
+  "greedy_identical_prefix": 32,
+  "steps": 32,
+  "device_text": " Paris.\nThe capital of Germany is Berlin.\nThe capital of Italy is Rome.\nThe capital of Spain is Madrid.\nThe capital of Portugal is",
+  "cpu_fp32_text": " Paris.\nThe capital of Germany is Berlin.\nThe capital of Italy is Rome.\nThe capital of Spain is Madrid.\nThe capital of Portugal is"
+ },
+ {
+  "prompt_len": 167,
+  "prefill_kl": 0.0013671856140717864,
+  "max_step_kl": 0.0034054070711135864,
+  "mean_step_kl": 0.00019148508727084845,
+  "teacher_forced_argmax_agree": 1.0,
+  "greedy_identical_prefix": 32,
+  "steps": 32,
+  "device_text": "<think>\nThe user is asking me to explain why the sky is blue during the day and red at sunset, using Rayleigh scattering physics with explicit wavelength dependence.",
+  "cpu_fp32_text": "<think>\nThe user is asking me to explain why the sky is blue during the day and red at sunset, using Rayleigh scattering physics with explicit wavelength dependence."
+ }
+]
+[    735s] {"lengths": [10, 90], "prefill_kl": [1.0559859219938517e-05, 9.683473035693169e-05], "argmax_eq": [true, true]}
+DONE
++ sync_out
++ aws s3 sync /home/ubuntu/out s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261126T191354Z-trn1.32xlarge/ --exclude '*.neff' --exclude '*.pt' --exclude 'neuronx-cc/*' --quiet
++ aws s3 cp --quiet /var/log/run.log s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261126T191354Z-trn1.32xlarge/run.log
++ sleep 120
++ echo exit=0
++ finish
++ sync_out
++ aws s3 sync /home/ubuntu/out s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261126T191354Z-trn1.32xlarge/ --exclude '*.neff' --exclude '*.pt' --exclude 'neuronx-cc/*' --quiet
++ aws s3 cp --quiet /var/log/run.log s3://neuron-lab-445056752928-us-east-1/qwen-gdn-static/20261126T191354Z-trn1.32xlarge/run.log

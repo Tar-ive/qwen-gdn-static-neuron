@@ -13,8 +13,8 @@
 \emergencystretch=3em
 \newtheorem{proposition}{Proposition}
 
-\title{Gated DeltaNet on AWS Inferentia2 Without a Triangular Solve:\\
-Exact Static Graphs for Hybrid Qwen3.5/Qwen3.8 Models}
+\title{Gated DeltaNet on AWS Inferentia2 and Trainium1 Without a Triangular Solve:\\
+Exact Static Graphs for Hybrid Qwen3.5/Qwen3.8 Models, up to 27B}
 \author{Saksham Adhikari}
 \date{Technical report, November 2026 \\ \small Not peer reviewed.}
 
@@ -37,7 +37,11 @@ and it is $2.9\times$ faster than the only other formulation that generalises, t
 Hugging Face Transformers. The whole Qwen3.5-0.8B model compiles to one prefill and one decode graph. With bf16 weights it
 reproduces 32 of 32 greedy tokens of the fp32 reference on both test prompts, with KL divergence at most $7.3\times10^{-4}$,
 including on prompts it was not traced with. Prefill of a $2\times256$ batch takes 41--52\,ms and a batch-2 decode step 21.7\,ms.
-All device runs used Spot instances and cost about \$0.20 in total.
+With tensor parallelism over eight NeuronCores and device-resident recurrent state, Qwen3.8-27B runs on Trainium1
+(\texttt{trn1.32xlarge}). It reproduces 32 of 32 greedy tokens of an fp32 host reference on both prompts (KL at most
+$3.4\times10^{-3}$), keeps the same argmax on a batch it was not compiled with, and decodes at 500 tokens/s per model copy at
+batch 64. At the November 2026 Spot price this is \$0.30 per million tokens, against \$1.05 for the cheapest hosted API; at the
+on-demand price it is \$2.99.
 \end{abstract}
 
 \section{Introduction}
@@ -75,7 +79,10 @@ the state unchanged, explicit fixed-shape state, rank-$\le4$ tensors and matmul 
 \item \textbf{Measurements on a real checkpoint, CPU and Inferentia2.} These include the first Gated DeltaNet hybrid we know
 of to run on Inferentia2. They also show that random-weight tests miss the instability of the Neumann alternative
 (Sections~\ref{sec:eval},~\ref{sec:device}).
-\item \textbf{A reproducible, cost-bounded recipe.} One-time Spot instances upload their results and terminate themselves.
+\item \textbf{Qwen3.8-27B on Trainium1.} Head-sliced tensor parallelism over eight NeuronCores, with the recurrent and KV
+state kept on the device between calls, reproduces the fp32 reference token for token and reaches 500 tokens/s per copy at
+batch 64. We report cost per million tokens against hosted APIs, Spot and on-demand (Section~\ref{sec:27b}).
+\item \textbf{A reproducible, cost-bounded recipe.} One-time instances upload their results and terminate themselves.
 Code and raw results are released (Section~\ref{sec:repro}).
 \end{enumerate}
 
@@ -293,13 +300,78 @@ did not profile the share of device time spent in the inverse inside the full mo
 (\texttt{inf2.8xlarge}) in us-east-1, cost about \$0.20 in total. One run was reclaimed by Spot and repeated. Each instance
 downloads the checkpoint, runs, uploads results to S3 and terminates itself, with a hard power-off as a backstop.
 
-\section{Scaling to Qwen3.8-27B}
-Qwen3.8-27B is 54\,GB in bf16 and needs tensor parallelism. TP=8 on \texttt{inf2.24xlarge} (four chips, 128\,GB of HBM in use)
-divides the 16 GDN key heads (2 key and 6 value heads per core) and the 24 query heads, and replicates each of the 4 KV heads
-twice. GDN heads are independent, so the recurrence needs no collectives beyond the usual all-reduce after the output
-projections. We describe this configuration but did not run it. The chunk loop unrolls $T/C$ times in each of 48 GDN
-layers, so compile time grows linearly with the bucket. Long contexts call for moderate buckets with chunked prefill across
-calls, which the explicit state interface already supports, or an NKI kernel for the scan.
+\section{Qwen3.8-27B on Trainium1}\label{sec:27b}
+\paragraph{Sharding.} Qwen3.8-27B is 54\,GB in bf16 (64 layers, hidden size 5120, 48 GDN and 16 attention layers, a 248k
+vocabulary), so it needs tensor parallelism. We slice every projection by head, Megatron style, so that all per-head
+computation stays on one core. With TP=8 each core holds 3 of the 24 query heads and one of the 4 KV heads (each replicated
+twice), 2 of the 16 GDN key heads and 6 of the 48 value heads, and one eighth of the MLP and of the vocabulary. Embeddings and
+norms are replicated, which brings the weights to 9.0\,GB per core. GDN heads are independent, so the recurrence itself needs
+no communication. The only collectives are one all-reduce after each mixer output projection, one after each MLP and one
+all-gather of the logits. The graphs are traced and compiled with the NxD functional API (\texttt{trace}, \texttt{compile},
+\texttt{NxDModel}) on SDK 2.28. A threaded CPU emulation of the collectives checks the sharded model against the unsharded
+one before any device run (max $|\Delta\text{logit}|\le6\times10^{-5}$ on a random-weight model with the 27B head layout).
+
+\paragraph{Device-resident state.} The single-core runs returned the full state to the host after every step. Here the
+KV cache, conv state and recurrent state live in module buffers that each graph rebinds to its new value. NxD then treats them
+as aliased inputs that stay on the device and are shared, by name, between the prefill and decode graphs. Two details matter
+and fail silently if missed: an in-place \texttt{copy\_} into the buffer breaks the aliasing analysis (the pre-call tensor no
+longer maps to a graph parameter), and a buffer whose dtype differs from the new value is not aliased at all. The KV buffer is
+therefore fp32, matching the attention computation. On Qwen3.5-0.8B (TP=2, \texttt{inf2.xlarge}) this cut the batch-2
+decode step from 21.7\,ms (one core, state through the host) to 6.3\,ms, with 32 of 32 greedy tokens still identical.
+
+\begin{table}[t]
+\centering
+\caption{Qwen3.8-27B on \texttt{trn1.32xlarge}, bf16 weights, TP=8 (one model copy on 8 of 32 NeuronCores), bucket 256,
+32 greedy steps. Decode rows are medians over steps from a zero state; throughput counts output tokens only.}
+\label{tab:27b}
+\begin{tabular}{lr}
+\toprule
+greedy tokens identical to fp32 (prompts of 5 and 167 tokens) & 32/32, 32/32 \\
+teacher-forced argmax agreement & 1.00, 1.00 \\
+KL to fp32, mean / max over steps & $1.9\times10^{-4}$ / $3.4\times10^{-3}$ \\
+prefill on unseen batch (lengths 10, 90): KL, argmax & $\le 9.7\times10^{-5}$, equal \\
+prefill, $2\times256$ & 117\,ms \\
+compile, five graphs in parallel & 1.5--6.3\,min \\
+\midrule
+decode, batch 2 & 38.2\,ms/step, 52 tok/s \\
+decode, batch 8 & 52.1\,ms/step, 153 tok/s \\
+decode, batch 32 & 78.1\,ms/step, 410 tok/s \\
+decode, batch 64 & 128.0\,ms/step, 500 tok/s \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Results.} Table~\ref{tab:27b} summarises the run. The device reproduces the fp32 host reference token for
+token on both prompts, including a 167-token prompt whose continuation is a reasoning trace, and a prefill batch with lengths it
+was not compiled with gives the same next token. Decode time grows slowly with batch: a step at batch 64 costs 3.4 times a step
+at batch 2 while producing 32 times the tokens, the signature of a weight-bandwidth-bound step.
+
+\begin{table}[t]
+\centering
+\caption{Cost per million output tokens for Qwen3.8-27B. Instance figures divide the hourly price by four copies
+(\texttt{trn1.32xlarge} has 32 cores, so four 8-core copies on disjoint chips) and by the measured per-copy throughput; the
+four-copy figure is projected, not measured concurrently. Prices from AWS and OpenRouter, November 2026.}
+\label{tab:cost}
+\begin{tabular}{lrrr}
+\toprule
+ & batch 8 & batch 32 & batch 64 \\
+\midrule
+\texttt{trn1.32xlarge} Spot, \$2.15/h (us-east-2c) & \$0.97 & \$0.36 & \$0.30 \\
+\texttt{trn1.32xlarge} on-demand, \$21.50/h & \$9.73 & \$3.64 & \$2.99 \\
+\midrule
+cheapest hosted API (OpenRouter) & \multicolumn{3}{r}{\$1.05} \\
+typical hosted API & \multicolumn{3}{r}{\$1.30--3.00} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Cost.} Table~\ref{tab:cost} converts throughput to cost. At the Spot price, one copy beats the cheapest hosted API
+from batch 8 upwards and is $3.5\times$ cheaper at batch 64. At the on-demand price the same instance costs about three times
+the cheapest API, so the saving depends on Spot (or on reserved capacity). The comparison is favourable to the instance in
+two ways that we state plainly: it counts only output tokens, while APIs also charge for input, and our contexts are short
+($\le320$ tokens), so the 16 attention layers read a small KV cache. It is unfavourable in one: we serve one copy per 8 cores
+with no continuous batching. The 27B run itself, including model download and compilation, took 12 minutes and cost about
+\$5 on demand.
 
 \section{Related work}
 The delta rule's chunkwise form and its WY/UT representation come from parallel
@@ -313,11 +385,14 @@ caches~\cite{vllmhybrid,sglanghybrid}.
 
 \section{Limitations}
 \begin{itemize}
-\item Only Qwen3.5-0.8B ran on device, at one bucket (256) and batch 2. Qwen3.8-27B was validated only through its head layout
-on random weights, on CPU.
+\item All device runs used one bucket (256) and contexts of at most 320 tokens. Throughput at long context, where the 16
+attention layers dominate, was not measured.
+\item The four-copy throughput of \texttt{trn1.32xlarge} is projected from one copy. The Spot cost uses the market price; the
+27B run itself was on demand because the account had no Trainium Spot quota.
 \item The solve-triangular finding is for torch-neuronx tracing on SDK 2.28. Other front ends, such as NxD Inference's model
 builder, or other SDK versions may behave differently.
-\item The decode latency includes host round-trips of the state. Neither phase was profiled at the engine level.
+\item The single-core decode latencies include host round-trips of the state (the TP runs do not). Neither phase was
+profiled at the engine level.
 \item The dense doubling inverse spends FLOPs on zero blocks, and a $64\times64$ product underuses the $128\times128$ Tensor
 engine.
 \item The multimodal encoder and the multi-token-prediction head are out of scope.
@@ -328,8 +403,10 @@ Code, launch scripts and raw JSON results are in the accompanying repository:
 \begin{itemize}
 \item \texttt{static\_qwen.py} (the model) and \texttt{test\_static.py} (CPU checks);
 \item \texttt{neuron/run\_inf2.py} and \texttt{neuron/solve\_vs\_doubling.py} (device runs);
-\item \texttt{infra/inf2\_spot.sh} (Spot launcher);
-\item \texttt{results/} (device runs 20261123T183627Z, 20261123T190820Z and 20261123T194739Z).
+\item \texttt{tp\_qwen.py}, \texttt{test\_tp.py} and \texttt{neuron/run\_tp.py} (tensor parallelism, CPU emulation, device run);
+\item \texttt{infra/inf2\_spot.sh} (launcher; Spot or on-demand);
+\item \texttt{results/} (device runs 20261123T183627Z, 20261123T190820Z and 20261123T194739Z; TP rehearsal
+20261123T234052Z; Qwen3.8-27B run 20261126T191354Z with \texttt{cost.json}).
 \end{itemize}
 CPU checks used PyTorch 2.15, Transformers 5.24 and Python 3.12.
 
@@ -338,8 +415,9 @@ On Inferentia2, \texttt{solve\_triangular} in Gated DeltaNet fails silently: it 
 Six masked doubling steps of dense products replace it exactly, run on the device, stay accurate to fp32 rounding on real
 checkpoints where the Neumann product fails by ten orders of magnitude, and are $2.9\times$ faster than the row-loop
 alternative. With state-neutral padding, explicit fixed-shape state and rank-4 tensors, the whole hybrid model becomes one static
-graph per phase. On an Inferentia2 chip it reproduces the fp32 reference token for token. This route works on Inferentia2 and
-Trainium1, where NKI-based ports are no longer supported.
+graph per phase. On an Inferentia2 chip it reproduces the fp32 reference token for token, and with tensor parallelism and
+device-resident state so does Qwen3.8-27B on Trainium1, at 500 tokens/s per copy and \$0.30 per million tokens at Spot
+prices. This route works on Inferentia2 and Trainium1, where NKI-based ports are no longer supported.
 
 
 \begin{thebibliography}{99}

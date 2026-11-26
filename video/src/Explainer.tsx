@@ -1,14 +1,14 @@
 import React from "react";
 import { AbsoluteFill, Audio, Sequence, staticFile, useCurrentFrame, interpolate } from "remotion";
 import timing from "./timing.json";
-import { C, FPS, SANS, enter } from "./style";
-import { SCENES } from "./scenes";
+import { C, FPS, MONO, enter } from "./style";
+import { SCENES, LIGHT } from "./scenes";
 
 type Cue = { text: string; start: number; end: number };
 type SceneTiming = { id: string; seconds: number; cues: Cue[] };
 const T = timing as SceneTiming[];
 
-const TAIL = 0.6; // s of breathing room after each scene's narration
+const TAIL = 0.5; // s of breathing room after each scene's narration
 const END_HOLD = 2.5; // s on the end card
 const sceneFrames = (i: number) =>
   Math.ceil((T[i].seconds + (i === T.length - 1 ? END_HOLD : TAIL)) * FPS);
@@ -40,36 +40,35 @@ function chunks(c: Cue): Cue[] {
   });
 }
 
-const Captions: React.FC<{ cues: Cue[] }> = ({ cues }) => {
+const Captions: React.FC<{ cues: Cue[]; light: boolean }> = ({ cues, light }) => {
   const f = useCurrentFrame();
   const t = f / FPS;
   const cur = cues.flatMap(chunks).find((c) => t >= c.start && t < c.end + 0.15);
   if (!cur) return null;
-  const k = Math.min(enter(f, cur.start * FPS, 5), 1);
+  const k = enter(f, cur.start * FPS, 6);
   return (
-    <div style={{ position: "absolute", bottom: 64, width: "100%", display: "flex", justifyContent: "center" }}>
-      <div
-        style={{
-          maxWidth: 1180, padding: "14px 28px", borderRadius: 14, background: "rgba(5,8,12,0.78)",
-          color: C.text, fontFamily: SANS, fontSize: 40, lineHeight: 1.3, textAlign: "center", opacity: k,
-        }}
-      >
+    <div style={{ position: "absolute", bottom: 54, width: "100%", display: "flex", justifyContent: "center" }}>
+      <div style={{
+        maxWidth: 1300, padding: "10px 22px", borderRadius: 12, fontFamily: MONO, fontSize: 30, lineHeight: 1.35, textAlign: "center",
+        color: light ? "#222" : C.ink, background: light ? "rgba(255,255,255,0.85)" : "rgba(9,9,10,0.72)", opacity: k,
+      }}>
         {cur.text}
       </div>
     </div>
   );
 };
 
+/** scene in/out: opacity + focus pull, like the reference's soft cuts */
 const Fade: React.FC<{ dur: number; children: React.ReactNode }> = ({ dur, children }) => {
   const f = useCurrentFrame();
-  const o = interpolate(f, [0, 10, dur - 10, dur], [0, 1, 1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-  return <AbsoluteFill style={{ opacity: o }}>{children}</AbsoluteFill>;
+  const o = interpolate(f, [0, 9, dur - 9, dur], [0, 1, 1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+  return <AbsoluteFill style={{ opacity: o, filter: `blur(${(1 - o) * 14}px)` }}>{children}</AbsoluteFill>;
 };
 
 export const Explainer: React.FC<Record<string, string>> = (props) => {
   let from = 0;
   return (
-    <AbsoluteFill style={{ background: C.bg, fontFamily: SANS, color: C.text }}>
+    <AbsoluteFill style={{ background: C.bg }}>
       {T.map((s, i) => {
         const dur = sceneFrames(i);
         const Scene = SCENES[s.id];
@@ -82,7 +81,7 @@ export const Explainer: React.FC<Record<string, string>> = (props) => {
             <Fade dur={dur}>
               <Scene cue={cue} dur={dur} props={props} />
             </Fade>
-            <Captions cues={s.cues} />
+            <Captions cues={s.cues} light={LIGHT.has(s.id)} />
           </Sequence>
         );
       })}

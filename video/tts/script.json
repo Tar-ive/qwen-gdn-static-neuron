@@ -1,14 +1,38 @@
 {
-  "voice": "am_michael",
-  "speed": 1.1,
-  "scenes": [
-    {"id": "hook", "vo": "This is Qwen three point eight. Twenty-seven billion parameters. But three out of four of its layers aren't attention. They're Gated DeltaNet: a recurrent layer that keeps a fixed-size memory, instead of a cache that grows with every token."},
-    {"id": "stakes", "vo": "That should make it cheap to serve. But AWS's Inferentia and Trainium chips only run fixed-shape graphs, and this layer was never built for them. So today, you pay API prices. About a dollar per million tokens."},
-    {"id": "bug", "vo": "Worse, the obvious port fails silently. The chip has no triangular solve. So the compiler runs it once, on the CPU, and bakes that answer into the program. It's like being handed a photo of a calculator. Right on the test input. Wrong on everything else."},
-    {"id": "fix", "vo": "So I rewrote the model as one static graph per phase. The solve becomes six matrix multiplies that build the exact inverse. Padding is provably harmless. And no shape ever depends on the data."},
-    {"id": "tp", "vo": "Twenty-seven billion parameters don't fit on one chip. So every layer is split by head, across eight NeuronCores. Each core keeps its own memory on the chip, and the cores only meet twice per layer, to add up their results."},
-    {"id": "result", "vo": "On the chip, the output matches the full-precision model, token for token. Thirty-two out of thirty-two. And split across two cores, with the state kept on the chip, a decode step dropped from twenty-two milliseconds to six."},
-    {"id": "cost", "vo": "Now the money. A spot Trainium instance holds four copies of the model, for about two dollars an hour. Each copy beats the cheapest API once it passes a hundred and forty tokens a second."},
-    {"id": "cta", "vo": "The code, the paper, and a one-command launcher are on GitHub."}
-  ]
+ "voice": "am_michael",
+ "speed": 1.1,
+ "scenes": [
+  {
+   "id": "intro",
+   "vo": "Qwen three point eight, twenty-seven B. Running exactly, on AWS Trainium."
+  },
+  {
+   "id": "hybrid",
+   "vo": "Three of every four layers are Gated DeltaNet: a fixed-size memory, instead of a cache that keeps growing. Cheap to serve, if the chip can run it."
+  },
+  {
+   "id": "bug",
+   "vo": "The obvious port compiles, and lies. The chip has no triangular solve, so the compiler freezes one CPU answer into the graph. Right on the test input. Wrong on everything else. So I replaced it with six matrix multiplies that build the exact inverse."
+  },
+  {
+   "id": "static",
+   "vo": "Every shape is fixed. Padding is provably harmless. And the recurrent state never leaves the chip."
+  },
+  {
+   "id": "tp",
+   "vo": "Twenty-seven billion parameters, split by head across eight NeuronCores. Two all-reduces per layer. Nothing else crosses."
+  },
+  {
+   "id": "result",
+   "vo": "On the chip, it matches the full-precision model, token for token. {greedy} out of {steps}, on both prompts. And {top_tok_s} tokens a second, at batch {top_batch}."
+  },
+  {
+   "id": "cost",
+   "vo": "At spot prices, that's {usd_cents} cents per million tokens. The cheapest API charges a dollar five. On demand, it's three dollars. So this is a spot story."
+  },
+  {
+   "id": "outro",
+   "vo": "The code, the paper, and a one-command launcher are on GitHub."
+  }
+ ]
 }

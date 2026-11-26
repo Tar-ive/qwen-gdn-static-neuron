@@ -1,0 +1,34 @@
+{
+ "source_run": "results/20261126T191354Z-trn1.32xlarge",
+ "assumptions": "decode-only throughput of ONE 8-core copy, context <= 320 tokens, greedy; trn1.32xlarge has 32 NeuronCores = 4 independent copies on disjoint chips (projected, not measured concurrently); prices Nov 2026",
+ "per_batch": {
+  "2": {
+   "tok_s_per_copy": 52.4,
+   "tok_s_instance_4_copies_projected": 210,
+   "usd_per_M__trn1.32xlarge spot us-east-2c": 2.851,
+   "usd_per_M__trn1.32xlarge on-demand us-east-2": 28.507
+  },
+  "8": {
+   "tok_s_per_copy": 153.4,
+   "tok_s_instance_4_copies_projected": 614,
+   "usd_per_M__trn1.32xlarge spot us-east-2c": 0.973,
+   "usd_per_M__trn1.32xlarge on-demand us-east-2": 9.733
+  },
+  "32": {
+   "tok_s_per_copy": 409.9,
+   "tok_s_instance_4_copies_projected": 1640,
+   "usd_per_M__trn1.32xlarge spot us-east-2c": 0.364,
+   "usd_per_M__trn1.32xlarge on-demand us-east-2": 3.643
+  },
+  "64": {
+   "tok_s_per_copy": 500.1,
+   "tok_s_instance_4_copies_projected": 2000,
+   "usd_per_M__trn1.32xlarge spot us-east-2c": 0.299,
+   "usd_per_M__trn1.32xlarge on-demand us-east-2": 2.986
+  }
+ },
+ "api_usd_per_M_output": {
+  "OpenRouter cheapest (StreamLake)": 1.05,
+  "Chutes": 1.25
+ }
+}

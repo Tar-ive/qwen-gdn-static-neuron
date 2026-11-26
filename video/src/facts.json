@@ -1,0 +1,18 @@
+{
+ "pending": false,
+ "source": "results/20261126T191354Z-trn1.32xlarge (results_tp.json, cost.json)",
+ "model": "Qwen3.8-27B",
+ "instance": "trn1.32xlarge",
+ "greedy": "32",
+ "steps": "32",
+ "kl": "3.4e-3",
+ "prefill_ms": "117",
+ "decode_ms": "38",
+ "top_batch": "64",
+ "top_tok_s": "500",
+ "spot_hr": "2.15",
+ "copies": "4",
+ "usd_per_m": "0.30",
+ "ondemand_usd_per_m": "2.99",
+ "api_usd_per_m": "1.05"
+}

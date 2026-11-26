@@ -14,10 +14,13 @@ HERE = pathlib.Path(__file__).parent
 OUT = HERE.parent / "public" / "vo"
 OUT.mkdir(parents=True, exist_ok=True)
 cfg = json.loads((HERE / "script.json").read_text())
+facts = json.loads((HERE.parent / "src" / "facts.json").read_text())
+facts["usd_cents"] = str(round(float(facts["usd_per_m"]) * 100))
 pipe = KPipeline(lang_code="a")
 SR = 24000
 timing = []
 for sc in cfg["scenes"]:
+    sc["vo"] = sc["vo"].format(**facts)
     parts, cues, t = [], [], 0.0
     for sent in re.split(r"(?<=[.!?])\s+", sc["vo"].strip()):           # one cue per sentence, timed from its audio
         a = np.concatenate([np.asarray(x) for _, _, x in pipe(sent, voice=cfg["voice"], speed=cfg["speed"])])

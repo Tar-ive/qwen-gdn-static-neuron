@@ -1,306 +1,347 @@
 import React from "react";
 import { AbsoluteFill, useCurrentFrame, interpolate } from "remotion";
-import { C, MONO, enter, fadeUp, FPS } from "./style";
+import { C, MONO, PIXEL, SANS, clamp, enter, reveal } from "./style";
+import { Curve, Glass, Globe, Icon, Kicker, Pill, Stage } from "./ui";
+import facts from "./facts.json";
 import type { SceneProps } from "./Explainer";
 
-const Stage: React.FC<{ children: React.ReactNode; kicker?: string }> = ({ children, kicker }) => (
-  <AbsoluteFill style={{ padding: "70px 120px 190px", display: "flex", flexDirection: "column" }}>
-    {kicker && (
-      <div style={{ fontFamily: MONO, fontSize: 24, letterSpacing: 3, color: C.muted, textTransform: "uppercase", marginBottom: 28 }}>
-        {kicker}
+const F = facts as Record<string, string | boolean>;
+const s = (k: string) => String(F[k]);
+const Hero: React.FC<{ children: React.ReactNode; size?: number; style?: React.CSSProperties }> = ({ children, size = 220, style }) => (
+  <div style={{ fontFamily: PIXEL, fontSize: size, lineHeight: 0.95, color: C.ink, letterSpacing: "-0.01em", ...style }}>{children}</div>
+);
+
+/* ---------------------------------------------------------- layer-card wall (intro + tp backdrop) */
+const LayerCard: React.FC<{ i: number }> = ({ i }) => {
+  const attn = i % 4 === 3;
+  const rows = attn
+    ? ["q · 24 heads", "k/v · 4 heads", "gated output", "rope · 64 dims", "kv cache ↑"]
+    : ["conv1d · k = 4", "β, g gates", "state 128×128", "chunk 64", "out_proj"];
+  return (
+    <div style={{ width: 250, height: 310, borderRadius: 22, background: "#141416", border: `1.5px solid ${C.faint}`, padding: 20, fontFamily: MONO, color: C.dim, fontSize: 17 }}>
+      <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+        <div style={{ width: 38, height: 38, borderRadius: 10, background: attn ? C.attn : C.gdn, opacity: 0.85 }} />
+        <div>
+          <div style={{ fontFamily: SANS, color: C.ink, fontSize: 21 }}>Layer {i}</div>
+          <div style={{ fontSize: 14 }}>{attn ? "full attention" : "Gated DeltaNet"}</div>
+        </div>
       </div>
-    )}
-    {children}
+      {rows.map((r) => <div key={r} style={{ marginTop: 16, display: "flex", gap: 10 }}><span style={{ opacity: 0.5 }}>▢</span>{r}</div>)}
+    </div>
+  );
+};
+const Wall: React.FC<{ drift?: number }> = ({ drift = 0 }) => (
+  <AbsoluteFill style={{ perspective: 1800, overflow: "hidden" }}>
+    <div style={{ position: "absolute", left: -500, top: -620, display: "grid", gridTemplateColumns: "repeat(11, 250px)", gap: 26,
+      transform: `rotateX(38deg) rotateZ(-14deg) translateY(${drift}px)` }}>
+      {Array.from({ length: 66 }).map((_, i) => <LayerCard key={i} i={i % 64} />)}
+    </div>
   </AbsoluteFill>
 );
 
-const Panel: React.FC<{ style?: React.CSSProperties; children: React.ReactNode; color?: string }> = ({ style, children, color }) => (
-  <div style={{ background: C.panel, border: `2px solid ${color ?? C.line}`, borderRadius: 18, padding: "26px 32px", ...style }}>{children}</div>
-);
-
-const Big: React.FC<{ children: React.ReactNode; color?: string; size?: number; style?: React.CSSProperties }> = ({ children, color, size = 64, style }) => (
-  <div style={{ fontSize: size, fontWeight: 700, color: color ?? C.text, lineHeight: 1.1, ...style }}>{children}</div>
-);
-
-const Small: React.FC<{ children: React.ReactNode; color?: string; style?: React.CSSProperties }> = ({ children, color, style }) => (
-  <div style={{ fontSize: 30, color: color ?? C.muted, lineHeight: 1.35, ...style }}>{children}</div>
-);
-
-/* ---------------------------------------------------------------- 1. hook */
-const Hook: React.FC<SceneProps> = ({ cue }) => {
+/* ---------------------------------------------------------- 1. intro */
+const Intro: React.FC<SceneProps> = ({ cue }) => {
   const f = useCurrentFrame();
-  const tokens = Math.round(interpolate(f, [cue(3), cue(3) + 8 * FPS], [1, 4096], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }));
-  const grow = interpolate(f, [cue(3), cue(3) + 8 * FPS], [0.03, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+  const dark = f >= cue(1) - 4;
+  if (!dark)
+    return (
+      <AbsoluteFill style={{ background: C.light, alignItems: "center", justifyContent: "center", fontFamily: SANS }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 22, fontSize: 84, color: "#111", ...reveal(f, 2) }}>
+          Introducing
+          <div style={{ width: 70, height: 70, borderRadius: 18, background: "#111", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6, padding: 14 }}>
+            {[C.gdn, C.gdn, C.gdn, C.attn].map((c, i) => <div key={i} style={{ background: c, borderRadius: 3 }} />)}
+          </div>
+          <span style={{ fontWeight: 600 }}>Qwen3.8-27B</span>
+        </div>
+      </AbsoluteFill>
+    );
+  const g = f - cue(1);
   return (
-    <Stage kicker="Hybrid decoder">
-      <div style={fadeUp(f, 0)}><Big size={110}>Qwen3.8-27B</Big></div>
-      <div style={fadeUp(f, cue(1))}><Small style={{ fontSize: 40, marginTop: 12 }}>27.8 B parameters · 64 layers</Small></div>
-      <div style={{ display: "flex", gap: 7, marginTop: 50 }}>
-        {Array.from({ length: 64 }).map((_, i) => {
-          const k = enter(f, cue(2) + i * 0.6, 8);
-          const attn = i % 4 === 3;
-          return <div key={i} style={{ width: 18, height: 70, borderRadius: 4, background: attn ? C.attn : C.gdn, opacity: k, transform: `scaleY(${k})` }} />;
-        })}
-      </div>
-      <div style={{ display: "flex", gap: 40, marginTop: 18, ...fadeUp(f, cue(2) + 20) }}>
-        <Small color={C.gdn}>■ 48 Gated DeltaNet</Small>
-        <Small color={C.attn}>■ 16 full attention</Small>
-      </div>
-      <div style={{ display: "flex", gap: 40, marginTop: 44, ...fadeUp(f, cue(3)) }}>
-        <Panel style={{ flex: 1 }} color={C.attn}>
-          <Small color={C.attn}>attention: KV cache grows with every token</Small>
-          <div style={{ marginTop: 18, height: 34, background: C.line, borderRadius: 8 }}>
-            <div style={{ height: "100%", width: `${grow * 100}%`, background: C.attn, borderRadius: 8 }} />
-          </div>
-          <Small style={{ marginTop: 10, fontFamily: MONO }}>{tokens.toLocaleString()} tokens</Small>
-        </Panel>
-        <Panel style={{ flex: 1 }} color={C.gdn}>
-          <Small color={C.gdn}>DeltaNet: fixed 128 × 128 memory per head</Small>
-          <div style={{ display: "flex", alignItems: "center", gap: 24, marginTop: 14 }}>
-            <div style={{ width: 82, height: 82, background: C.gdn, borderRadius: 8, opacity: 0.85 }} />
-            <Small style={{ fontFamily: MONO }}>same size at {tokens.toLocaleString()} tokens</Small>
-          </div>
-        </Panel>
-      </div>
+    <Stage>
+      <AbsoluteFill style={{ opacity: 0.55 }}><Wall drift={-g * 0.8} /></AbsoluteFill>
+      <AbsoluteFill style={{ background: "radial-gradient(ellipse at center, rgba(9,9,10,0.85) 0%, rgba(9,9,10,0.2) 60%)" }} />
+      <AbsoluteFill style={{ alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 24 }}>
+        <div style={{ display: "flex", gap: 18, alignItems: "center", fontSize: 44, ...reveal(f, cue(1)) }}>
+          Introducing <span style={{ fontWeight: 600 }}>Qwen3.8-27B</span>
+          <span style={{ color: C.dim, fontFamily: MONO }}>&lt;&gt;</span>
+          <span style={{ fontWeight: 600 }}>NeuronCore</span>
+        </div>
+        <Hero size={190} style={reveal(f, cue(1) + 8, 22)}>Exact on Trainium</Hero>
+      </AbsoluteFill>
     </Stage>
   );
 };
 
-/* ---------------------------------------------------------------- 2. stakes */
-const Chip: React.FC<{ size?: number; label?: string }> = ({ size = 300, label }) => (
-  <div style={{ position: "relative", width: size, height: size }}>
-    {Array.from({ length: 7 }).map((_, i) =>
-      ["top", "bottom", "left", "right"].map((side) => (
-        <div key={side + i} style={{
-          position: "absolute", background: C.muted, opacity: 0.6,
-          ...(side === "top" || side === "bottom"
-            ? { width: 10, height: 26, left: size * 0.16 + i * size * 0.11, [side]: -24 }
-            : { height: 10, width: 26, top: size * 0.16 + i * size * 0.11, [side]: -24 }),
-        }} />
-      )),
-    )}
-    <div style={{ position: "absolute", inset: 0, background: C.panel, border: `3px solid ${C.muted}`, borderRadius: 22, display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", fontSize: 30, color: C.text, padding: 20 }}>
-      {label}
-    </div>
-  </div>
-);
-
-const Stakes: React.FC<SceneProps> = ({ cue }) => {
+/* ---------------------------------------------------------- 2. hybrid model */
+const Hybrid: React.FC<SceneProps> = ({ cue }) => {
   const f = useCurrentFrame();
+  const up = enter(f, cue(0) + 10, 24);
+  const tokens = Math.round(interpolate(f, [cue(0) + 40, cue(1) + 30], [1, 4096], clamp));
   return (
-    <Stage kicker="Why it matters">
-      <div style={fadeUp(f, 0)}><Big>Cheap to serve… in theory.</Big></div>
-      <div style={{ display: "flex", alignItems: "center", gap: 90, marginTop: 70 }}>
-        <div style={fadeUp(f, cue(1))}><Chip label={"Inferentia2 · Trainium1\nNeuronCore-v2"} /></div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 26 }}>
-          <div style={fadeUp(f, cue(1) + 25)}><Panel><Big size={44}>fixed-shape graphs only</Big></Panel></div>
-          <div style={fadeUp(f, cue(1) + 60)}><Panel color={C.bad}><Big size={44} color={C.bad}>✕ Gated DeltaNet: no support</Big></Panel></div>
-        </div>
-      </div>
-      <div style={{ display: "flex", alignItems: "baseline", gap: 30, marginTop: 70, ...fadeUp(f, cue(2)) }}>
-        <Big size={96} color={C.cost}>$1.05</Big>
-        <Small style={{ fontSize: 36 }}>per million output tokens · cheapest API today</Small>
-      </div>
-    </Stage>
-  );
-};
-
-/* ---------------------------------------------------------------- 3. the silent bug */
-const Bug: React.FC<SceneProps> = ({ cue }) => {
-  const f = useCurrentFrame();
-  return (
-    <Stage kicker="The silent failure">
-      <div style={{ display: "flex", alignItems: "baseline", gap: 30, ...fadeUp(f, 0) }}>
-        <Big style={{ fontFamily: MONO }} size={60}>torch.linalg.solve_triangular</Big>
-        <Small color={C.gdn} style={{ fontSize: 34 }}>compiles ✓</Small>
-      </div>
-      <div style={{ display: "flex", alignItems: "center", gap: 36, marginTop: 56 }}>
-        <div style={fadeUp(f, cue(1))}><Panel style={{ width: 300, textAlign: "center" }} color={C.bad}><Big size={38}>chip</Big><Small color={C.bad}>no solve op</Small></Panel></div>
-        <div style={{ fontSize: 60, color: C.muted, ...fadeUp(f, cue(2)) }}>→</div>
-        <div style={fadeUp(f, cue(2) + 10)}><Panel style={{ width: 300, textAlign: "center" }}><Big size={38}>CPU</Big><Small>runs it once</Small></Panel></div>
-        <div style={{ fontSize: 60, color: C.muted, ...fadeUp(f, cue(2) + 30) }}>→</div>
-        <div style={fadeUp(f, cue(2) + 45)}><Panel style={{ width: 500, textAlign: "center" }} color={C.bad}><Big size={38} color={C.bad}>❄ frozen constant</Big><Small style={{ fontFamily: MONO, fontSize: 24 }}>HLO: identity on a parameter</Small></Panel></div>
-      </div>
-      <div style={{ display: "flex", gap: 60, marginTop: 56, alignItems: "center" }}>
-        <div style={{ ...fadeUp(f, cue(3)), transform: `${fadeUp(f, cue(3)).transform} rotate(-4deg)` }}>
-          <div style={{ background: "#f4f1ea", padding: "16px 16px 50px", borderRadius: 6, width: 230 }}>
-            <div style={{ background: "#1d2530", height: 150, borderRadius: 4, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: MONO, fontSize: 40, color: C.gdn }}>0.7310</div>
+    <Stage>
+      <Globe opacity={1 - up * 0.6} />
+      <div style={{ position: "absolute", left: 960, top: 540 - up * 300, transform: "translate(-50%, -50%)", ...reveal(f, 0) }}>
+        <Glass style={{ borderRadius: 999, padding: "18px 22px 18px 30px", display: "flex", alignItems: "center", gap: 20 }}>
+          <span style={{ fontFamily: MONO, fontSize: 30 }}>serve</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 14, padding: "10px 22px 10px 10px", borderRadius: 999, background: "rgba(255,255,255,0.07)", border: `1.5px solid ${C.edge}` }}>
+            <div style={{ width: 40, height: 40, borderRadius: 999, background: `conic-gradient(${C.gdn} 0 75%, ${C.attn} 0)` }} />
+            <span style={{ fontSize: 30 }}>Qwen3.8-27B</span>
           </div>
-        </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
-          <div style={fadeUp(f, cue(4))}><Big size={44} color={C.gdn}>✓ tracing input: exact</Big></div>
-          <div style={fadeUp(f, cue(5))}><Big size={44} color={C.bad}>✕ any other input: error 0.56 – 1.44</Big></div>
-          <div style={fadeUp(f, cue(5) + 20)}><Small>inside the full model: compiles, then segfaults</Small></div>
-        </div>
+          <Icon size={44}>↵</Icon>
+        </Glass>
       </div>
-    </Stage>
-  );
-};
-
-/* ---------------------------------------------------------------- 4. the fix */
-const Fix: React.FC<SceneProps> = ({ cue }) => {
-  const f = useCurrentFrame();
-  return (
-    <Stage kicker="The fix">
-      <div style={{ display: "flex", gap: 30, ...fadeUp(f, 0) }}>
-        <Panel color={C.gdn}><Big size={44}>prefill graph</Big></Panel>
-        <Panel color={C.gdn}><Big size={44}>decode graph</Big></Panel>
-        <Small style={{ alignSelf: "center" }}>one static graph per phase</Small>
-      </div>
-      <div style={{ marginTop: 56, ...fadeUp(f, cue(1)) }}>
-        <Big size={64} style={{ fontFamily: MONO }}>X ← X − X·O<sub>b</sub>·X</Big>
-        <div style={{ display: "flex", gap: 16, marginTop: 24 }}>
-          {Array.from({ length: 6 }).map((_, i) => {
-            const k = enter(f, cue(1) + 20 + i * 9, 8);
-            return <div key={i} style={{ width: 120, height: 46, borderRadius: 23, border: `2px solid ${C.gdn}`, background: k > 0.5 ? C.gdn : "transparent", color: k > 0.5 ? C.bg : C.gdn, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: MONO, fontSize: 24 }}>step {i + 1}</div>;
+      <div style={{ position: "absolute", left: 160, right: 160, top: 400, opacity: up }}>
+        <Kicker>64 layers · 3 of 4 are recurrent</Kicker>
+        <div style={{ display: "flex", gap: 8, marginTop: 26 }}>
+          {Array.from({ length: 64 }).map((_, i) => {
+            const k = enter(f, cue(0) + 14 + i * 0.7, 10);
+            return <div key={i} style={{ flex: 1, height: 64, borderRadius: 6, background: i % 4 === 3 ? C.attn : C.gdn, opacity: 0.15 + 0.75 * k }} />;
           })}
         </div>
-        <Small style={{ marginTop: 18 }}>exact inverse from matmuls only · max error 1.6e-7 on inputs it never saw · 2.9× faster than the row loop</Small>
-      </div>
-      <div style={{ display: "flex", gap: 30, marginTop: 50 }}>
-        <div style={fadeUp(f, cue(2))}><Panel><Big size={38}>padding: β = 0, g = 0</Big><Small>state provably unchanged</Small></Panel></div>
-        <div style={fadeUp(f, cue(3))}><Panel><Big size={38}>no data-dependent shapes</Big><Small>rank ≤ 4 · prefix sums as matmuls</Small></Panel></div>
+        <div style={{ display: "flex", gap: 40, marginTop: 50 }}>
+          <Glass style={{ flex: 1, padding: 32 }}>
+            <Kicker color={C.gdn}>48 × Gated DeltaNet</Kicker>
+            <div style={{ display: "flex", alignItems: "center", gap: 28, marginTop: 24 }}>
+              <div style={{ width: 96, height: 96, borderRadius: 14, background: C.gdn, opacity: 0.9 }} />
+              <div style={{ fontFamily: MONO, fontSize: 28, color: C.dim }}>128 × 128 state<br />same at {tokens.toLocaleString()} tokens</div>
+            </div>
+          </Glass>
+          <Glass style={{ flex: 1, padding: 32 }}>
+            <Kicker color={C.attn}>16 × full attention</Kicker>
+            <div style={{ height: 36, borderRadius: 10, background: "rgba(255,255,255,0.06)", marginTop: 36 }}>
+              <div style={{ height: "100%", width: `${(tokens / 4096) * 100}%`, borderRadius: 10, background: C.attn }} />
+            </div>
+            <div style={{ fontFamily: MONO, fontSize: 28, color: C.dim, marginTop: 16 }}>kv cache · {tokens.toLocaleString()} tokens</div>
+          </Glass>
+        </div>
+        <div style={{ ...reveal(f, cue(1)), marginTop: 46, display: "flex", justifyContent: "center" }}>
+          <Pill>cheap to serve · if the chip can run it</Pill>
+        </div>
       </div>
     </Stage>
   );
 };
 
-/* ---------------------------------------------------------------- 5. tensor parallel */
+/* ---------------------------------------------------------- 3. the silent bug ("which one is real?") */
+const wave = (x0: number, y0: number, x1: number, y1: number) => {
+  const n = 7, pts: string[] = [];
+  for (let i = 0; i <= 140; i++) {
+    const t = i / 140, amp = 46 * Math.sin(Math.PI * t) * (1 - t * 0.4);
+    pts.push(`${x0 + (x1 - x0) * t},${y0 + (y1 - y0) * t + amp * Math.sin(t * n * 2 * Math.PI)}`);
+  }
+  return "M" + pts.join(" L");
+};
+const Bug: React.FC<SceneProps> = ({ cue }) => {
+  const f = useCurrentFrame();
+  const dead = enter(f, cue(3), 14);
+  const good = enter(f, cue(4), 20);
+  const ring = 1 + 0.06 * Math.sin(f / 6);
+  const RX = 1500, RY = 470;
+  return (
+    <Stage behind={<Globe />}>
+      <div style={{ position: "absolute", left: 120, top: 150 }}>
+        <Kicker style={reveal(f, 0)}>2 inverses compiled · which one is real?</Kicker>
+        <Glass glow={dead < 0.5} style={{ marginTop: 26, padding: "34px 44px", width: 900, opacity: 1 - dead * 0.45, ...reveal(f, 4) }}>
+          <div style={{ fontFamily: PIXEL, fontSize: 92, position: "relative", display: "inline-block" }}>
+            solve_triangular
+            <div style={{ position: "absolute", left: -6, right: -6, top: "52%", height: 6, background: C.ink, transform: `scaleX(${dead})`, transformOrigin: "left" }} />
+          </div>
+          <div style={{ marginTop: 22, display: "flex", gap: 16 }}>
+            {dead < 0.5
+              ? <Pill solid>✓ compiles · no errors</Pill>
+              : <Pill dashed style={{ color: C.bad }}>✕ frozen constant · err 0.56 – 1.44</Pill>}
+            <Pill style={{ ...reveal(f, cue(2)) }}>trace input · exact</Pill>
+          </div>
+        </Glass>
+        <Glass glow={good > 0.5} style={{ marginTop: 40, padding: "34px 44px", width: 900, ...reveal(f, cue(4), 22) }}>
+          <div style={{ fontFamily: PIXEL, fontSize: 92 }}>6 × matmul</div>
+          <div style={{ marginTop: 22, display: "flex", gap: 16 }}>
+            <Pill solid>✓ exact · err 1.6e-7 on unseen inputs</Pill>
+          </div>
+        </Glass>
+      </div>
+      <svg width={1920} height={1080} style={{ position: "absolute", inset: 0 }}>
+        <Curve d={wave(1010, 330, RX - 70, RY)} k={enter(f, cue(1), 30) * (1 - good)} opacity={0.9 - dead * 0.6} width={3} />
+        <Curve d={wave(1010, 680, RX - 70, RY)} k={good} opacity={0.95} width={3} />
+        <Curve d={`M ${RX - 40} ${RY + 60} Q ${RX - 200} ${RY + 260} ${RX - 120} ${RY + 330}`} k={enter(f, cue(1) + 20, 20)} dashed />
+        {[150, 115, 80].map((r, i) => <circle key={r} cx={RX} cy={RY} r={r * (i === 0 ? ring : 1)} fill="none" stroke="white" strokeOpacity={0.12 + i * 0.12} strokeWidth={2} />)}
+        <circle cx={RX} cy={RY} r={56} fill="#111" stroke="white" strokeOpacity={0.8} strokeWidth={2.5} />
+      </svg>
+      <div style={{ position: "absolute", left: RX - 24, top: RY - 30, fontFamily: PIXEL, fontSize: 52 }}>N</div>
+      <div style={{ position: "absolute", left: RX - 140, top: RY + 175 }}><Kicker color={C.ink}>neuroncore-v2</Kicker></div>
+      <div style={{ position: "absolute", left: RX - 260, top: RY + 340, ...reveal(f, cue(1) + 30) }}>
+        <Pill dashed>cpu · runs once · baked into neff</Pill>
+      </div>
+    </Stage>
+  );
+};
+
+/* ---------------------------------------------------------- 4. static graphs (profile-card layout) */
+const Row: React.FC<{ icon: string; text: string; f: number; at: number; hi?: boolean }> = ({ icon, text, f, at, hi }) => (
+  <div style={{ display: "flex", alignItems: "center", gap: 20, padding: "16px 0", ...reveal(f, at, 14, 8) }}>
+    <Icon size={46} color={hi ? C.gdn : C.ink}>{icon}</Icon>
+    <span style={{ fontSize: 30, color: hi ? C.gdn : C.ink }}>{text}</span>
+  </div>
+);
+const Static: React.FC<SceneProps> = ({ cue }) => {
+  const f = useCurrentFrame();
+  return (
+    <Stage behind={<Globe />}>
+      <div style={{ position: "absolute", left: 120, top: 250 }}>
+        <Hero size={210} style={reveal(f, 0, 20)}>1 graph</Hero>
+        <Kicker style={{ marginTop: 30, ...reveal(f, 8) }}>per phase · prefill + decode · no data-dependent shapes</Kicker>
+      </div>
+      <svg width={1920} height={1080} style={{ position: "absolute", inset: 0 }}>
+        <Curve d="M 820 330 C 1000 330, 980 470, 1140 470" k={enter(f, 10, 24)} />
+      </svg>
+      <Glass style={{ position: "absolute", left: 1140, top: 140, width: 660, padding: "34px 40px", ...reveal(f, 6) }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 22, paddingBottom: 22, borderBottom: `1.5px solid ${C.faint}` }}>
+          <div style={{ width: 76, height: 76, borderRadius: 999, background: `conic-gradient(${C.gdn} 0 75%, ${C.attn} 0)` }} />
+          <div><div style={{ fontSize: 40 }}>static_qwen.py</div><div style={{ color: C.dim, fontSize: 26 }}>prefill · decode</div></div>
+        </div>
+        <Row f={f} at={cue(0)} icon="▭" text="ids [B, 256] · lengths [B]" />
+        <Row f={f} at={cue(0) + 6} icon="△" text="prefix sums → triu matmul" />
+        <Row f={f} at={cue(0) + 12} icon="⌗" text="tensor rank ≤ 4" />
+        <Row f={f} at={cue(1)} icon="β" text="padding: β = 0, g = 0 → no-op" hi />
+        <Row f={f} at={cue(2)} icon="▣" text="state resident on chip · aliased" hi />
+        <Row f={f} at={cue(2) + 8} icon="×" text="6-step exact inverse" />
+      </Glass>
+    </Stage>
+  );
+};
+
+/* ---------------------------------------------------------- 5. tensor parallel */
 const TP: React.FC<SceneProps> = ({ cue }) => {
   const f = useCurrentFrame();
-  const pulse = (start: number) => interpolate((f - start) % 45, [0, 10, 30], [0, 1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-  const on = f > cue(2) + 20 ? pulse(cue(2) + 20) : 0;
+  const SX = 960, SY = 560;
+  const pos = Array.from({ length: 8 }, (_, i) => ({ x: i < 4 ? 140 : 1420, y: 230 + (i % 4) * 175 }));
+  const flow = f > cue(1) ? ((f - cue(1)) % 40) / 40 : -1;
   return (
-    <Stage kicker="Scaling to 27 B">
-      <div style={{ display: "flex", gap: 50, alignItems: "center", ...fadeUp(f, 0) }}>
-        <div style={{ width: 700 }}>
-          <Small>bf16 weights</Small>
-          <div style={{ height: 40, width: 700, background: C.bad, borderRadius: 8, marginTop: 8 }} />
-          <Small style={{ marginTop: 6, fontFamily: MONO }}>54 GB</Small>
-        </div>
-        <div style={{ width: 410 }}>
-          <Small>one chip</Small>
-          <div style={{ height: 40, width: 410, background: C.line, borderRadius: 8, marginTop: 8 }} />
-          <Small style={{ marginTop: 6, fontFamily: MONO }}>32 GB</Small>
-        </div>
+    <Stage behind={<Wall />}>
+      <div style={{ position: "absolute", top: 90, width: "100%", textAlign: "center", ...reveal(f, 0) }}>
+        <Kicker>tp = 8 · 54 GB bf16 → 9 GB per core</Kicker>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 24, marginTop: 56 }}>
-        {Array.from({ length: 8 }).map((_, i) => (
-          <div key={i} style={fadeUp(f, cue(1) + i * 4)}>
-            <Panel style={{ padding: "18px 22px" }} color={on > 0.3 ? C.gdn : C.line}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <Big size={32}>core {i}</Big>
-                <div style={{ width: 44, height: 44, borderRadius: 6, background: C.gdn, opacity: enter(f, cue(2), 15) * 0.9 }} />
+      <svg width={1920} height={1080} style={{ position: "absolute", inset: 0 }}>
+        {pos.map((p, i) => {
+          const x0 = p.x < 960 ? p.x + 360 : p.x;
+          const d = `M ${x0} ${p.y + 60} C ${(x0 + SX) / 2} ${p.y + 60}, ${(x0 + SX) / 2} ${SY}, ${SX + (p.x < 960 ? -70 : 70)} ${SY}`;
+          return <g key={i}><Curve d={d} k={enter(f, cue(0) + 20 + i * 3, 24)} opacity={0.45} />
+            {flow >= 0 && <path d={d} fill="none" stroke={C.gdn} strokeWidth={4} pathLength={1} strokeDasharray={`0.08 1`} strokeDashoffset={-flow} />}</g>;
+        })}
+        {[130, 100].map((r) => <circle key={r} cx={SX} cy={SY} r={r} fill="none" stroke="white" strokeOpacity={0.15} strokeWidth={2} />)}
+        <circle cx={SX} cy={SY} r={70} fill="#111" stroke="white" strokeOpacity={0.8} strokeWidth={2.5} />
+      </svg>
+      <div style={{ position: "absolute", left: SX - 30, top: SY - 48, fontFamily: PIXEL, fontSize: 84 }}>Σ</div>
+      <div style={{ position: "absolute", left: SX - 160, top: SY + 150, width: 320, textAlign: "center", ...reveal(f, cue(1)) }}>
+        <Pill solid>2 all-reduces / layer</Pill>
+      </div>
+      <div style={{ position: "absolute", left: SX - 160, top: SY + 225, width: 320, textAlign: "center", ...reveal(f, cue(2)) }}>
+        <Kicker>nothing else crosses</Kicker>
+      </div>
+      {pos.map((p, i) => (
+        <Glass key={i} style={{ position: "absolute", left: p.x, top: p.y, width: 360, padding: "20px 26px", ...reveal(f, cue(0) + i * 3) }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <span style={{ fontSize: 30 }}>core {i}</span>
+            <div style={{ width: 34, height: 34, borderRadius: 8, background: C.gdn, opacity: 0.85 }} />
+          </div>
+          <div style={{ fontFamily: MONO, fontSize: 19, color: C.dim, marginTop: 8 }}>3q · 2k/6v heads · ⅛ MLP</div>
+        </Glass>
+      ))}
+    </Stage>
+  );
+};
+
+/* ---------------------------------------------------------- 6. result */
+const Result: React.FC<SceneProps> = ({ cue }) => {
+  const f = useCurrentFrame();
+  const n = Math.round(interpolate(f, [cue(1), cue(1) + 24], [0, Number(s("greedy"))], clamp));
+  const second = f >= cue(2);
+  return (
+    <Stage behind={<Globe />}>
+      <div style={{ position: "absolute", left: 120, top: 260 }}>
+        <Hero size={second ? 190 : 250} style={reveal(f, second ? cue(2) : cue(1), 18)}>{second ? `${s("top_tok_s")} tok/s` : `${n}/${s("steps")}`}</Hero>
+        <Kicker style={{ marginTop: 34, ...reveal(f, cue(1) + 6) }}>
+          {second ? `batch ${s("top_batch")} · one model copy · 8 neuroncores` : `greedy tokens identical to fp32 · kl ≤ ${s("kl")}`}
+        </Kicker>
+      </div>
+      <Glass style={{ position: "absolute", left: 1150, top: 150, width: 650, padding: "34px 40px", ...reveal(f, 0) }}>
+        <div style={{ paddingBottom: 20, borderBottom: `1.5px solid ${C.faint}` }}>
+          <div style={{ fontSize: 40 }}>{s("model")}</div>
+          <div style={{ color: C.dim, fontSize: 26 }}>{s("instance")} · bf16 · tp 8</div>
+        </div>
+        <Row f={f} at={8} icon="⇥" text={`prefill 2×256 · ${s("prefill_ms")} ms`} />
+        <Row f={f} at={14} icon="↻" text={`decode step, batch 2 · ${s("decode_ms")} ms`} />
+        <Row f={f} at={cue(1)} icon="=" text={`${s("greedy")}/${s("steps")} greedy · vs fp32 cpu`} hi />
+        <Row f={f} at={cue(1) + 8} icon="?" text="unseen batch · same argmax" hi />
+        <Row f={f} at={cue(2)} icon="▤" text={`batch ${s("top_batch")} · ${s("top_tok_s")} tok/s`} />
+      </Glass>
+      {F.pending === true && (
+        <div style={{ position: "absolute", left: 120, top: 70 }}><Kicker color={C.bad}>placeholder · 0.8b rehearsal numbers · 27b run in progress</Kicker></div>
+      )}
+    </Stage>
+  );
+};
+
+/* ---------------------------------------------------------- 7. cost ($0.07 layout) */
+const Cost: React.FC<SceneProps> = ({ cue }) => {
+  const f = useCurrentFrame();
+  const apis = [["OpenRouter · cheapest", "$1.05/M"], ["Chutes", "$1.25/M"], ["typical provider", "$1.30–3.00/M"]];
+  const od = enter(f, cue(2), 16);
+  return (
+    <Stage behind={<Wall />}>
+      <div style={{ position: "absolute", left: 120, top: 200 }}>
+        <Hero size={300} style={reveal(f, 0, 20)}>${s("usd_per_m")}</Hero>
+        <Kicker style={{ marginTop: 30, ...reveal(f, 8) }}>per million tokens · trn1 spot ${s("spot_hr")}/hr</Kicker>
+        <div style={{ marginTop: 60 }}>
+          <Kicker style={{ fontSize: 18, ...reveal(f, cue(1)) }}>instead of an api at</Kicker>
+          {apis.map(([name, p], i) => {
+            const k = enter(f, cue(1) + 8 + i * 8, 12);
+            return (
+              <div key={name} style={{ display: "flex", gap: 30, fontSize: 34, marginTop: 14, color: C.dim, opacity: k, position: "relative", width: 700 }}>
+                <span style={{ width: 420 }}>{name}</span><span style={{ fontFamily: MONO }}>{p}</span>
+                <div style={{ position: "absolute", left: 0, top: "52%", height: 2.5, width: `${100 * enter(f, cue(1) + 14 + i * 8, 10)}%`, background: C.dim }} />
               </div>
-              <Small style={{ fontSize: 24, marginTop: 6 }}>3 q heads · 2 k / 6 v GDN heads · ⅛ MLP</Small>
-            </Panel>
-          </div>
-        ))}
+            );
+          })}
+        </div>
       </div>
-      <div style={{ display: "flex", gap: 40, marginTop: 36, alignItems: "center", ...fadeUp(f, cue(2) + 20) }}>
-        <Big size={44} color={C.gdn}>Σ</Big>
-        <Small style={{ fontSize: 34 }}>memory stays on each core · 2 all-reduces per layer · nothing else crosses</Small>
+      <div style={{ position: "absolute", left: 1180, top: 300, opacity: od, filter: `blur(${(1 - od) * 10}px)` }}>
+        <Glass style={{ padding: "30px 38px", width: 600 }}>
+          <Kicker>same run · on-demand $21.50/hr</Kicker>
+          <div style={{ fontFamily: PIXEL, fontSize: 110, marginTop: 14, color: C.bad }}>${s("ondemand_usd_per_m")}</div>
+          <Kicker>per million tokens · ~3× the cheapest api</Kicker>
+        </Glass>
       </div>
+      <div style={{ position: "absolute", left: 120, top: 90 }}><Kicker>measured: {s("top_tok_s")} tok/s per copy at batch {s("top_batch")} · 4 copies per instance projected</Kicker></div>
     </Stage>
   );
 };
 
-/* ---------------------------------------------------------------- 6. result */
-const DEVICE = " Paris. The capital of France is Paris. The capital of France is Paris.".split(" ");
-const Result: React.FC<SceneProps> = ({ cue, props }) => {
+/* ---------------------------------------------------------- 8. outro (light) */
+const DOTS = Array.from({ length: 46 }, (_, i) => ({ x: (i * 397) % 1840 + 40, y: (i * 233) % 1000 + 40, c: [C.gdn, C.attn, "#111", "#60A5FA", "#F59E0B"][i % 5] }));
+const Outro: React.FC<SceneProps> = ({ props }) => {
   const f = useCurrentFrame();
-  const n = Math.round(interpolate(f, [cue(1), cue(1) + 30], [0, 32], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }));
-  const shown = Math.round(interpolate(f, [10, cue(1)], [0, DEVICE.length], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }));
-  const bar = (ms: number) => (ms / 21.7) * 640;
+  const cmd = `$ git clone ${props.repoUrl}`;
+  const typed = Math.round(interpolate(f, [24, 70], [0, cmd.length], clamp));
   return (
-    <Stage kicker="On the chip">
-      <div style={{ display: "flex", gap: 30 }}>
-        {["NeuronCores (bf16)", "CPU reference (fp32)"].map((h) => (
-          <Panel key={h} style={{ flex: 1 }}>
-            <Small>{h}</Small>
-            <div style={{ fontFamily: MONO, fontSize: 30, marginTop: 10, minHeight: 90 }}>
-              {DEVICE.slice(0, shown).map((w, i) => <span key={i} style={{ color: C.gdn }}>{w} </span>)}
-            </div>
-          </Panel>
-        ))}
-      </div>
-      <div style={{ display: "flex", gap: 70, alignItems: "center", marginTop: 44 }}>
-        <div style={fadeUp(f, cue(1))}><Big size={150} color={C.gdn}>{n}/32</Big><Small style={{ whiteSpace: "nowrap" }}>greedy tokens identical<br />KL ≤ 7.5e-4 vs fp32</Small></div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 20, ...fadeUp(f, cue(2)) }}>
-          <Small>decode step</Small>
-          <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-            <div style={{ height: 44, width: bar(21.7) * enter(f, cue(2), 20), background: C.muted, borderRadius: 8 }} />
-            <Small style={{ fontFamily: MONO, whiteSpace: "nowrap" }}>21.7 ms · 1 core, state via host</Small>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-            <div style={{ height: 44, width: bar(6.3) * enter(f, cue(2) + 15, 20), background: C.gdn, borderRadius: 8 }} />
-            <Small style={{ fontFamily: MONO, whiteSpace: "nowrap" }} color={C.gdn}>6.3 ms · 2 cores, state on chip</Small>
-          </div>
+    <AbsoluteFill style={{ background: "#FFFFFF", fontFamily: SANS, color: "#111", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
+      {DOTS.map((d, i) => {
+        if (Math.abs(d.x - 960) < 520 && Math.abs(d.y - 520) < 220) return null;
+        return <div key={i} style={{ position: "absolute", left: d.x, top: d.y + Math.sin((f + i * 9) / 30) * 6, width: 26, height: 26, borderRadius: 7, background: d.c, opacity: 0.85 * enter(f, i * 0.6, 14) }} />;
+      })}
+      <div style={{ display: "flex", alignItems: "center", gap: 18, fontSize: 52, ...reveal(f, 0) }}>
+        <div style={{ width: 54, height: 54, borderRadius: 14, background: "#111", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 5, padding: 11 }}>
+          {[C.gdn, C.gdn, C.gdn, C.attn].map((c, i) => <div key={i} style={{ background: c, borderRadius: 2 }} />)}
         </div>
+        qwen-gdn-static-neuron
       </div>
-      <Small style={{ fontSize: 22, marginTop: 30, ...fadeUp(f, cue(1)) }}>{props.resultNote}</Small>
-    </Stage>
-  );
-};
-
-/* ---------------------------------------------------------------- 7. cost */
-const Cost: React.FC<SceneProps> = ({ cue, props }) => {
-  const f = useCurrentFrame();
-  // $/M tokens for one model copy at $2.15/hr / 4 copies, vs tok/s
-  const perCopy = 2.15 / 4;
-  const X0 = 40, X1 = 400, Y1 = 4; // tok/s range, $/M range
-  const gw = 900, gh = 380;
-  const px = (x: number) => ((x - X0) / (X1 - X0)) * gw;
-  const py = (y: number) => gh - (Math.min(y, Y1) / Y1) * gh;
-  const pts = Array.from({ length: 80 }, (_, i) => X0 + ((X1 - X0) * i) / 79).map((x) => `${px(x)},${py((perCopy / (3600 * x)) * 1e6)}`);
-  const draw = enter(f, cue(2), 40);
-  const be = (perCopy / 1.05 / 3600) * 1e6;
-  return (
-    <Stage kicker="Cost">
-      <div style={{ display: "flex", gap: 60 }}>
-        <div style={{ width: 640, ...fadeUp(f, cue(1)) }}>
-          <Panel color={C.cost}>
-            <Big size={40}>trn1.32xlarge · Spot</Big>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginTop: 20 }}>
-              {Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} style={{ height: 110, borderRadius: 10, border: `2px solid ${C.gdn}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, color: C.gdn, opacity: enter(f, cue(1) + 15 + i * 8, 10) }}>27B #{i + 1}</div>
-              ))}
-            </div>
-            <Big size={70} color={C.cost} style={{ marginTop: 26 }}>$2.15/hr</Big>
-            <Small>= $0.54 per hour per model copy</Small>
-          </Panel>
-        </div>
-        <div style={fadeUp(f, cue(2))}>
-          <Small>$ per million tokens, one copy</Small>
-          <svg width={gw + 40} height={gh + 70} style={{ marginTop: 10, overflow: "visible" }}>
-            <line x1={0} y1={gh} x2={gw} y2={gh} stroke={C.line} strokeWidth={2} />
-            <line x1={0} y1={py(1.05)} x2={gw} y2={py(1.05)} stroke={C.cost} strokeWidth={3} strokeDasharray="10 8" />
-            <text x={gw - 4} y={py(1.05) - 12} fill={C.cost} fontSize={26} textAnchor="end">cheapest API $1.05/M</text>
-            <polyline points={pts.slice(0, Math.max(2, Math.round(pts.length * draw))).join(" ")} fill="none" stroke={C.gdn} strokeWidth={5} />
-            <circle cx={px(be)} cy={py(1.05)} r={11 * enter(f, cue(2) + 40, 10)} fill={C.gdn} />
-            <text x={10} y={py(1.05) + 48} fill={C.gdn} fontSize={28} opacity={enter(f, cue(2) + 40, 10)}>break-even ≈ {Math.round(be)} tok/s</text>
-            {[50, 100, 200, 300, 400].map((x) => (
-              <text key={x} x={px(x)} y={gh + 36} fill={C.muted} fontSize={22} textAnchor="middle">{x}</text>
-            ))}
-            <text x={gw / 2} y={gh + 66} fill={C.muted} fontSize={22} textAnchor="middle">tokens / s per copy</text>
-          </svg>
-        </div>
+      <div style={{ fontFamily: PIXEL, fontSize: 92, marginTop: 30, textAlign: "center", ...reveal(f, 8) }}>Exact hybrid models<br />on Inferentia2 + Trainium1</div>
+      <div style={{ marginTop: 50, background: "#111", color: "#E5E5E5", fontFamily: MONO, fontSize: 30, padding: "18px 34px", borderRadius: 12, minWidth: 900, ...reveal(f, 16) }}>
+        {cmd.slice(0, typed)}<span style={{ opacity: Math.floor(f / 15) % 2 ? 1 : 0 }}>▌</span>
       </div>
-      <Small style={{ fontSize: 22, marginTop: 20 }}>{props.costNote}</Small>
-    </Stage>
-  );
-};
-
-/* ---------------------------------------------------------------- 8. CTA */
-const CTA: React.FC<SceneProps> = ({ props }) => {
-  const f = useCurrentFrame();
-  return (
-    <AbsoluteFill style={{ alignItems: "center", justifyContent: "center", flexDirection: "column", paddingBottom: 120 }}>
-      <div style={fadeUp(f, 0)}><Big size={84}>Qwen3.8-27B on NeuronCores</Big></div>
-      <div style={fadeUp(f, 12)}><Small style={{ fontSize: 36, marginTop: 20, textAlign: "center" }}>code · paper · one-command Spot launcher</Small></div>
-      <div style={fadeUp(f, 24)}><Big size={50} color={C.gdn} style={{ fontFamily: MONO, marginTop: 50 }}>{props.repoUrl}</Big></div>
     </AbsoluteFill>
   );
 };
 
-export const SCENES: Record<string, React.FC<SceneProps>> = { hook: Hook, stakes: Stakes, bug: Bug, fix: Fix, tp: TP, result: Result, cost: Cost, cta: CTA };
+export const SCENES: Record<string, React.FC<SceneProps>> = { intro: Intro, hybrid: Hybrid, bug: Bug, static: Static, tp: TP, result: Result, cost: Cost, outro: Outro };
+export const LIGHT = new Set(["outro"]);

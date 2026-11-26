@@ -1,0 +1,213 @@
+{
+ "args": {
+  "ckpt": "ckpt",
+  "out": "/home/ubuntu/out",
+  "tp": 8,
+  "bucket": 256,
+  "steps": 32,
+  "cc": "--auto-cast=none --model-type=transformer -O1",
+  "skip_ref": false,
+  "decode_batches": "8,32,64"
+ },
+ "host": "ip-172-31-47-80",
+ "started": "2026-11-26T19:19:51Z",
+ "env": {
+  "torch": "2.9.0+cu128",
+  "torch_neuronx": "2.9.0.2.12.22436+0f1dac25",
+  "neuronx_distributed": "?",
+  "neuronx_cc": "NeuronX Compiler version 2.23.6484.0+3b612583",
+  "neuron_ls": "instance-type: trn1.32xlarge\ninstance-id: i-02068db26dbba2b53\n+--------+--------+----------+--------+---------------+--------------+--------------+------+\n| NEURON | NEURON |  NEURON  | NEURON |   CONNECTED   |     PCI      |     CPU      | NUMA |\n| DEVICE | CORES  | CORE IDS | MEMORY |    DEVICES    |     BDF      |   AFFINITY   | NODE |\n+--------+--------+----------+--------+---------------+--------------+--------------+------+\n| 0      | 2      | 0-1      | 32 GB  | 12, 3, 4, 1   | 0000:10:1b.0 | 0-31,64-95   | 0    |\n| 1      | 2      | 2-3      | 32 GB  | 13, 0, 5, 2   | 0000:10:1e.0 | 0-31,64-95   | 0    |\n| 2      | 2      | 4-5      | 32 GB  | 14, 1, 6, 3   | 0000:a0:1b.0 | 32-63,96-127 | 1    |\n| 3      | 2      | 6-7      | 32 GB  | 15, 2, 7, 0   | 0000:a0:1e.0 | 32-63,96-127 | 1    |\n| 4      | 2      | 8-9      | 32 GB  | 0, 7, 8, 5    | 0000:20:1e.0 | 0-31,64-95   | 0    |\n| 5      | 2      | 10-11    | 32 GB  | 1, 4, 9, 6    | 0000:20:1c.0 | 0-31,64-95   | 0    |\n| 6      | 2      | 12-13    | 32 GB  | 2, 5, 10, 7   | 0000:90:1e.0 | 32-63,96-127 | 1    |\n| 7      | 2      | 14-15    | 32 GB  | 3, 6, 11, 4   | 0000:90:1c.0 | 32-63,96-127 | 1    |\n| 8      | 2      | 16-17    | 32 GB  | 4, 11, 12, 9  | 0000:20:1d.0 | 0-31,64-95   | 0    |\n| 9      | 2      | 18-19    | 32 GB  | 5, 8, 13, 10  | 0000:20:1b.0 | 0-31,64-95   | 0    |\n| 10     | 2      | 20-21    | 32 GB  | 6, 9, 14, 11  | 0000:90:1d.0 | 32-63,96-127 | 1    |\n| 11     | 2      | 22-23    | 32 GB  | 7, 10, 15, 8  | 0000:90:1b.0 | 32-63,96-127 | 1    |\n| 12     | 2      | 24-25    | 32 GB  | 8, 15, 0, 13  | 0000:10:1c.0 | 0-31,64-95   | 0    |\n| 13     | 2      | 26-27    | 32 GB  | 9, 12, 1, 14  | 0000:10:1d.0 | 0-31,64-95   | 0    |\n| 14     | 2      | 28-29    | 32 GB  | 10, 13, 2, 15 | 0000:a0:1c.0 | 32-63,96-127 | 1    |\n| 15     | 2      | 30-31    | 32 GB  | 11, 14, 3, 12 | 0000:a0:1d.0 | 32-63,96-127 | 1    |\n+--------+--------+----------+--------+---------------+--------------+--------------+------+",
+  "cpus": 128,
+  "mem": "total        used        free      shared  buff/cache   available\nMem:             495           7         436           0          54         488"
+ },
+ "elapsed_s": 735.4325017929077,
+ "prompts": {
+  "lengths": [
+   5,
+   167
+  ],
+  "lengths_unseen": [
+   10,
+   90
+  ],
+  "bucket": 256,
+  "max_len": 320
+ },
+ "model": {
+  "layers": 64,
+  "hidden": 5120,
+  "gdn_layers": 48
+ },
+ "trace_s": 9.577884912490845,
+ "states": {
+  "prefill": {
+   "kv_b2": [
+    64,
+    320,
+    256
+   ],
+   "conv_b2": [
+    96,
+    1280,
+    3
+   ],
+   "rec_b2": [
+    576,
+    128,
+    128
+   ]
+  },
+  "decode": {
+   "kv_b2": [
+    64,
+    320,
+    256
+   ],
+   "conv_b2": [
+    96,
+    1280,
+    3
+   ],
+   "rec_b2": [
+    576,
+    128,
+    128
+   ]
+  },
+  "decode_b8": {
+   "kv_b8": [
+    256,
+    320,
+    256
+   ],
+   "conv_b8": [
+    384,
+    1280,
+    3
+   ],
+   "rec_b8": [
+    2304,
+    128,
+    128
+   ]
+  },
+  "decode_b32": {
+   "kv_b32": [
+    1024,
+    320,
+    256
+   ],
+   "conv_b32": [
+    1536,
+    1280,
+    3
+   ],
+   "rec_b32": [
+    9216,
+    128,
+    128
+   ]
+  },
+  "decode_b64": {
+   "kv_b64": [
+    2048,
+    320,
+    256
+   ],
+   "conv_b64": [
+    3072,
+    1280,
+    3
+   ],
+   "rec_b64": [
+    18432,
+    128,
+    128
+   ]
+  }
+ },
+ "compile": {
+  "decode_b8_s": 91.46540713310242,
+  "prefill_s": 91.53165698051453,
+  "decode_b32_s": 93.70066595077515,
+  "decode_b64_s": 109.72556233406067,
+  "decode_s": 375.79827094078064
+ },
+ "neff_bytes": "19057664 /home/ubuntu/out/neuronx-cc/decode/2026-11-26T19-23-17.172789/graph.neff\n6175744 /home/ubuntu/out/neuronx-cc/prefill/2026-11-26T19-23-17.148016/graph.neff\n13753344 /home/ubuntu/out/neuronx-cc/decode_b32/2026-11-26T19-23-17.173315/graph.neff\n8223744 /home/ubuntu/out/neuronx-cc/decode_b8/2026-11-26T19-23-17.173066/graph.neff\n19723264 /home/ubuntu/out/neuronx-cc/decode_b64/2026-11-26T19-23-17.173648/graph.neff",
+ "weights_s": 2.9252657890319824,
+ "weights_bytes_per_rank": 8993520000,
+ "to_neuron_s": 26.719200134277344,
+ "latency": {
+  "prefill_ms": 116.79816246032715,
+  "batch": 2,
+  "bucket": 256,
+  "prefill_tokens": 172,
+  "decode_step_ms_median": 38.185834884643555,
+  "decode_step_ms_p90": 38.77449035644531,
+  "decode_tok_per_s_batch": 52.37544251793486,
+  "decode_state": "device-resident (aliased)"
+ },
+ "device_text": [
+  " Paris.\nThe capital of Germany is Berlin.\nThe capital of Italy is Rome.\nThe capital of Spain is Madrid.\nThe capital of Portugal is",
+  "<think>\nThe user is asking me to explain why the sky is blue during the day and red at sunset, using Rayleigh scattering physics with explicit wavelength dependence."
+ ],
+ "batch_sweep": {
+  "2": {
+   "step_ms_median": 38.185834884643555,
+   "tok_per_s": 52.37544251793486
+  },
+  "8": {
+   "step_ms_median": 52.149295806884766,
+   "tok_per_s": 153.40571480821103
+  },
+  "32": {
+   "step_ms_median": 78.06849479675293,
+   "tok_per_s": 409.8964644228156
+  },
+  "64": {
+   "step_ms_median": 127.97999382019043,
+   "tok_per_s": 500.07816135636665
+  }
+ },
+ "ref_load_s": 3.206521511077881,
+ "ref_prefill_s": 23.098320722579956,
+ "accuracy": [
+  {
+   "prompt_len": 5,
+   "prefill_kl": 0.00034253858029842377,
+   "max_step_kl": 0.0004925538087263703,
+   "mean_step_kl": 9.279728692490608e-05,
+   "teacher_forced_argmax_agree": 1.0,
+   "greedy_identical_prefix": 32,
+   "steps": 32,
+   "device_text": " Paris.\nThe capital of Germany is Berlin.\nThe capital of Italy is Rome.\nThe capital of Spain is Madrid.\nThe capital of Portugal is",
+   "cpu_fp32_text": " Paris.\nThe capital of Germany is Berlin.\nThe capital of Italy is Rome.\nThe capital of Spain is Madrid.\nThe capital of Portugal is"
+  },
+  {
+   "prompt_len": 167,
+   "prefill_kl": 0.0013671856140717864,
+   "max_step_kl": 0.0034054070711135864,
+   "mean_step_kl": 0.00019148508727084845,
+   "teacher_forced_argmax_agree": 1.0,
+   "greedy_identical_prefix": 32,
+   "steps": 32,
+   "device_text": "<think>\nThe user is asking me to explain why the sky is blue during the day and red at sunset, using Rayleigh scattering physics with explicit wavelength dependence.",
+   "cpu_fp32_text": "<think>\nThe user is asking me to explain why the sky is blue during the day and red at sunset, using Rayleigh scattering physics with explicit wavelength dependence."
+  }
+ ],
+ "unseen_batch": {
+  "lengths": [
+   10,
+   90
+  ],
+  "prefill_kl": [
+   1.0559859219938517e-05,
+   9.683473035693169e-05
+  ],
+  "argmax_eq": [
+   true,
+   true
+  ]
+ },
+ "finished": "2026-11-26T19:32:07Z"
+}

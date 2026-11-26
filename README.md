@@ -2,7 +2,10 @@
 
 A fixed-shape rewrite of the Qwen3.5 / Qwen3.8 hybrid decoder (Gated DeltaNet + gated full attention) that compiles on
 AWS Inferentia2 / Trainium1 (Neuron SDK 2.28) as one graph per inference phase, and reproduces the fp32 reference token
-for token on the chip.
+for token on the chip, up to **Qwen3.8-27B on Trainium1** (8 NeuronCores, 500 tok/s per copy at batch 64,
+$0.30 per million tokens at Spot prices).
+
+Explainer video: [`video/`](video/) (Remotion project; render with `cd video && npm i && npm run render`).
 
 Paper: [`paper/static_gdn_inferentia2.pdf`](paper/static_gdn_inferentia2.pdf)
 
@@ -29,8 +32,33 @@ Paper: [`paper/static_gdn_inferentia2.pdf`](paper/static_gdn_inferentia2.pdf)
      * 32/32 greedy tokens identical to fp32 on both prompts, KL ≤ 7.3e-4;
      * prefill on a batch it was not traced with: KL ≤ 5.8e-4, same argmax;
      * prefill 2x256 in 41-52 ms; batch-2 decode step 21.7 ms, including a 51 MB state round-trip.
-5. **Spot recipe** (`infra/inf2_spot.sh`): a one-time Spot instance uploads its results and terminates itself. The three
-   device runs cost about $0.20 in total.
+5. **Qwen3.8-27B on Trainium1** (`tp_qwen.py`, `neuron/run_tp.py`; `trn1.32xlarge`, bf16, TP=8, run
+   `results/20261126T191354Z-trn1.32xlarge`):
+
+   | | |
+   |---|---|
+   | greedy tokens identical to fp32 (prompts of 5 and 167 tokens) | 32/32, 32/32 |
+   | KL to fp32, mean / max | 1.9e-4 / 3.4e-3 |
+   | prefill on an unseen batch | KL ≤ 9.7e-5, same argmax |
+   | prefill 2×256 | 117 ms |
+   | decode, batch 2 / 8 / 32 / 64 | 38 / 52 / 78 / 128 ms per step = 52 / 153 / 410 / 500 tok/s |
+
+   * Weights are sliced by head across 8 cores (9 GB each). The recurrent, conv and KV state stay on the device between
+     calls (aliased NxD buffers). There are 2 all-reduces per layer and one logits all-gather.
+   * On Qwen3.5-0.8B, device-resident state with TP=2 cut the batch-2 decode step from 21.7 ms to 6.3 ms.
+6. **Cost per million output tokens** (`results/20261126T191354Z-trn1.32xlarge/cost.json`). A trn1.32xlarge holds 4
+   copies; that figure is projected from one measured copy.
+
+   | | batch 8 | batch 32 | batch 64 |
+   |---|---|---|---|
+   | trn1.32xlarge Spot ($2.15/h) | $0.97 | $0.36 | **$0.30** |
+   | trn1.32xlarge on-demand ($21.50/h) | $9.73 | $3.64 | $2.99 |
+   | cheapest hosted API (OpenRouter) | $1.05 | $1.05 | $1.05 |
+
+   * Spot is 3.5x cheaper than the cheapest API at batch 64. On-demand is about 3x more expensive.
+   * Caveats: contexts are ≤ 320 tokens, only output tokens are counted, and there is no continuous batching.
+7. **Launcher** (`infra/inf2_spot.sh`): a one-time Spot or `MARKET=ondemand` instance uploads its results and terminates
+   itself. All 0.8B runs cost about $0.20; the 27B run took 12 minutes and cost about $5 on-demand.
 
 ## Layout
 | path | what |
@@ -41,7 +69,10 @@ Paper: [`paper/static_gdn_inferentia2.pdf`](paper/static_gdn_inferentia2.pdf)
 | `neuron/run_inf2.py` | on-device run: inverse, whole-model compile, greedy decode vs fp32, latency |
 | `neuron/solve_vs_doubling.py` | on-device comparison: solve_triangular vs row loop vs doubling, HLO dump, unseen inputs |
 | `paper/` | technical report (LaTeX + PDF) |
-| `infra/inf2_spot.sh` | the Spot launcher |
+| `tp_qwen.py`, `test_tp.py` | tensor-parallel model (head-sliced) and its CPU check with emulated collectives |
+| `neuron/run_tp.py` | NxD trace/compile/run at TP=N: accuracy vs fp32, latency, batch sweep |
+| `infra/inf2_spot.sh` | the launcher (Spot or on-demand, any region) |
+| `video/` | explainer video (Remotion + Kokoro narration; numbers from `video/src/facts.json`) |
 | `results/` | `results_0p8b.json`, `results_tiny_gqa.json` (CPU); `2026112*-inf2.*/` device runs |
 
 ## Reproduce
@@ -59,11 +90,14 @@ cp infra/env.example infra/.env && $EDITOR infra/.env && ./infra/inf2_spot.sh &&
 For a pinned Neuron 2.28 environment off the DLAMI, see
 [neuron-2.28-trn1-inf2](https://github.com/Tar-ive/neuron-2.28-trn1-inf2).
 
-## Scaling to Qwen3.8-27B
-54 GB in bf16 needs tensor parallelism, e.g. TP=8 on inf2.24xlarge (4 chips, 128 GB). TP=8 divides the 16 GDN key heads
-(2 key and 6 value heads per core) and the 24 query heads, and replicates the 4 KV heads 2x. GDN heads are independent,
-so the recurrence adds no collectives. Compile time grows with the unrolled `bucket/64` chunk loop in each of 48 GDN
-layers: keep buckets ≤ 4096 or move the chunk scan into an NKI kernel.
+## Qwen3.8-27B on Trainium1
+```bash
+REGION=us-east-2 SUBNETS=subnet-... SG=sg-... MARKET=ondemand ITYPE=trn1.32xlarge VOLUME_GB=300 MINUTES=150 \
+SCRIPT=neuron/run_tp.py MODEL=Qwen/Qwen3.8-27B RUN_ARGS="--tp 8 --bucket 256 --steps 32 --decode-batches 8,32,64" \
+./infra/inf2_spot.sh
+```
+Compile time grows with the unrolled `bucket/64` chunk loop in each of 48 GDN layers. Keep buckets ≤ 4096, or move the
+chunk scan into an NKI kernel.
 
 ## License
 Apache-2.0
