@@ -85,7 +85,7 @@ expose the numerical instability of the Neumann-series alternative.
 device-resident recurrent and KV state reproduces the fp32 reference token for token and reaches 500 tokens/s per copy at
 batch 64. We report cost per million tokens at Spot and on-demand prices against hosted APIs.
 \end{enumerate}
-Code, launch scripts and raw results are released (Section~\ref{sec:repro}).
+Code, launch scripts and raw results are released at \url{https://github.com/Tar-ive/qwen-gdn-static-neuron}.
 
 \paragraph{Organisation.} Section~\ref{sec:bg} reviews the gated delta rule and its chunked form. Section~\ref{sec:solve}
 characterises the behaviour of \texttt{solve\_triangular} on Inferentia2. Sections~\ref{sec:inverse} and~\ref{sec:graph}
@@ -446,7 +446,8 @@ Tensor engine.
 \end{itemize}
 
 \section{Reproducibility}\label{sec:repro}
-Code, launch scripts and raw JSON results are available in the accompanying repository:
+Code, launch scripts and raw JSON results are available at
+\url{https://github.com/Tar-ive/qwen-gdn-static-neuron}:
 \begin{itemize}
 \item \texttt{static\_qwen.py} (model) and \texttt{test\_static.py} (CPU checks);
 \item \texttt{neuron/run\_inf2.py} and \texttt{neuron/solve\_vs\_doubling.py} (Inferentia2 runs);
