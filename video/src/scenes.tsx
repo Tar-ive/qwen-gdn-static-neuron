@@ -90,6 +90,7 @@ const Hybrid: React.FC<SceneProps> = ({ cue }) => {
         <Glass style={{ flex: 1, padding: "40px 46px", height: 560, ...reveal(f, 4) }}>
           <Kicker color={C.attn}>normal attention</Kicker>
           <Title style={{ marginTop: 14 }}>Memory grows<br />with every word</Title>
+          <Kicker style={{ marginTop: 12, fontSize: 18 }}>kv cache · O(n) per layer</Kicker>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 34, width: 700 }}>
             {Array.from({ length: blocks }).map((_, i) => <div key={i} style={{ width: 22, height: 22, borderRadius: 5, background: C.attn, opacity: 0.85 }} />)}
           </div>
@@ -99,6 +100,7 @@ const Hybrid: React.FC<SceneProps> = ({ cue }) => {
         <Glass glow={f > cue(1)} style={{ padding: "40px 46px", height: 560, ...reveal(f, cue(1)) }}>
           <Kicker color={C.gdn}>gated deltanet</Kicker>
           <Title style={{ marginTop: 14 }}>Small memory<br />that never grows</Title>
+          <Kicker style={{ marginTop: 12, fontSize: 18 }}>128 × 128 state per head · O(1)</Kicker>
           <div style={{ display: "flex", alignItems: "center", gap: 36, marginTop: 50 }}>
             <div style={{ width: 150, height: 150, borderRadius: 22, background: C.gdn, transform: `scale(${pulse})` }} />
             <div style={{ fontFamily: MONO, fontSize: 28, color: C.dim }}>same size<br />after {words.toLocaleString()} words</div>
@@ -125,6 +127,7 @@ const Blocker: React.FC<SceneProps> = ({ cue }) => {
           <Hero size={120} style={{ marginTop: 16 }}>Inferentia · Trainium</Hero>
         </Glass>
         <div style={reveal(f, 18)}><Pill dashed style={{ color: C.bad, fontSize: 30 }}>✕ can't run these layers</Pill></div>
+        <div style={reveal(f, 34)}><Kicker style={{ fontSize: 18 }}>existing ports use nki kernels on trainium2 · unsupported on inf2 / trn1 since sdk 2.29</Kicker></div>
       </AbsoluteFill>
       <AbsoluteFill style={{ alignItems: "center", justifyContent: "center", flexDirection: "column", opacity: out, filter: `blur(${(1 - out) * 10}px)` }}>
         <Kicker>so today you rent it from an api</Kicker>
@@ -135,70 +138,89 @@ const Blocker: React.FC<SceneProps> = ({ cue }) => {
   );
 };
 
-/* ---------------------------------------------------------- 4. the silent bug, as a frozen answer */
-const QA: React.FC<{ q: string; a: string; ok: boolean; f: number; at: number; strike?: number }> = ({ q, a, ok, f, at, strike = 0 }) => (
-  <Glass glow={ok} style={{ padding: "30px 40px", width: 1000, ...reveal(f, at, 18) }}>
-    <div style={{ display: "flex", alignItems: "baseline", gap: 30 }}>
-      <span style={{ fontSize: 40, color: C.dim }}>{q}</span>
-      <span style={{ fontFamily: PIXEL, fontSize: 90, position: "relative", color: ok ? C.ink : C.dim }}>
-        {a}
-        <span style={{ position: "absolute", left: -8, right: -8, top: "50%", height: 6, background: C.bad, transform: `scaleX(${strike})`, transformOrigin: "left" }} />
-      </span>
+/* ---------------------------------------------------------- 4. the silent bug: solve_triangular frozen at trace time */
+const Verdict: React.FC<{ label: string; detail: string; ok: boolean; f: number; at: number; strike?: number }> = ({ label, detail, ok, f, at, strike = 0 }) => (
+  <Glass glow={ok} style={{ padding: "26px 36px", width: 940, ...reveal(f, at, 18) }}>
+    <Kicker>{label}</Kicker>
+    <div style={{ fontFamily: PIXEL, fontSize: 64, marginTop: 10, position: "relative", display: "inline-block", color: ok ? C.ink : C.bad }}>
+      {detail}
+      <span style={{ position: "absolute", left: -6, right: -6, top: "52%", height: 5, background: C.bad, transform: `scaleX(${strike})`, transformOrigin: "left" }} />
     </div>
-    <div style={{ marginTop: 16 }}>
-      {ok ? <Pill solid>✓ right</Pill> : <Pill dashed style={{ color: C.bad }}>✕ wrong · same frozen answer</Pill>}
+    <div style={{ marginTop: 14 }}>
+      {ok ? <Pill solid>✓ exact</Pill> : <Pill dashed style={{ color: C.bad }}>✕ wrong · median relative error 0.56, max 1.44</Pill>}
     </div>
   </Glass>
 );
 const Bug: React.FC<SceneProps> = ({ cue }) => {
   const f = useCurrentFrame();
-  const RX = 1560, RY = 520;
+  const RX = 1500, RY = 300;
   const ring = 1 + 0.05 * Math.sin(f / 6);
+  const step = (i: number) => enter(f, cue(1) + 8 + i * 14, 14);
+  const pipe = ["solve_triangular", "no device kernel", "runs on CPU at trace time", "result stored as a constant"];
   return (
     <Stage behind={<Globe />}>
-      <div style={{ position: "absolute", left: 120, top: 100 }}>
-        <Kicker style={reveal(f, 0)}>the obvious port · compiles with no errors</Kicker>
-        <Kicker style={{ marginTop: 10, fontSize: 16, ...reveal(f, 6) }}>illustration</Kicker>
+      <div style={{ position: "absolute", left: 120, top: 90, ...reveal(f, 0) }}><Kicker>the obvious port · torch.linalg.solve_triangular · neuron sdk 2.28</Kicker></div>
+      <div style={{ position: "absolute", left: 120, top: 150, ...reveal(f, 6) }}>
+        <div style={{ background: "#0E0E10", border: `1.5px solid ${C.edge}`, borderRadius: 16, padding: "20px 28px", fontFamily: MONO, fontSize: 28, width: 940 }}>
+          <span style={{ color: C.dim }}>$ </span>torch_neuronx.trace(model, inputs)<br />
+          <span style={{ color: C.gdn, opacity: enter(f, 26, 8) }}>✓ compiled · 0 errors · 0 warnings</span>
+        </div>
       </div>
-      <div style={{ position: "absolute", left: 120, top: 220 }}><QA q="Capital of France?" a="Paris" ok f={f} at={cue(0) + 10} /></div>
-      <div style={{ position: "absolute", left: 120, top: 560 }}><QA q="Capital of Japan?" a="Paris" ok={false} f={f} at={cue(3)} strike={enter(f, cue(3) + 22, 12)} /></div>
-      <svg width={1920} height={1080} style={{ position: "absolute", inset: 0 }}>
-        <Curve d={`M ${RX - 90} ${RY} C ${RX - 260} ${RY}, ${RX - 300} 330, 1120 330`} k={enter(f, cue(2), 24)} />
-        <Curve d={`M ${RX - 90} ${RY} C ${RX - 260} ${RY}, ${RX - 300} 670, 1120 670`} k={enter(f, cue(3), 24)} />
-        {[160, 125].map((r, i) => <circle key={r} cx={RX} cy={RY} r={r * (i === 0 ? ring : 1)} fill="none" stroke="white" strokeOpacity={0.14 + i * 0.1} strokeWidth={2} style={{ opacity: enter(f, cue(1), 16) }} />)}
-        <circle cx={RX} cy={RY} r={88} fill="#111" stroke="white" strokeOpacity={0.85} strokeWidth={2.5} style={{ opacity: enter(f, cue(1), 16) }} />
+      <div style={{ position: "absolute", left: 120, top: 340, display: "flex", flexDirection: "column", gap: 10 }}>
+        {pipe.map((t, i) => (
+          <div key={t} style={{ display: "flex", alignItems: "center", gap: 16, opacity: step(i), filter: `blur(${(1 - step(i)) * 8}px)` }}>
+            <span style={{ fontFamily: MONO, color: C.dim, fontSize: 24, width: 30 }}>{i === 0 ? "" : "↳"}</span>
+            <span style={{ fontFamily: i === 0 ? MONO : SANS, fontSize: 32, color: i === 3 ? C.ink : C.dim }}>{t}</span>
+          </div>
+        ))}
+        <div style={{ marginTop: 8, background: "#0E0E10", border: `1.5px dashed ${C.edge}`, borderRadius: 14, padding: "14px 24px", fontFamily: MONO, fontSize: 24, color: C.dim, ...reveal(f, cue(1) + 70) }}>
+          HLO&nbsp;&nbsp;<span style={{ color: C.ink }}>ROOT %out = %p0</span>&nbsp;&nbsp;// identity: the input is never read
+        </div>
+      </div>
+      <svg width={1920} height={1080} style={{ position: "absolute", inset: 0, opacity: enter(f, cue(1), 16) }}>
+        {[150, 118].map((r, i) => <circle key={r} cx={RX} cy={RY} r={r * (i === 0 ? ring : 1)} fill="none" stroke="white" strokeOpacity={0.14 + i * 0.1} strokeWidth={2} />)}
+        <circle cx={RX} cy={RY} r={84} fill="#111" stroke="white" strokeOpacity={0.85} strokeWidth={2.5} />
       </svg>
-      <div style={{ position: "absolute", left: RX - 40, top: RY - 52, fontSize: 80, ...reveal(f, cue(1)) }}>❄</div>
-      <div style={{ position: "absolute", left: RX - 200, width: 400, top: RY + 190, textAlign: "center", ...reveal(f, cue(1) + 10) }}>
-        <Kicker color={C.ink}>one step frozen in</Kicker>
-        <Kicker style={{ marginTop: 8, fontSize: 18 }}>computed once, ahead of time</Kicker>
+      <div style={{ position: "absolute", left: RX - 38, top: RY - 50, fontSize: 76, ...reveal(f, cue(1)) }}>❄</div>
+      <div style={{ position: "absolute", left: RX - 220, width: 440, top: RY + 175, textAlign: "center", ...reveal(f, cue(1) + 10) }}>
+        <Kicker color={C.ink}>L⁻¹ frozen into the neff</Kicker>
       </div>
+      <div style={{ position: "absolute", left: 120, top: 660, transform: "scale(0.8)", transformOrigin: "left top" }}><Verdict label="the input it was traced with" detail="max error 0" ok f={f} at={cue(2)} /></div>
+      <div style={{ position: "absolute", left: 1000, top: 660, transform: "scale(0.8)", transformOrigin: "left top" }}><Verdict label="any other input" detail="error 56%" ok={false} f={f} at={cue(3)} /></div>
+      <div style={{ position: "absolute", left: RX - 320, width: 640, top: RY + 225, textAlign: "center", ...reveal(f, cue(3) + 30) }}><Kicker color={C.bad} style={{ fontSize: 19 }}>inside the full model: compiles, then segfaults</Kicker></div>
     </Stage>
   );
 };
 
-/* ---------------------------------------------------------- 5. the fix */
+/* ---------------------------------------------------------- 5. the fix: exact block-doubling inverse */
 const Fix: React.FC<SceneProps> = ({ cue }) => {
   const f = useCurrentFrame();
-  const chips = ["fixed shapes", "one graph per phase", "memory stays on chip"];
+  const chips = ["fixed shapes · rank ≤ 4", "padding β = g = 0 → state unchanged", "prefix sums as matmuls", "state stays on the device", "one graph per phase"];
   return (
     <Stage behind={<Globe />}>
-      <div style={{ position: "absolute", left: 120, top: 150 }}>
-        <Kicker style={reveal(f, 0)}>the fix · what this chip does best</Kicker>
-        <Hero size={170} style={{ marginTop: 24, ...reveal(f, 4, 20) }}>6 × matmul</Hero>
-        <div style={{ marginTop: 30, ...reveal(f, cue(1)) }}><Pill solid style={{ fontSize: 28 }}>✓ exact on every input</Pill></div>
+      <div style={{ position: "absolute", left: 120, top: 110 }}>
+        <Kicker style={reveal(f, 0)}>the fix · exact block-doubling inverse</Kicker>
+        <Hero size={150} style={{ marginTop: 22, ...reveal(f, 4, 20) }}>6 × matmul</Hero>
+        <div style={{ fontFamily: MONO, fontSize: 52, marginTop: 30, ...reveal(f, 20) }}>X ← X − X·O<sub style={{ fontSize: 30 }}>b</sub>·X</div>
+        <div style={{ display: "flex", gap: 10, marginTop: 22 }}>
+          {Array.from({ length: 6 }).map((_, i) => {
+            const k = enter(f, 30 + i * 8, 8);
+            return <div key={i} style={{ padding: "8px 18px", borderRadius: 999, border: `1.5px solid ${C.gdn}`, background: k > 0.5 ? C.gdn : "transparent", color: k > 0.5 ? "#0A0A0A" : C.gdn, fontFamily: MONO, fontSize: 20 }}>b = {2 ** i}</div>;
+          })}
+        </div>
+        <Kicker style={{ marginTop: 16, ...reveal(f, 40) }}>64×64 unit-lower inverse · 12 products per chunk</Kicker>
+        <div style={{ display: "flex", flexDirection: "column", gap: 16, marginTop: 44 }}>
+          <div style={reveal(f, cue(1))}><Pill solid style={{ fontSize: 26 }}>✓ max error 1.6e-7 on 256 systems it never saw</Pill></div>
+          <div style={reveal(f, cue(1) + 14)}><Pill style={{ fontSize: 26, color: C.ink }}>2.9× faster than the row loop · 22× smaller hlo</Pill></div>
+        </div>
       </div>
-      <div style={{ position: "absolute", left: 120, top: 640 }}>
-        <QA q="Capital of Japan?" a="Tokyo" ok f={f} at={cue(1) + 6} />
-      </div>
-      <div style={{ position: "absolute", left: 1220, top: 190, display: "flex", flexDirection: "column", gap: 22 }}>
+      <div style={{ position: "absolute", left: 1250, top: 180, display: "flex", flexDirection: "column", gap: 16 }}>
         {chips.map((c, i) => (
-          <Glass key={c} style={{ padding: "24px 32px", width: 560, display: "flex", alignItems: "center", gap: 20, ...reveal(f, cue(2) + i * 8) }}>
-            <div style={{ width: 30, height: 30, borderRadius: 8, background: C.gdn }} />
-            <span style={{ fontSize: 34 }}>{c}</span>
+          <Glass key={c} style={{ padding: "20px 28px", width: 610, whiteSpace: "nowrap", display: "flex", alignItems: "center", gap: 18, ...reveal(f, cue(2) + i * 7) }}>
+            <div style={{ width: 24, height: 24, borderRadius: 6, background: C.gdn, flex: "none" }} />
+            <span style={{ fontSize: 28 }}>{c}</span>
           </Glass>
         ))}
-        <div style={{ marginTop: 6, ...reveal(f, cue(2) + 30) }}><Kicker>→ the whole model compiles once</Kicker></div>
       </div>
     </Stage>
   );

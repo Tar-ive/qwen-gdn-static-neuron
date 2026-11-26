@@ -16,11 +16,11 @@
   },
   {
    "id": "bug",
-   "vo": "And the obvious port is worse than broken, because it looks like it works. One math step the chip can't do gets computed once, ahead of time, and frozen in. Same question: right answer. New question: the same old answer."
+   "vo": "The obvious port is worse than broken, because it compiles with no errors. The chip has no kernel for the triangular solve, so the compiler runs it once, on the CPU, and bakes the answer into the graph as a constant. On the input it was traced with: exact. On any other input: off by fifty-six percent."
   },
   {
    "id": "fix",
-   "vo": "So I rewrote that step as six plain matrix multiplies, the thing this chip does best. Now it's exact on every input. And with every shape fixed, the whole model compiles once."
+   "vo": "So I rewrote the inverse as six block-doubling steps of plain matrix multiplies. On inputs it never saw, it's exact to fp32 rounding, and almost three times faster than the row loop. With every shape fixed, the model compiles to one graph per phase."
   },
   {
    "id": "tp",

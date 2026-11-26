@@ -17,7 +17,7 @@
  },
  {
   "id": "hybrid",
-  "seconds": 7.984,
+  "seconds": 7.954,
   "cues": [
    {
     "text": "Most of its layers don't keep a memory that grows with every word.",
@@ -27,12 +27,12 @@
    {
     "text": "They keep a small one that never grows.",
     "start": 3.947,
-    "end": 6.072
+    "end": 6.071
    },
    {
     "text": "That should make it cheap to run.",
-    "start": 6.292,
-    "end": 7.764
+    "start": 6.291,
+    "end": 7.734
    }
   ]
  },
@@ -54,54 +54,54 @@
  },
  {
   "id": "bug",
-  "seconds": 13.376,
+  "seconds": 19.564,
   "cues": [
    {
-    "text": "And the obvious port is worse than broken, because it looks like it works.",
+    "text": "The obvious port is worse than broken, because it compiles with no errors.",
     "start": 0.0,
-    "end": 3.98
+    "end": 4.47
    },
    {
-    "text": "One math step the chip can't do gets computed once, ahead of time, and frozen in.",
-    "start": 4.2,
-    "end": 9.029
+    "text": "The chip has no kernel for the triangular solve, so the compiler runs it once, on the CPU, and bakes the answer into the graph as a constant.",
+    "start": 4.69,
+    "end": 13.574
    },
    {
-    "text": "Same question: right answer.",
-    "start": 9.249,
-    "end": 10.88
+    "text": "On the input it was traced with: exact.",
+    "start": 13.794,
+    "end": 16.102
    },
    {
-    "text": "New question: the same old answer.",
-    "start": 11.1,
-    "end": 13.156
+    "text": "On any other input: off by fifty-six percent.",
+    "start": 16.322,
+    "end": 19.344
    }
   ]
  },
  {
   "id": "fix",
-  "seconds": 10.705,
+  "seconds": 16.432,
   "cues": [
    {
-    "text": "So I rewrote that step as six plain matrix multiplies, the thing this chip does best.",
+    "text": "So I rewrote the inverse as six block-doubling steps of plain matrix multiplies.",
     "start": 0.0,
-    "end": 5.001
+    "end": 4.97
    },
    {
-    "text": "Now it's exact on every input.",
-    "start": 5.221,
-    "end": 6.991
+    "text": "On inputs it never saw, it's exact to fp32 rounding, and almost three times faster than the row loop.",
+    "start": 5.19,
+    "end": 12.026
    },
    {
-    "text": "And with every shape fixed, the whole model compiles once.",
-    "start": 7.211,
-    "end": 10.485
+    "text": "With every shape fixed, the model compiles to one graph per phase.",
+    "start": 12.246,
+    "end": 16.212
    }
   ]
  },
  {
   "id": "tp",
-  "seconds": 7.784,
+  "seconds": 7.808,
   "cues": [
    {
     "text": "Twenty-seven billion parameters, split by head across eight NeuronCores.",
@@ -111,59 +111,59 @@
    {
     "text": "Two all-reduces per layer.",
     "start": 4.593,
-    "end": 6.127
+    "end": 6.15
    },
    {
     "text": "Nothing else crosses.",
-    "start": 6.346,
-    "end": 7.564
+    "start": 6.37,
+    "end": 7.588
    }
   ]
  },
  {
   "id": "result",
-  "seconds": 10.195,
+  "seconds": 10.194,
   "cues": [
    {
     "text": "On the chip, it matches the full-precision model, token for token.",
     "start": 0.0,
-    "end": 3.71
+    "end": 3.709
    },
    {
     "text": "32 out of 32, on both prompts.",
-    "start": 3.93,
-    "end": 6.507
+    "start": 3.929,
+    "end": 6.506
    },
    {
     "text": "And 500 tokens a second, at batch 64.",
-    "start": 6.727,
-    "end": 9.975
+    "start": 6.726,
+    "end": 9.974
    }
   ]
  },
  {
   "id": "cost",
-  "seconds": 9.872,
+  "seconds": 9.874,
   "cues": [
    {
     "text": "At spot prices, that's 30 cents per million tokens.",
     "start": 0.0,
-    "end": 3.404
+    "end": 3.406
    },
    {
     "text": "The cheapest API charges a dollar five.",
-    "start": 3.624,
-    "end": 6.128
+    "start": 3.626,
+    "end": 6.131
    },
    {
     "text": "On demand, it's three dollars.",
-    "start": 6.348,
-    "end": 8.109
+    "start": 6.351,
+    "end": 8.112
    },
    {
     "text": "So this is a spot story.",
-    "start": 8.329,
-    "end": 9.652
+    "start": 8.332,
+    "end": 9.654
    }
   ]
  },
