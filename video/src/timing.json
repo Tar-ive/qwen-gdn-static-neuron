@@ -1,0 +1,190 @@
+[
+ {
+  "id": "hook",
+  "seconds": 14.101,
+  "cues": [
+   {
+    "text": "This is Qwen three point eight.",
+    "start": 0.0,
+    "end": 1.519
+   },
+   {
+    "text": "Twenty-seven billion parameters.",
+    "start": 1.739,
+    "end": 3.713
+   },
+   {
+    "text": "But three out of four of its layers aren't attention.",
+    "start": 3.933,
+    "end": 6.525
+   },
+   {
+    "text": "They're Gated DeltaNet: a recurrent layer that keeps a fixed-size memory, instead of a cache that grows with every token.",
+    "start": 6.745,
+    "end": 13.881
+   }
+  ]
+ },
+ {
+  "id": "stakes",
+  "seconds": 13.512,
+  "cues": [
+   {
+    "text": "That should make it cheap to serve.",
+    "start": 0.0,
+    "end": 1.501
+   },
+   {
+    "text": "But AWS's Inferentia and Trainium chips only run fixed-shape graphs, and this layer was never built for them.",
+    "start": 1.721,
+    "end": 8.868
+   },
+   {
+    "text": "So today, you pay API prices.",
+    "start": 9.088,
+    "end": 11.098
+   },
+   {
+    "text": "About a dollar per million tokens.",
+    "start": 11.318,
+    "end": 13.292
+   }
+  ]
+ },
+ {
+  "id": "bug",
+  "seconds": 16.016,
+  "cues": [
+   {
+    "text": "Worse, the obvious port fails silently.",
+    "start": 0.0,
+    "end": 2.233
+   },
+   {
+    "text": "The chip has no triangular solve.",
+    "start": 2.453,
+    "end": 4.336
+   },
+   {
+    "text": "So the compiler runs it once, on the CPU, and bakes that answer into the program.",
+    "start": 4.556,
+    "end": 9.717
+   },
+   {
+    "text": "It's like being handed a photo of a calculator.",
+    "start": 9.937,
+    "end": 12.568
+   },
+   {
+    "text": "Right on the test input.",
+    "start": 12.788,
+    "end": 14.04
+   },
+   {
+    "text": "Wrong on everything else.",
+    "start": 14.26,
+    "end": 15.796
+   }
+  ]
+ },
+ {
+  "id": "fix",
+  "seconds": 12.354,
+  "cues": [
+   {
+    "text": "So I rewrote the model as one static graph per phase.",
+    "start": 0.0,
+    "end": 3.187
+   },
+   {
+    "text": "The solve becomes six matrix multiplies that build the exact inverse.",
+    "start": 3.407,
+    "end": 7.764
+   },
+   {
+    "text": "Padding is provably harmless.",
+    "start": 7.984,
+    "end": 9.636
+   },
+   {
+    "text": "And no shape ever depends on the data.",
+    "start": 9.857,
+    "end": 12.134
+   }
+  ]
+ },
+ {
+  "id": "tp",
+  "seconds": 13.792,
+  "cues": [
+   {
+    "text": "Twenty-seven billion parameters don't fit on one chip.",
+    "start": 0.0,
+    "end": 3.129
+   },
+   {
+    "text": "So every layer is split by head, across eight NeuronCores.",
+    "start": 3.349,
+    "end": 6.957
+   },
+   {
+    "text": "Each core keeps its own memory on the chip, and the cores only meet twice per layer, to add up their results.",
+    "start": 7.177,
+    "end": 13.572
+   }
+  ]
+ },
+ {
+  "id": "result",
+  "seconds": 13.316,
+  "cues": [
+   {
+    "text": "On the chip, the output matches the full-precision model, token for token.",
+    "start": 0.0,
+    "end": 4.129
+   },
+   {
+    "text": "Thirty-two out of thirty-two.",
+    "start": 4.349,
+    "end": 5.933
+   },
+   {
+    "text": "And split across two cores, with the state kept on the chip, a decode step dropped from twenty-two milliseconds to six.",
+    "start": 6.153,
+    "end": 13.096
+   }
+  ]
+ },
+ {
+  "id": "cost",
+  "seconds": 11.777,
+  "cues": [
+   {
+    "text": "Now the money.",
+    "start": 0.0,
+    "end": 0.796
+   },
+   {
+    "text": "A spot Trainium instance holds four copies of the model, for about two dollars an hour.",
+    "start": 1.016,
+    "end": 5.911
+   },
+   {
+    "text": "Each copy beats the cheapest API once it passes a hundred and forty tokens a second.",
+    "start": 6.131,
+    "end": 11.557
+   }
+  ]
+ },
+ {
+  "id": "cta",
+  "seconds": 3.818,
+  "cues": [
+   {
+    "text": "The code, the paper, and a one-command launcher are on GitHub.",
+    "start": 0.0,
+    "end": 3.598
+   }
+  ]
+ }
+]
